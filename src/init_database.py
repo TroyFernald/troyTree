@@ -95,6 +95,25 @@ CREATE TABLE IF NOT EXISTS family_relationships (
     FOREIGN KEY(related_person_id) REFERENCES people(person_id)
 );
 
+CREATE TABLE IF NOT EXISTS direct_ancestor_audit (
+    audit_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id TEXT,
+    person_name TEXT,
+    generation INTEGER,
+    birth_date TEXT,
+    birth_place TEXT,
+    death_date TEXT,
+    death_place TEXT,
+    spouse_names TEXT,
+    parent_names TEXT,
+    source_count INTEGER,
+    confidence_status TEXT,
+    audit_flags TEXT,
+    priority INTEGER,
+    notes TEXT,
+    FOREIGN KEY(person_id) REFERENCES people(person_id)
+);
+
 CREATE TABLE IF NOT EXISTS duplicate_candidates (
     duplicate_id INTEGER PRIMARY KEY AUTOINCREMENT,
     left_person_id TEXT,

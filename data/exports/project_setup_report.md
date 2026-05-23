@@ -26,6 +26,8 @@ None.
 
 ## Working SQLite Tables
 
+- `direct_ancestor_audit`: 2825 rows
+  - Columns: audit_id, person_id, person_name, generation, birth_date, birth_place, death_date, death_place, spouse_names, parent_names, source_count, confidence_status, audit_flags, priority, notes
 - `duplicate_candidates`: 760 rows
   - Columns: duplicate_id, left_person_id, right_person_id, left_name, right_name, score, reason, review_status
 - `evidence_candidates`: 9 rows
@@ -36,7 +38,7 @@ None.
   - Columns: person_id, gedcom_id, full_name, given_name, surname, birth_date, birth_place, death_date, death_place, spouse_names, parent_names, generation, relationship_to_root, source_count, confidence_status, notes
 - `proposed_updates`: 0 rows
   - Columns: update_id, person_id, person_name, field_name, current_value, proposed_value, reason, supporting_evidence_ids, confidence_score, review_status, review_notes
-- `research_queue`: 7 rows
+- `research_queue`: 1183 rows
   - Columns: queue_id, person_id, person_name, priority, reason, search_terms, target_sources, status, assigned_to, created_date, last_researched_date, notes
 
 ## CSV Columns

@@ -5,6 +5,7 @@ from datetime import date
 
 from .ancestry_person import AncestryPerson
 from .date_validation import find_date_issues
+from .direct_ancestor_audit import update_direct_ancestor_audit
 from .duplicate_detection import find_duplicate_candidates
 from .gedcom_import import import_gedcom
 from .init_database import connect, initialize_database
@@ -195,6 +196,7 @@ def import_pilot_data() -> None:
         import_queue(con, queue, people, person_names)
         import_duplicates(con)
         con.commit()
+    update_direct_ancestor_audit()
 
 
 if __name__ == "__main__":
