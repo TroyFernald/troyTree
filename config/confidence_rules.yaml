@@ -1,0 +1,38 @@
+labels:
+  high_confidence:
+    min: 90
+    max: 100
+  medium_high_confidence:
+    min: 70
+    max: 89
+  medium_confidence:
+    min: 50
+    max: 69
+  low_confidence:
+    min: 30
+    max: 49
+  weak_clue_only:
+    min: 0
+    max: 29
+
+weights:
+  name_match: 15
+  spouse_match: 12
+  parent_match: 12
+  child_match: 8
+  birth_date_match: 12
+  birth_place_match: 8
+  death_date_match: 12
+  death_place_match: 8
+  record_based_source: 18
+  secondary_profile_source: 8
+  independent_corroboration: 10
+
+penalties:
+  different_spouse: -20
+  different_parents: -20
+  impossible_dates: -25
+  unsourced_tree_only: -20
+  conflicting_birth_or_death_place: -15
+  duplicate_profile_no_proof: -10
+  medieval_or_noble_without_primary_support: -30

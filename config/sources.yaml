@@ -1,0 +1,43 @@
+strong_sources:
+  - birth record
+  - marriage record
+  - death record
+  - census record
+  - probate record
+  - cemetery record with corroboration
+  - town record
+  - church record
+  - military record
+  - newspaper obituary
+  - published town history
+  - published county history
+
+weak_sources:
+  - Ancestry Family Trees
+  - Geneanet community tree
+  - unsourced WikiTree profile
+  - personal genealogy page without citations
+  - Find a Grave memorial without grave photo or linked records
+  - noble lineage page
+  - medieval lineage page
+
+priority_surnames:
+  - Fernald
+  - Bagley
+  - Meservie
+  - Meserve
+  - Fuller
+  - McKay
+  - Pierce
+  - Fairfield
+  - Soper
+  - Adams
+  - Grant
+  - Cookson
+
+priority_places:
+  - Maine
+  - New Hampshire
+  - Massachusetts
+  - Nova Scotia
+

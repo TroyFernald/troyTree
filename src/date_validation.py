@@ -1,0 +1,51 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from datetime import date, datetime
+from dateutil import parser
+
+
+@dataclass(frozen=True)
+class DateIssue:
+    field: str
+    message: str
+
+
+def parse_genealogy_date(value: str | None) -> date | None:
+    if not value:
+        return None
+    text = value.strip()
+    if not text:
+        return None
+    try:
+        default = datetime(1, 1, 1)
+        parsed = parser.parse(text, fuzzy=True, default=default)
+        return parsed.date()
+    except (ValueError, OverflowError):
+        return None
+
+
+def years_between(start: date, end: date) -> int:
+    return end.year - start.year - ((end.month, end.day) < (start.month, start.day))
+
+
+def find_date_issues(
+    birth_date: str | None,
+    death_date: str | None,
+    *,
+    person_name: str = "",
+) -> list[DateIssue]:
+    issues: list[DateIssue] = []
+    birth = parse_genealogy_date(birth_date)
+    death = parse_genealogy_date(death_date)
+
+    if birth_date and not birth:
+        issues.append(DateIssue("birth_date", f"Could not parse birth date for {person_name}".strip()))
+    if death_date and not death:
+        issues.append(DateIssue("death_date", f"Could not parse death date for {person_name}".strip()))
+    if birth and death:
+        if death < birth:
+            issues.append(DateIssue("death_date", "Death date is before birth date"))
+        elif years_between(birth, death) > 115:
+            issues.append(DateIssue("death_date", "Lifespan exceeds 115 years"))
+    return issues
