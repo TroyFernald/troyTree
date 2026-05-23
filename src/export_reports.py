@@ -75,9 +75,13 @@ def add_workbook_sheets(con: sqlite3.Connection, writer: pd.ExcelWriter) -> None
     duplicates = read_sql(con, "SELECT * FROM duplicate_candidates ORDER BY score DESC")
     review_tasks = read_sql(con, "SELECT * FROM review_task ORDER BY priority, task_type, person_name")
     validation = read_sql(con, "SELECT * FROM validation_issue ORDER BY severity, generation, person_name")
+    research_targets = read_sql(con, "SELECT * FROM web_research_target ORDER BY priority, generation, person_name")
+    research_findings = read_sql(con, "SELECT * FROM web_research_finding ORDER BY confidence_score DESC, person_name")
 
     queue.head(25).to_excel(writer, sheet_name="Top Priority People", index=False)
     review_tasks.head(100).to_excel(writer, sheet_name="Review Tasks", index=False)
+    research_targets.head(250).to_excel(writer, sheet_name="Web Research Targets", index=False)
+    research_findings.to_excel(writer, sheet_name="New Research Findings", index=False)
     direct[
         direct["audit_flags"].fillna("").str.contains("no sources|weak source only", case=False)
     ].to_excel(writer, sheet_name="Weakly Sourced Direct Ancestors", index=False)
@@ -150,6 +154,23 @@ def export_reports() -> None:
         read_sql(con, "SELECT * FROM review_task ORDER BY priority, task_type, person_name").to_csv(
             EXPORTS_DIR / "review_tasks_export.csv", index=False
         )
+        read_sql(con, "SELECT * FROM web_research_target ORDER BY priority, generation, person_name").to_csv(
+            EXPORTS_DIR / "web_research_targets_export.csv", index=False
+        )
+        read_sql(con, "SELECT * FROM web_research_finding ORDER BY confidence_score DESC, person_name").to_csv(
+            EXPORTS_DIR / "new_research_findings.csv", index=False
+        )
+        read_sql(con, "SELECT * FROM web_research_finding ORDER BY confidence_score DESC, person_name").to_excel(
+            EXPORTS_DIR / "new_research_findings.xlsx", index=False
+        )
+        read_sql(
+            con,
+            """
+            SELECT *
+            FROM web_research_target
+            ORDER BY priority, generation, person_name
+            """,
+        ).to_excel(EXPORTS_DIR / "whole_family_research_targets.xlsx", index=False)
         read_sql(con, "SELECT * FROM validation_issue ORDER BY severity, generation, person_name").to_csv(
             EXPORTS_DIR / "relationship_validation_export.csv", index=False
         )

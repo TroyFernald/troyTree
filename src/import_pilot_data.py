@@ -14,6 +14,7 @@ from .research_queue import TARGET_SOURCES, build_search_terms
 from .relationship_validation import rebuild_validation_issues
 from .review_tasks import rebuild_review_tasks
 from .source_scoring import infer_source_type, score_evidence, source_site
+from .web_research import import_web_findings, rebuild_web_research_targets
 
 
 def read_csv(name: str) -> list[dict]:
@@ -213,6 +214,8 @@ def import_pilot_data() -> None:
         con.commit()
     update_direct_ancestor_audit()
     rebuild_validation_issues()
+    rebuild_web_research_targets()
+    import_web_findings()
     rebuild_review_tasks()
 
 

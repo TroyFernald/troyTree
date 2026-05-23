@@ -38,7 +38,7 @@ None.
   - Columns: duplicate_id, left_person_id, right_person_id, left_name, right_name, score, reason, review_status, left_birth_date, right_birth_date, left_birth_place, right_birth_place, left_death_date, right_death_date, left_death_place, right_death_place, left_relationship_to_root, right_relationship_to_root
 - `evidence_assertion`: 16129 rows
   - Columns: assertion_id, import_batch_id, raw_record_id, citation_id, subject_type, subject_id, person_id, claim_type, claim_value, date_text, place_text, source_quality, information_type, evidence_type, confidence_score, confidence_label, review_status, review_notes, created_at
-- `evidence_candidates`: 9 rows
+- `evidence_candidates`: 12 rows
   - Columns: evidence_id, person_id, person_name, source_title, source_type, source_url, source_site, claimed_birth_date, claimed_birth_place, claimed_death_date, claimed_death_place, claimed_spouse, claimed_parents, claimed_children, summary, transcription, confidence_score, confidence_label, conflicts, date_found, review_status, review_notes
 - `family_relationships`: 10872 rows
   - Columns: relationship_id, family_id, person_id, related_person_id, relationship_type, notes
@@ -60,6 +60,10 @@ None.
   - Columns: source_id, repository_id, source_title, source_type, source_url, source_quality, notes
 - `validation_issue`: 200 rows
   - Columns: validation_issue_id, issue_type, severity, person_id, person_name, related_person_id, related_person_name, relationship_id, generation, description, review_status, created_at
+- `web_research_finding`: 7 rows
+  - Columns: finding_id, person_id, person_name, search_query, source_title, source_type, source_url, source_site, snippet, claimed_facts, confidence_score, confidence_label, review_status, date_found, notes
+- `web_research_target`: 27721 rows
+  - Columns: target_id, person_id, person_name, generation, priority, reason, search_query, target_sources, status, created_at
 
 ## CSV Columns
 

@@ -136,6 +136,41 @@ CREATE TABLE IF NOT EXISTS evidence_candidates (
     FOREIGN KEY(person_id) REFERENCES people(person_id)
 );
 
+CREATE TABLE IF NOT EXISTS web_research_finding (
+    finding_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id TEXT,
+    person_name TEXT,
+    search_query TEXT,
+    source_title TEXT,
+    source_type TEXT,
+    source_url TEXT,
+    source_site TEXT,
+    snippet TEXT,
+    claimed_facts TEXT,
+    confidence_score INTEGER,
+    confidence_label TEXT,
+    review_status TEXT DEFAULT 'needs_review',
+    date_found TEXT DEFAULT CURRENT_DATE,
+    notes TEXT,
+    UNIQUE(person_id, source_url),
+    FOREIGN KEY(person_id) REFERENCES people(person_id)
+);
+
+CREATE TABLE IF NOT EXISTS web_research_target (
+    target_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id TEXT,
+    person_name TEXT,
+    generation INTEGER,
+    priority INTEGER,
+    reason TEXT,
+    search_query TEXT,
+    target_sources TEXT,
+    status TEXT DEFAULT 'open',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(person_id, search_query),
+    FOREIGN KEY(person_id) REFERENCES people(person_id)
+);
+
 CREATE TABLE IF NOT EXISTS research_queue (
     queue_id INTEGER PRIMARY KEY AUTOINCREMENT,
     person_id TEXT,
