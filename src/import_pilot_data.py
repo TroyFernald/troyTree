@@ -6,6 +6,7 @@ from datetime import date
 from .ancestry_person import AncestryPerson
 from .date_validation import find_date_issues
 from .duplicate_detection import find_duplicate_candidates
+from .gedcom_import import import_gedcom
 from .init_database import connect, initialize_database
 from .paths import ORIGINAL_DIR, WORKING_DB, ensure_directories
 from .research_queue import TARGET_SOURCES, build_search_terms
@@ -47,6 +48,10 @@ def import_people(con, rows: list[dict]) -> None:
         else:
             confidence_status = "needs_review"
 
+        existing = con.execute(
+            "SELECT spouse_names, parent_names FROM people WHERE person_id = ?",
+            (person.person_id,),
+        ).fetchone()
         con.execute(
             """
             INSERT OR REPLACE INTO people (
@@ -65,8 +70,8 @@ def import_people(con, rows: list[dict]) -> None:
                 person.birth_place,
                 person.death_date,
                 person.death_place,
-                "",
-                "",
+                existing["spouse_names"] if existing else "",
+                existing["parent_names"] if existing else "",
                 int(person.generation or 0),
                 "direct ancestor",
                 person.source_count,
@@ -178,6 +183,7 @@ def import_duplicates(con) -> None:
 def import_pilot_data() -> None:
     ensure_directories()
     initialize_database(WORKING_DB)
+    import_gedcom()
     people = read_csv("persons.csv")
     evidence = read_csv("evidence_candidates.csv")
     queue = read_csv("research_queue.csv")
@@ -194,4 +200,3 @@ def import_pilot_data() -> None:
 if __name__ == "__main__":
     import_pilot_data()
     print(f"Imported pilot data into {WORKING_DB}")
-

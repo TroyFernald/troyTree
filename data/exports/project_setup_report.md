@@ -26,11 +26,13 @@ None.
 
 ## Working SQLite Tables
 
-- `duplicate_candidates`: 0 rows
+- `duplicate_candidates`: 760 rows
   - Columns: duplicate_id, left_person_id, right_person_id, left_name, right_name, score, reason, review_status
 - `evidence_candidates`: 9 rows
   - Columns: evidence_id, person_id, person_name, source_title, source_type, source_url, source_site, claimed_birth_date, claimed_birth_place, claimed_death_date, claimed_death_place, claimed_spouse, claimed_parents, claimed_children, summary, transcription, confidence_score, confidence_label, conflicts, date_found, review_status, review_notes
-- `people`: 7 rows
+- `family_relationships`: 10872 rows
+  - Columns: relationship_id, family_id, person_id, related_person_id, relationship_type, notes
+- `people`: 3761 rows
   - Columns: person_id, gedcom_id, full_name, given_name, surname, birth_date, birth_place, death_date, death_place, spouse_names, parent_names, generation, relationship_to_root, source_count, confidence_status, notes
 - `proposed_updates`: 0 rows
   - Columns: update_id, person_id, person_name, field_name, current_value, proposed_value, reason, supporting_evidence_ids, confidence_score, review_status, review_notes

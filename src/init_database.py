@@ -84,6 +84,17 @@ CREATE TABLE IF NOT EXISTS proposed_updates (
     FOREIGN KEY(person_id) REFERENCES people(person_id)
 );
 
+CREATE TABLE IF NOT EXISTS family_relationships (
+    relationship_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    family_id TEXT,
+    person_id TEXT,
+    related_person_id TEXT,
+    relationship_type TEXT,
+    notes TEXT,
+    FOREIGN KEY(person_id) REFERENCES people(person_id),
+    FOREIGN KEY(related_person_id) REFERENCES people(person_id)
+);
+
 CREATE TABLE IF NOT EXISTS duplicate_candidates (
     duplicate_id INTEGER PRIMARY KEY AUTOINCREMENT,
     left_person_id TEXT,
@@ -112,4 +123,3 @@ def initialize_database(db_path=WORKING_DB) -> None:
 if __name__ == "__main__":
     initialize_database()
     print(f"Initialized {WORKING_DB}")
-
