@@ -73,8 +73,10 @@ def add_workbook_sheets(con: sqlite3.Connection, writer: pd.ExcelWriter) -> None
     direct = read_sql(con, "SELECT * FROM direct_ancestor_audit ORDER BY priority, generation, person_name")
     evidence = read_sql(con, "SELECT * FROM evidence_candidates ORDER BY confidence_score DESC")
     duplicates = read_sql(con, "SELECT * FROM duplicate_candidates ORDER BY score DESC")
+    review_tasks = read_sql(con, "SELECT * FROM review_task ORDER BY priority, task_type, person_name")
 
     queue.head(25).to_excel(writer, sheet_name="Top Priority People", index=False)
+    review_tasks.head(100).to_excel(writer, sheet_name="Review Tasks", index=False)
     direct[
         direct["audit_flags"].fillna("").str.contains("no sources|weak source only", case=False)
     ].to_excel(writer, sheet_name="Weakly Sourced Direct Ancestors", index=False)
@@ -140,6 +142,30 @@ def export_reports() -> None:
         read_sql(con, "SELECT * FROM proposed_updates ORDER BY person_name, field_name").to_csv(
             EXPORTS_DIR / "proposed_updates.csv", index=False
         )
+        read_sql(con, "SELECT * FROM evidence_assertion ORDER BY person_id, claim_type").to_csv(
+            EXPORTS_DIR / "evidence_assertions_export.csv", index=False
+        )
+        read_sql(con, "SELECT * FROM review_task ORDER BY priority, task_type, person_name").to_csv(
+            EXPORTS_DIR / "review_tasks_export.csv", index=False
+        )
+        read_sql(
+            con,
+            """
+            SELECT *
+            FROM review_task
+            WHERE task_type IN ('citation_gap', 'proof_gap')
+            ORDER BY priority, person_name
+            """,
+        ).to_excel(EXPORTS_DIR / "direct_ancestor_proof_gaps.xlsx", index=False)
+        read_sql(
+            con,
+            """
+            SELECT *
+            FROM review_task
+            WHERE task_type = 'citation_gap'
+            ORDER BY priority, person_name
+            """,
+        ).to_excel(EXPORTS_DIR / "citation_gap_report.xlsx", index=False)
         read_sql(con, "SELECT * FROM duplicate_candidates ORDER BY score DESC, left_name").to_csv(
             EXPORTS_DIR / "duplicate_candidates_export.csv", index=False
         )

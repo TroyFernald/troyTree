@@ -8,6 +8,89 @@ from .paths import WORKING_DB, ensure_directories
 SCHEMA = """
 PRAGMA foreign_keys = ON;
 
+CREATE TABLE IF NOT EXISTS import_batch (
+    import_batch_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_name TEXT NOT NULL,
+    source_path TEXT,
+    source_hash TEXT,
+    source_type TEXT,
+    gedcom_version TEXT,
+    imported_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    parser_version TEXT,
+    notes TEXT
+);
+
+CREATE TABLE IF NOT EXISTS raw_record (
+    raw_record_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    import_batch_id INTEGER NOT NULL,
+    xref TEXT,
+    record_type TEXT,
+    raw_text TEXT NOT NULL,
+    parsed_summary TEXT,
+    FOREIGN KEY(import_batch_id) REFERENCES import_batch(import_batch_id)
+);
+
+CREATE TABLE IF NOT EXISTS repository (
+    repository_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    url TEXT,
+    notes TEXT
+);
+
+CREATE TABLE IF NOT EXISTS source (
+    source_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    repository_id INTEGER,
+    source_title TEXT NOT NULL,
+    source_type TEXT,
+    source_url TEXT,
+    source_quality TEXT DEFAULT 'unknown',
+    notes TEXT,
+    FOREIGN KEY(repository_id) REFERENCES repository(repository_id)
+);
+
+CREATE TABLE IF NOT EXISTS citation (
+    citation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_id INTEGER,
+    raw_record_id INTEGER,
+    page_locator TEXT,
+    url TEXT,
+    accessed_date TEXT,
+    transcript TEXT,
+    abstract TEXT,
+    citation_text TEXT,
+    information_type TEXT DEFAULT 'unknown',
+    evidence_type TEXT DEFAULT 'unknown',
+    review_status TEXT DEFAULT 'imported',
+    FOREIGN KEY(source_id) REFERENCES source(source_id),
+    FOREIGN KEY(raw_record_id) REFERENCES raw_record(raw_record_id)
+);
+
+CREATE TABLE IF NOT EXISTS evidence_assertion (
+    assertion_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    import_batch_id INTEGER,
+    raw_record_id INTEGER,
+    citation_id INTEGER,
+    subject_type TEXT NOT NULL,
+    subject_id TEXT,
+    person_id TEXT,
+    claim_type TEXT NOT NULL,
+    claim_value TEXT,
+    date_text TEXT,
+    place_text TEXT,
+    source_quality TEXT DEFAULT 'unknown',
+    information_type TEXT DEFAULT 'unknown',
+    evidence_type TEXT DEFAULT 'unknown',
+    confidence_score INTEGER DEFAULT 0,
+    confidence_label TEXT DEFAULT 'Weak clue only',
+    review_status TEXT DEFAULT 'imported',
+    review_notes TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(import_batch_id) REFERENCES import_batch(import_batch_id),
+    FOREIGN KEY(raw_record_id) REFERENCES raw_record(raw_record_id),
+    FOREIGN KEY(citation_id) REFERENCES citation(citation_id),
+    FOREIGN KEY(person_id) REFERENCES people(person_id)
+);
+
 CREATE TABLE IF NOT EXISTS people (
     person_id TEXT PRIMARY KEY,
     gedcom_id TEXT,
@@ -84,6 +167,47 @@ CREATE TABLE IF NOT EXISTS proposed_updates (
     FOREIGN KEY(person_id) REFERENCES people(person_id)
 );
 
+CREATE TABLE IF NOT EXISTS conclusion_evidence (
+    conclusion_evidence_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    conclusion_table TEXT NOT NULL,
+    conclusion_id TEXT NOT NULL,
+    assertion_id INTEGER NOT NULL,
+    support_type TEXT DEFAULT 'supports',
+    notes TEXT,
+    FOREIGN KEY(assertion_id) REFERENCES evidence_assertion(assertion_id)
+);
+
+CREATE TABLE IF NOT EXISTS review_task (
+    review_task_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    task_type TEXT NOT NULL,
+    subject_type TEXT NOT NULL,
+    subject_id TEXT,
+    person_id TEXT,
+    person_name TEXT,
+    priority INTEGER DEFAULT 999,
+    reason TEXT,
+    status TEXT DEFAULT 'open',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    reviewed_at TEXT,
+    reviewed_by TEXT,
+    review_notes TEXT,
+    FOREIGN KEY(person_id) REFERENCES people(person_id)
+);
+
+CREATE TABLE IF NOT EXISTS change_log (
+    change_log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    change_type TEXT NOT NULL,
+    table_name TEXT,
+    row_id TEXT,
+    person_id TEXT,
+    summary TEXT,
+    changed_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    changed_by TEXT,
+    review_task_id INTEGER,
+    FOREIGN KEY(person_id) REFERENCES people(person_id),
+    FOREIGN KEY(review_task_id) REFERENCES review_task(review_task_id)
+);
+
 CREATE TABLE IF NOT EXISTS family_relationships (
     relationship_id INTEGER PRIMARY KEY AUTOINCREMENT,
     family_id TEXT,
@@ -148,6 +272,7 @@ def initialize_database(db_path=WORKING_DB) -> None:
     with connect(db_path) as con:
         con.executescript(SCHEMA)
         ensure_duplicate_columns(con)
+        ensure_review_columns(con)
 
 
 def ensure_duplicate_columns(con: sqlite3.Connection) -> None:
@@ -167,6 +292,18 @@ def ensure_duplicate_columns(con: sqlite3.Connection) -> None:
     for column, column_type in columns.items():
         if column not in existing:
             con.execute(f"ALTER TABLE duplicate_candidates ADD COLUMN {column} {column_type}")
+
+
+def ensure_review_columns(con: sqlite3.Connection) -> None:
+    review_existing = {row["name"] for row in con.execute("PRAGMA table_info(review_task)")}
+    review_columns = {
+        "reviewed_at": "TEXT",
+        "reviewed_by": "TEXT",
+        "review_notes": "TEXT",
+    }
+    for column, column_type in review_columns.items():
+        if column not in review_existing:
+            con.execute(f"ALTER TABLE review_task ADD COLUMN {column} {column_type}")
 
 
 if __name__ == "__main__":
