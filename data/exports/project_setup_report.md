@@ -28,8 +28,8 @@ None.
 
 - `direct_ancestor_audit`: 2825 rows
   - Columns: audit_id, person_id, person_name, generation, birth_date, birth_place, death_date, death_place, spouse_names, parent_names, source_count, confidence_status, audit_flags, priority, notes
-- `duplicate_candidates`: 760 rows
-  - Columns: duplicate_id, left_person_id, right_person_id, left_name, right_name, score, reason, review_status
+- `duplicate_candidates`: 391 rows
+  - Columns: duplicate_id, left_person_id, right_person_id, left_name, right_name, score, reason, review_status, left_birth_date, right_birth_date, left_birth_place, right_birth_place, left_death_date, right_death_date, left_death_place, right_death_place, left_relationship_to_root, right_relationship_to_root
 - `evidence_candidates`: 9 rows
   - Columns: evidence_id, person_id, person_name, source_title, source_type, source_url, source_site, claimed_birth_date, claimed_birth_place, claimed_death_date, claimed_death_place, claimed_spouse, claimed_parents, claimed_children, summary, transcription, confidence_score, confidence_label, conflicts, date_found, review_status, review_notes
 - `family_relationships`: 10872 rows

@@ -167,14 +167,27 @@ def import_duplicates(con) -> None:
         con.execute(
             """
             INSERT INTO duplicate_candidates (
-                left_person_id, right_person_id, left_name, right_name, score, reason
-            ) VALUES (?, ?, ?, ?, ?, ?)
+                left_person_id, right_person_id, left_name, right_name,
+                left_birth_date, right_birth_date, left_birth_place, right_birth_place,
+                left_death_date, right_death_date, left_death_place, right_death_place,
+                left_relationship_to_root, right_relationship_to_root, score, reason
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 candidate.left_person_id,
                 candidate.right_person_id,
                 candidate.left_name,
                 candidate.right_name,
+                candidate.left_birth_date,
+                candidate.right_birth_date,
+                candidate.left_birth_place,
+                candidate.right_birth_place,
+                candidate.left_death_date,
+                candidate.right_death_date,
+                candidate.left_death_place,
+                candidate.right_death_place,
+                candidate.left_relationship_to_root,
+                candidate.right_relationship_to_root,
                 candidate.score,
                 candidate.reason,
             ),

@@ -120,6 +120,16 @@ CREATE TABLE IF NOT EXISTS duplicate_candidates (
     right_person_id TEXT,
     left_name TEXT,
     right_name TEXT,
+    left_birth_date TEXT,
+    right_birth_date TEXT,
+    left_birth_place TEXT,
+    right_birth_place TEXT,
+    left_death_date TEXT,
+    right_death_date TEXT,
+    left_death_place TEXT,
+    right_death_place TEXT,
+    left_relationship_to_root TEXT,
+    right_relationship_to_root TEXT,
     score INTEGER,
     reason TEXT,
     review_status TEXT DEFAULT 'needs_review'
@@ -137,6 +147,26 @@ def connect(db_path=WORKING_DB) -> sqlite3.Connection:
 def initialize_database(db_path=WORKING_DB) -> None:
     with connect(db_path) as con:
         con.executescript(SCHEMA)
+        ensure_duplicate_columns(con)
+
+
+def ensure_duplicate_columns(con: sqlite3.Connection) -> None:
+    existing = {row["name"] for row in con.execute("PRAGMA table_info(duplicate_candidates)")}
+    columns = {
+        "left_birth_date": "TEXT",
+        "right_birth_date": "TEXT",
+        "left_birth_place": "TEXT",
+        "right_birth_place": "TEXT",
+        "left_death_date": "TEXT",
+        "right_death_date": "TEXT",
+        "left_death_place": "TEXT",
+        "right_death_place": "TEXT",
+        "left_relationship_to_root": "TEXT",
+        "right_relationship_to_root": "TEXT",
+    }
+    for column, column_type in columns.items():
+        if column not in existing:
+            con.execute(f"ALTER TABLE duplicate_candidates ADD COLUMN {column} {column_type}")
 
 
 if __name__ == "__main__":

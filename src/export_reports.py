@@ -140,6 +140,12 @@ def export_reports() -> None:
         read_sql(con, "SELECT * FROM proposed_updates ORDER BY person_name, field_name").to_csv(
             EXPORTS_DIR / "proposed_updates.csv", index=False
         )
+        read_sql(con, "SELECT * FROM duplicate_candidates ORDER BY score DESC, left_name").to_csv(
+            EXPORTS_DIR / "duplicate_candidates_export.csv", index=False
+        )
+        read_sql(con, "SELECT * FROM duplicate_candidates ORDER BY score DESC, left_name").to_excel(
+            EXPORTS_DIR / "duplicate_candidates.xlsx", index=False
+        )
         read_sql(con, "SELECT * FROM direct_ancestor_audit ORDER BY priority, generation, person_name").to_excel(
             EXPORTS_DIR / "direct_ancestor_audit.xlsx", index=False
         )

@@ -17,3 +17,24 @@ def test_duplicate_detection_ignores_distinct_people():
     ]
     assert find_duplicate_candidates(people, threshold=85) == []
 
+
+def test_duplicate_detection_rejects_same_name_different_generation_years():
+    people = [
+        {
+            "person_id": "1",
+            "full_name": "Joseph Fernald",
+            "birth_date": "1843",
+            "birth_place": "Maine",
+            "generation": 4,
+            "relationship_to_root": "direct ancestor",
+        },
+        {
+            "person_id": "2",
+            "full_name": "Joseph Fernald",
+            "birth_date": "1704",
+            "birth_place": "Maine",
+            "generation": 9,
+            "relationship_to_root": "direct ancestor",
+        },
+    ]
+    assert find_duplicate_candidates(people, threshold=85) == []
