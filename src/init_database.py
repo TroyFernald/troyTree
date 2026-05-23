@@ -194,6 +194,24 @@ CREATE TABLE IF NOT EXISTS review_task (
     FOREIGN KEY(person_id) REFERENCES people(person_id)
 );
 
+CREATE TABLE IF NOT EXISTS validation_issue (
+    validation_issue_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    issue_type TEXT NOT NULL,
+    severity TEXT NOT NULL,
+    person_id TEXT,
+    person_name TEXT,
+    related_person_id TEXT,
+    related_person_name TEXT,
+    relationship_id INTEGER,
+    generation INTEGER,
+    description TEXT NOT NULL,
+    review_status TEXT DEFAULT 'open',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(person_id) REFERENCES people(person_id),
+    FOREIGN KEY(related_person_id) REFERENCES people(person_id),
+    FOREIGN KEY(relationship_id) REFERENCES family_relationships(relationship_id)
+);
+
 CREATE TABLE IF NOT EXISTS change_log (
     change_log_id INTEGER PRIMARY KEY AUTOINCREMENT,
     change_type TEXT NOT NULL,

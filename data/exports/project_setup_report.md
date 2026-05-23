@@ -52,12 +52,14 @@ None.
   - Columns: raw_record_id, import_batch_id, xref, record_type, raw_text, parsed_summary
 - `repository`: 0 rows
   - Columns: repository_id, name, url, notes
-- `research_queue`: 1183 rows
+- `research_queue`: 1181 rows
   - Columns: queue_id, person_id, person_name, priority, reason, search_terms, target_sources, status, assigned_to, created_date, last_researched_date, notes
-- `review_task`: 2732 rows
+- `review_task`: 2933 rows
   - Columns: review_task_id, task_type, subject_type, subject_id, person_id, person_name, priority, reason, status, created_at, reviewed_at, reviewed_by, review_notes
 - `source`: 5832 rows
   - Columns: source_id, repository_id, source_title, source_type, source_url, source_quality, notes
+- `validation_issue`: 200 rows
+  - Columns: validation_issue_id, issue_type, severity, person_id, person_name, related_person_id, related_person_name, relationship_id, generation, description, review_status, created_at
 
 ## CSV Columns
 

@@ -74,6 +74,7 @@ def add_workbook_sheets(con: sqlite3.Connection, writer: pd.ExcelWriter) -> None
     evidence = read_sql(con, "SELECT * FROM evidence_candidates ORDER BY confidence_score DESC")
     duplicates = read_sql(con, "SELECT * FROM duplicate_candidates ORDER BY score DESC")
     review_tasks = read_sql(con, "SELECT * FROM review_task ORDER BY priority, task_type, person_name")
+    validation = read_sql(con, "SELECT * FROM validation_issue ORDER BY severity, generation, person_name")
 
     queue.head(25).to_excel(writer, sheet_name="Top Priority People", index=False)
     review_tasks.head(100).to_excel(writer, sheet_name="Review Tasks", index=False)
@@ -103,6 +104,7 @@ def add_workbook_sheets(con: sqlite3.Connection, writer: pd.ExcelWriter) -> None
             }
         )
     pd.DataFrame(date_conflict_rows).to_excel(writer, sheet_name="Date Conflicts", index=False)
+    validation.head(500).to_excel(writer, sheet_name="Validation Issues", index=False)
     direct_ids = set(direct["person_id"].tolist())
     direct_duplicates = duplicates[
         duplicates["left_person_id"].isin(direct_ids) | duplicates["right_person_id"].isin(direct_ids)
@@ -147,6 +149,12 @@ def export_reports() -> None:
         )
         read_sql(con, "SELECT * FROM review_task ORDER BY priority, task_type, person_name").to_csv(
             EXPORTS_DIR / "review_tasks_export.csv", index=False
+        )
+        read_sql(con, "SELECT * FROM validation_issue ORDER BY severity, generation, person_name").to_csv(
+            EXPORTS_DIR / "relationship_validation_export.csv", index=False
+        )
+        read_sql(con, "SELECT * FROM validation_issue ORDER BY severity, generation, person_name").to_excel(
+            EXPORTS_DIR / "relationship_validation.xlsx", index=False
         )
         read_sql(
             con,

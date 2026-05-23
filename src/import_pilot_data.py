@@ -11,6 +11,7 @@ from .gedcom_import import import_gedcom
 from .init_database import connect, initialize_database
 from .paths import ORIGINAL_DIR, WORKING_DB, ensure_directories
 from .research_queue import TARGET_SOURCES, build_search_terms
+from .relationship_validation import rebuild_validation_issues
 from .review_tasks import rebuild_review_tasks
 from .source_scoring import infer_source_type, score_evidence, source_site
 
@@ -211,6 +212,7 @@ def import_pilot_data() -> None:
         import_duplicates(con)
         con.commit()
     update_direct_ancestor_audit()
+    rebuild_validation_issues()
     rebuild_review_tasks()
 
 
