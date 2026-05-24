@@ -17,7 +17,7 @@ import json
 from collections import defaultdict
 
 from .ancestral_sides import compute_sides
-from .build_storybook import NOBLE_IMAGES
+from .build_storybook import noble_images
 from .init_database import connect
 from .paths import EXPORTS_DIR, WORKING_DB
 
@@ -36,6 +36,7 @@ PRIORITY = {k: i for i, (k, _, _) in enumerate(SECTIONS)}
 
 def _collect(con) -> list[dict]:
     sides, _, _ = compute_sides(con)
+    ni_map = noble_images()
     people: dict[str, dict] = {}
     for r in con.execute(
         "SELECT person_id, person_name, generation, birth_date, death_date, birth_place, "
@@ -47,7 +48,7 @@ def _collect(con) -> list[dict]:
             "born": r["birth_date"] or "", "died": r["death_date"] or "",
             "place": r["birth_place"] or r["death_place"] or "",
             "cats": set(), "reasons": set(), "side": sides.get(pid, []),
-            "ni": NOBLE_IMAGES.get(pid),
+            "ni": ni_map.get(pid),
         })
         if r["category"]:
             e["cats"].add(r["category"])

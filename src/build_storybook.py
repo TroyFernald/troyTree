@@ -85,7 +85,23 @@ def _narrate(name, born, bornp, died, diedp, spouse, parents) -> str:
     return " ".join(s)
 
 
-def _collect(con, redact_living: bool, media_base: str) -> list[dict]:
+def noble_images() -> dict:
+    """Famous-figure imagery: hardcoded defaults merged with the agent-built
+    noble_images.json (portraits, castles, stories) when present."""
+    imgs = dict(NOBLE_IMAGES)
+    f = EXPORTS_DIR / "noble_images.json"
+    if f.exists():
+        try:
+            for pid, v in json.loads(f.read_text(encoding="utf-8")).items():
+                if isinstance(v, dict) and (v.get("portrait") or v.get("castle")):
+                    v.setdefault("caption", v.get("story", ""))
+                    imgs[pid] = v
+        except Exception:
+            pass
+    return imgs
+
+
+def _collect(con, redact_living: bool, media_base: str, ni_map: dict) -> list[dict]:
     def href(file_name, file_path):
         if media_base:
             return media_base + quote(file_name)
@@ -145,7 +161,7 @@ def _collect(con, redact_living: bool, media_base: str) -> list[dict]:
         "spouse_names, parent_names, generation, relationship_to_root FROM people"
     ):
         pid = p["person_id"]
-        if not (pid in sides or pid in photos or pid in papers or pid in military or pid in records or pid in noble or pid in NOBLE_IMAGES):
+        if not (pid in sides or pid in photos or pid in papers or pid in military or pid in records or pid in noble or pid in ni_map):
             continue
         living = redact_living and is_living(p["birth_date"], p["death_date"], p["generation"])
         if living:
@@ -171,7 +187,7 @@ def _collect(con, redact_living: bool, media_base: str) -> list[dict]:
             "military": military.get(pid, [])[:6],
             "records": records.get(pid, [])[:4],
             "noble": noble.get(pid, ""),
-            "ni": NOBLE_IMAGES.get(pid),
+            "ni": ni_map.get(pid),
         })
     pages.sort(key=lambda x: (x["gen"] is None, x["gen"] if x["gen"] is not None else 0, x["name"]))
     return pages
@@ -179,7 +195,7 @@ def _collect(con, redact_living: bool, media_base: str) -> list[dict]:
 
 def build(db_path=WORKING_DB, redact_living: bool = True, media_base: str = "") -> dict:
     with connect(db_path) as con:
-        pages = _collect(con, redact_living, media_base)
+        pages = _collect(con, redact_living, media_base, noble_images())
         _, side_labels, side_keys = compute_sides(con)
     data = json.dumps(pages, ensure_ascii=False).replace("</", "<\\/")
     html_doc = (_TEMPLATE.replace("__DATA__", data)
@@ -245,10 +261,12 @@ _TEMPLATE = r"""<!doctype html>
   .rec .tag { font-size:11px; background:#efe2c7; color:#6b513a; border-radius:3px; padding:1px 6px; margin-right:6px; }
   .gallery { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
   .gallery img { width:108px; height:108px; object-fit:cover; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,.18); }
-  .nav { position:fixed; top:0; bottom:0; width:14vw; max-width:150px; border:0; background:transparent;
-    cursor:pointer; color:transparent; font-size:46px; z-index:20; }
-  .nav:hover { color:rgba(255,255,255,.45); }
-  #prev{left:0} #next{right:0}
+  .nav { position:fixed; top:50%; transform:translateY(-50%); width:56px; height:56px; border:0;
+    background:rgba(20,15,9,.6); color:#ecdfc6; cursor:pointer; font-size:30px; z-index:20;
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.45); transition:background .15s; }
+  .nav:hover { background:rgba(122,92,62,.95); }
+  #prev{left:16px} #next{right:16px}
   #toc { position:fixed; top:0; left:0; bottom:0; width:300px; max-width:84vw; background:#1f1810; color:#ecdfc6;
     transform:translateX(-100%); transition:transform .2s; z-index:40; display:flex; flex-direction:column; }
   #toc.open{transform:none}
@@ -261,7 +279,8 @@ _TEMPLATE = r"""<!doctype html>
     #book{padding:78px 8px 18px}
     .page{padding:22px 18px; width:96vw; height:82vh}
     .facts{columns:1}
-    .nav{width:18vw; font-size:34px}
+    .nav{width:48px; height:48px; font-size:26px}
+    #prev{left:8px} #next{right:8px}
     .gallery img{width:84px; height:84px}
   }
 </style>
@@ -291,9 +310,12 @@ function html(p){
   if(!p) return '<p>No pages for this side.</p>';
   let h=`<div class="gen">${p.gen==null?'':'Generation '+p.gen}${p.rel?' · '+esc(p.rel):''}</div><h1 class="nm">${esc(p.name)}</h1>`;
   if(p.noble) h+=`<div class="crest">🏰 ⚜ <b>Claimed noble line</b> ⚜ 🏰<span>Family legend — ${esc(p.noble)}. Unproven through the colonial bridge; treat as lore, not fact.</span></div>`;
-  if(p.ni){ h+=`<div class="portraits"><figure><img src="${esc(p.ni.portrait)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>Illustrative portrait — claimed &amp; unverified</figcaption></figure>`
-    +(p.ni.castle?`<figure><img src="${esc(p.ni.castle)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>Associated castle</figcaption></figure>`:'')+`</div>`
-    +(p.ni.caption?`<p class="nicap">${esc(p.ni.caption)}${p.ni.wiki?` · <a href="${esc(p.ni.wiki)}" target="_blank">Wikipedia ↗</a>`:''}</p>`:''); }
+  if(p.ni){ const ni=p.ni; let pf='';
+    if(ni.portrait) pf+=`<figure><img src="${esc(ni.portrait)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>Illustrative portrait — claimed &amp; unverified</figcaption></figure>`;
+    if(ni.castle) pf+=`<figure><img src="${esc(ni.castle)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>🏰 ${ni.castle_name?esc(ni.castle_name):'Family seat'}</figcaption></figure>`;
+    if(pf) h+=`<div class="portraits">${pf}</div>`;
+    const story=ni.story||ni.caption||'';
+    if(story) h+=`<p class="nicap">${esc(story)}${ni.wiki?` · <a href="${esc(ni.wiki)}" target="_blank">Wikipedia ↗</a>`:''}</p>`; }
   if(p.photos&&p.photos.length) h+=`<img class="lead" src="${esc(p.photos[0].src)}" alt="" onerror="this.style.display='none'">`;
   h+=`<p class="body">${esc(p.text)}</p>`;
   if(p.facts&&p.facts.length) h+=`<div class="facts">`+p.facts.map(f=>`<div><b>${esc(f[0])}:</b> ${esc(f[1])}</div>`).join('')+`</div>`;
