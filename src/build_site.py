@@ -17,6 +17,7 @@ default — pass ``redact_living=False`` to publish everyone.
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import sys
 
@@ -27,6 +28,16 @@ from .paths import EXPORTS_DIR, PROJECT_ROOT, WORKING_DB
 
 DEFAULT_SITE_DIR = PROJECT_ROOT.parent / "troy-family-site"
 VIEW_FILES = ["family.html", "graph_3d.html", "fan.html", "story.html", "map.html", "notable.html"]
+
+
+def _site_password() -> str:
+    """Shared family password for the site gate, from env or a gitignored file.
+    Returns "" if none configured (then no gate is written)."""
+    env = os.environ.get("SITE_PASSWORD")
+    if env:
+        return env.strip()
+    f = PROJECT_ROOT / "data" / "site_password.txt"
+    return f.read_text(encoding="utf-8").strip() if f.exists() else ""
 
 
 def build_site(media_base: str = "", redact_living: bool = True, out_dir=DEFAULT_SITE_DIR,
@@ -54,6 +65,12 @@ def build_site(media_base: str = "", redact_living: bool = True, out_dir=DEFAULT
     )
     (out_dir / ".gitignore").write_text(_GITIGNORE, encoding="utf-8")
     (out_dir / "README.md").write_text(_README, encoding="utf-8")
+
+    # Password gate (Cloudflare Pages advanced-mode worker). Written only when a
+    # password is configured; keeps the whole site behind a shared family password.
+    password = _site_password()
+    if password:
+        (out_dir / "_worker.js").write_text(_WORKER.replace("__PASSWORD__", json.dumps(password)), encoding="utf-8")
 
     return {
         "out": str(out_dir),
@@ -148,6 +165,29 @@ Static family-history site for **troytree.org**.
 - Living people are redacted unless the site was built with `redact_living=False`.
 
 Rebuild: `python -m src.build_site https://<your-r2-public-base>/`
+"""
+
+_WORKER = r"""// Cloudflare Pages advanced-mode worker: gate the whole site behind a shared
+// family password, then serve the static assets. Worker source is not exposed
+// to browsers. Password is injected at build time from a gitignored local file.
+export default {
+  async fetch(request, env) {
+    const PASSWORD = __PASSWORD__;
+    const auth = request.headers.get("Authorization") || "";
+    if (auth.startsWith("Basic ")) {
+      try {
+        const decoded = atob(auth.slice(6));
+        if (decoded.slice(decoded.indexOf(":") + 1) === PASSWORD) {
+          return env.ASSETS.fetch(request);
+        }
+      } catch (e) { /* fall through */ }
+    }
+    return new Response("Troy Family Tree - enter the family password.", {
+      status: 401,
+      headers: { "WWW-Authenticate": 'Basic realm="Troy Family Tree (any name + family password)"' },
+    });
+  },
+};
 """
 
 
