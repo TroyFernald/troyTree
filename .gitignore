@@ -13,3 +13,6 @@ venv/
 build/
 dist/
 *.egg-info/
+.wrangler/
+data/access_allowlist.txt
+data/*.txt

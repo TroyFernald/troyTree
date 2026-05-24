@@ -335,8 +335,9 @@ CREATE TABLE IF NOT EXISTS duplicate_candidates (
 
 def connect(db_path=WORKING_DB) -> sqlite3.Connection:
     ensure_directories()
-    con = sqlite3.connect(db_path)
+    con = sqlite3.connect(db_path, timeout=30)
     con.row_factory = sqlite3.Row
+    con.execute("PRAGMA busy_timeout=30000")
     return con
 
 
