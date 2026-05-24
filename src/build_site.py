@@ -20,13 +20,13 @@ import json
 import shutil
 import sys
 
-from . import build_fan_chart, build_graph_3d, build_html_viewer, build_map, build_storybook
+from . import build_fan_chart, build_graph_3d, build_html_viewer, build_map, build_notable, build_storybook
 from .ancestral_sides import compute_sides
 from .init_database import connect
 from .paths import EXPORTS_DIR, PROJECT_ROOT, WORKING_DB
 
 DEFAULT_SITE_DIR = PROJECT_ROOT.parent / "troy-family-site"
-VIEW_FILES = ["family.html", "graph_3d.html", "fan.html", "story.html", "map.html"]
+VIEW_FILES = ["family.html", "graph_3d.html", "fan.html", "story.html", "map.html", "notable.html"]
 
 
 def build_site(media_base: str = "", redact_living: bool = True, out_dir=DEFAULT_SITE_DIR,
@@ -36,6 +36,7 @@ def build_site(media_base: str = "", redact_living: bool = True, out_dir=DEFAULT
     build_fan_chart.build(redact_living=redact_living)
     build_storybook.build(redact_living=redact_living, media_base=media_base)
     build_map.build(redact_living=redact_living)
+    build_notable.build()
 
     with connect(WORKING_DB) as con:
         _, side_labels, side_keys = compute_sides(con)
@@ -105,6 +106,7 @@ _LANDING = r"""<!doctype html>
 </header>
 <div class="grid" id="grid">
   <a class="card" data-view="family.html"><div class="ico">📇</div><h2>Browse</h2><p>Every person, searchable, with photos, documents and findings.</p></a>
+  <a class="card" data-view="notable.html"><div class="ico">⭐</div><h2>Notable Ancestors</h2><p>Mayflower passengers, war service, and the royal & noble legends.</p></a>
   <a class="card" data-view="graph_3d.html"><div class="ico">🕸️</div><h2>3D Connections</h2><p>The whole tree as a rotating 3D web of relationships.</p></a>
   <a class="card" data-view="fan.html"><div class="ico">🌓</div><h2>Fan Chart</h2><p>Your direct ancestors in concentric 360° rings.</p></a>
   <a class="card" data-view="map.html"><div class="ico">🗺️</div><h2>World Map</h2><p>Where the family lived, mapped across the world.</p></a>

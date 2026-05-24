@@ -33,7 +33,10 @@ def normalize(value: str | None) -> str:
 
 def load_cache() -> dict:
     if CACHE_PATH.exists():
-        return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+        try:
+            return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, ValueError):
+            return {}  # tolerate a concurrent mid-write read
     return {}
 
 
