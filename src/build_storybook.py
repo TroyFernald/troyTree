@@ -222,9 +222,9 @@ _TEMPLATE = r"""<!doctype html>
     padding:6px 14px; color:#ecdfc6; font-size:13px; backdrop-filter:blur(4px); }
   #bar a, #bar button { color:#ecdfc6; background:none; border:0; cursor:pointer; font:inherit; text-decoration:none; }
   #bar select { background:#15110b; color:#ecdfc6; border:1px solid #4a3d2c; border-radius:6px; font:inherit; padding:2px 6px; }
-  #book { height:100vh; display:flex; align-items:center; justify-content:center; padding:64px 16px 28px; perspective:2400px; }
-  .page { background:var(--paper); width:min(680px,96vw); height:min(84vh,900px); border-radius:6px;
-    box-shadow:0 18px 50px rgba(0,0,0,.5); padding:40px 44px; overflow:auto; transform-origin:left center;
+  #book { height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:58px 16px 16px; }
+  .page { background:var(--paper); width:min(680px,96vw); height:calc(100vh - 74px); max-height:940px; border-radius:6px;
+    box-shadow:0 18px 50px rgba(0,0,0,.5); padding:34px 40px; overflow:auto;
     background-image:linear-gradient(90deg,rgba(0,0,0,.07),transparent 5%); position:relative; }
   .page.out-next{animation:flipOutL .26s ease-in forwards}
   .page.in-next{animation:flipInL .28s ease-out forwards}
@@ -283,6 +283,11 @@ _TEMPLATE = r"""<!doctype html>
     #prev{left:8px} #next{right:8px}
     .gallery img{width:84px; height:84px}
   }
+  .lead, .gallery img, .portraits img { cursor:zoom-in; }
+  #lb{position:fixed;inset:0;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;z-index:9999;}
+  #lb.open{display:flex;}
+  #lb img{max-width:96vw;max-height:90vh;object-fit:contain;border-radius:4px;}
+  #lbx{position:fixed;top:10px;right:16px;color:#fff;font-size:40px;line-height:1;cursor:pointer;z-index:10000;}
 </style>
 </head>
 <body>
@@ -294,6 +299,7 @@ _TEMPLATE = r"""<!doctype html>
 </div>
 <aside id="toc"><input id="tocq" placeholder="Search…" autocomplete="off"><div id="tocList"></div></aside>
 <div id="book"><div class="page" id="page"></div></div>
+<div id="lb"><span id="lbx">×</span><img id="lbimg" alt=""></div>
 <button class="nav" id="prev">‹</button>
 <button class="nav" id="next">›</button>
 <script>
@@ -343,18 +349,9 @@ function render(){
   document.getElementById('count').textContent=view.length?`${idx+1} / ${view.length}`:'';
 }
 function go(d){
-  if(animating) return;
   const ni=Math.max(0,Math.min(view.length-1,idx+d));
   if(ni===idx) return;
-  animating=true;
-  const out=d>0?'out-next':'out-prev', inn=d>0?'in-next':'in-prev';
-  function phase2(){ pageEl.removeEventListener('animationend',phase1);
-    idx=ni; render(); pageEl.classList.remove(out); pageEl.classList.add(inn);
-    pageEl.addEventListener('animationend',function done(){ pageEl.removeEventListener('animationend',done);
-      pageEl.classList.remove(inn); animating=false; }); }
-  function phase1(){ phase2(); }
-  pageEl.addEventListener('animationend',phase1,{once:true});
-  pageEl.classList.add(out);
+  idx=ni; render();
 }
 function applySide(){
   const s=sideSel.value;
@@ -368,6 +365,10 @@ sideSel.onchange=applySide;
 let sx=0; const book=document.getElementById('book');
 book.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
 book.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50)go(dx<0?1:-1);});
+const lb=document.getElementById('lb'),lbimg=document.getElementById('lbimg');
+pageEl.addEventListener('click',e=>{ if(e.target.tagName==='IMG'&&e.target.src){ lbimg.src=e.target.src; lb.classList.add('open'); }});
+lb.addEventListener('click',e=>{ if(e.target.id!=='lbimg'){ lb.classList.remove('open'); lbimg.removeAttribute('src'); }});
+addEventListener('keydown',e=>{ if(e.key==='Escape'){ lb.classList.remove('open'); lbimg.removeAttribute('src'); }});
 const toc=document.getElementById('toc'), tocList=document.getElementById('tocList');
 document.getElementById('toc-btn').onclick=()=>toc.classList.toggle('open');
 function buildTOC(f=''){f=f.toLowerCase();

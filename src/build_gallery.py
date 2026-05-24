@@ -92,6 +92,11 @@ _TEMPLATE = r"""<!doctype html>
   figcaption{padding:6px 8px;font-size:12px;color:#5b4a35;}
   figcaption .ppl{color:var(--accent);}
   @media (max-width:600px){.grid{grid-template-columns:repeat(auto-fill,minmax(108px,1fr));} figure img{height:108px;}}
+  #lb{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:9999;}
+  #lb.open{display:flex;}
+  #lb img{max-width:96vw;max-height:88vh;object-fit:contain;border-radius:4px;}
+  #lbx{position:fixed;top:10px;right:16px;color:#fff;font-size:40px;line-height:1;cursor:pointer;z-index:10000;}
+  #lbcap{position:fixed;bottom:14px;left:0;right:0;text-align:center;color:#eee;font-size:13px;padding:0 16px;}
 </style>
 </head>
 <body>
@@ -107,6 +112,7 @@ _TEMPLATE = r"""<!doctype html>
   <span class="count" id="count"></span>
 </header>
 <div class="grid" id="grid"></div>
+<div id="lb"><span id="lbx">×</span><img id="lbimg" alt=""><div id="lbcap"></div></div>
 <script>
 const ITEMS=__DATA__;
 const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -116,12 +122,21 @@ function render(){
   document.getElementById('count').textContent=list.length+' shown';
   document.getElementById('grid').innerHTML=list.slice(0,1500).map(i=>{
     const cap=i.ppl.length?`<span class="ppl">${esc(i.ppl.slice(0,3).join(', '))}${i.ppl.length>3?' +'+(i.ppl.length-3):''}</span>`:(i.cap?esc(i.cap):'<span style="color:#b3a487">unidentified</span>');
-    return `<figure><a href="${esc(i.src)}" target="_blank"><img loading="lazy" src="${esc(i.src)}" alt="" onerror="this.style.opacity=.25"></a><figcaption>${cap}</figcaption></figure>`;
+    return `<figure><a href="${esc(i.src)}" class="lb"><img loading="lazy" src="${esc(i.src)}" alt="" onerror="this.style.opacity=.25"></a><figcaption>${cap}</figcaption></figure>`;
   }).join('');
 }
 document.getElementById('seg').addEventListener('click',e=>{const b=e.target.closest('button');if(b){kind=b.dataset.k;
   [...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));render();}});
 document.getElementById('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render();});
+const lb=document.getElementById('lb'),lbimg=document.getElementById('lbimg'),lbcap=document.getElementById('lbcap');
+document.getElementById('grid').addEventListener('click',e=>{
+  const a=e.target.closest('a.lb'); if(!a) return; e.preventDefault();
+  lbimg.src=a.getAttribute('href'); const fc=a.parentNode.querySelector('figcaption');
+  lbcap.textContent=fc?fc.textContent:''; lb.classList.add('open');
+});
+function closeLB(){lb.classList.remove('open');lbimg.removeAttribute('src');}
+lb.addEventListener('click',e=>{if(e.target.id!=='lbimg')closeLB();});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeLB();});
 render();
 </script>
 </body>

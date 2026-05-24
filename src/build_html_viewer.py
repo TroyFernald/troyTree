@@ -225,6 +225,10 @@ _TEMPLATE = r"""<!doctype html>
     #list { max-height:42vh; }
     main { padding:16px; }
   }
+  #lb { position:fixed; inset:0; background:rgba(0,0,0,.92); display:none; align-items:center; justify-content:center; z-index:9999; }
+  #lb.open { display:flex; }
+  #lb img { max-width:96vw; max-height:90vh; object-fit:contain; border-radius:4px; }
+  #lbx { position:fixed; top:10px; right:16px; color:#fff; font-size:40px; line-height:1; cursor:pointer; z-index:10000; }
 </style>
 </head>
 <body>
@@ -252,6 +256,7 @@ _TEMPLATE = r"""<!doctype html>
   </aside>
   <main id="detail"><div class="empty">Select a person from the list.</div></main>
 </div>
+<div id="lb"><span id="lbx">×</span><img id="lbimg" alt=""></div>
 <script>
 const PEOPLE = __DATA__;
 const CONF = __CONF__;
@@ -322,9 +327,9 @@ function renderDetail(p) {
   let h = `<h2 class="name">${esc(p.name)}</h2><div class="sub">${sub}</div>`;
   h += `<table class="facts">${facts}</table>`;
   h += section('Photos', p.photos, it =>
-        `<li><a href="${esc(it.href)}" target="_blank">${esc(it.name)}</a>${it.caption?' — '+esc(it.caption):''}</li>`);
+        `<li><a href="${esc(it.href)}" class="lb">${esc(it.name)}</a>${it.caption?' — '+esc(it.caption):''}</li>`);
   h += section('Documents', p.docs, it =>
-        `<li><a href="${esc(it.href)}" target="_blank">${esc(it.name)}</a>${it.ocr?`<div class="ocr">${esc(it.ocr)}</div>`:' <em>(not transcribed)</em>'}</li>`);
+        `<li><a href="${esc(it.href)}" class="lb">${esc(it.name)}</a>${it.ocr?`<div class="ocr">${esc(it.ocr)}</div>`:' <em>(not transcribed)</em>'}</li>`);
   h += section('Evidence', p.evidence, it =>
         `<li><span class="lab">${esc(it.label)}</span><strong>${esc(it.title)}</strong>${it.summary?' — '+esc(it.summary):''}</li>`);
   h += section('Web findings', p.findings, it =>
@@ -348,6 +353,14 @@ document.getElementById('rootBtn').addEventListener('click', () => {
   if (root) { document.getElementById('q').value=''; renderList(); select(root.id);
     document.querySelector('.person.sel')?.scrollIntoView({block:'center'}); }
 });
+
+const lb=document.getElementById('lb'), lbimg=document.getElementById('lbimg');
+document.getElementById('detail').addEventListener('click', e => {
+  const a=e.target.closest('a.lb'); if(!a) return; e.preventDefault();
+  lbimg.src=a.getAttribute('href'); lb.classList.add('open');
+});
+lb.addEventListener('click', e => { if(e.target.id!=='lbimg'){ lb.classList.remove('open'); lbimg.removeAttribute('src'); } });
+addEventListener('keydown', e => { if(e.key==='Escape'){ lb.classList.remove('open'); lbimg.removeAttribute('src'); } });
 
 renderList();
 </script>
