@@ -247,6 +247,25 @@ CREATE TABLE IF NOT EXISTS validation_issue (
     FOREIGN KEY(relationship_id) REFERENCES family_relationships(relationship_id)
 );
 
+CREATE TABLE IF NOT EXISTS notable_person_candidate (
+    notable_candidate_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id TEXT,
+    person_name TEXT,
+    generation INTEGER,
+    relationship_to_root TEXT,
+    birth_date TEXT,
+    death_date TEXT,
+    birth_place TEXT,
+    death_place TEXT,
+    category TEXT,
+    notable_reason TEXT,
+    risk_level TEXT,
+    proof_status TEXT DEFAULT 'unverified',
+    review_notes TEXT,
+    UNIQUE(person_id, category, notable_reason),
+    FOREIGN KEY(person_id) REFERENCES people(person_id)
+);
+
 CREATE TABLE IF NOT EXISTS change_log (
     change_log_id INTEGER PRIMARY KEY AUTOINCREMENT,
     change_type TEXT NOT NULL,

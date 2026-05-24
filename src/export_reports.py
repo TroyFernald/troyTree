@@ -77,11 +77,28 @@ def add_workbook_sheets(con: sqlite3.Connection, writer: pd.ExcelWriter) -> None
     validation = read_sql(con, "SELECT * FROM validation_issue ORDER BY severity, generation, person_name")
     research_targets = read_sql(con, "SELECT * FROM web_research_target ORDER BY priority, generation, person_name")
     research_findings = read_sql(con, "SELECT * FROM web_research_finding ORDER BY confidence_score DESC, person_name")
+    notable = read_sql(
+        con,
+        """
+        SELECT *
+        FROM notable_person_candidate
+        ORDER BY
+          CASE risk_level
+            WHEN 'high' THEN 1
+            WHEN 'medium-high' THEN 2
+            WHEN 'medium' THEN 3
+            ELSE 4
+          END,
+          generation,
+          person_name
+        """,
+    )
 
     queue.head(25).to_excel(writer, sheet_name="Top Priority People", index=False)
     review_tasks.head(100).to_excel(writer, sheet_name="Review Tasks", index=False)
     research_targets.head(250).to_excel(writer, sheet_name="Web Research Targets", index=False)
     research_findings.to_excel(writer, sheet_name="New Research Findings", index=False)
+    notable.head(250).to_excel(writer, sheet_name="Notable Candidates", index=False)
     direct[
         direct["audit_flags"].fillna("").str.contains("no sources|weak source only", case=False)
     ].to_excel(writer, sheet_name="Weakly Sourced Direct Ancestors", index=False)
@@ -163,6 +180,38 @@ def export_reports() -> None:
         read_sql(con, "SELECT * FROM web_research_finding ORDER BY confidence_score DESC, person_name").to_excel(
             EXPORTS_DIR / "new_research_findings.xlsx", index=False
         )
+        read_sql(
+            con,
+            """
+            SELECT *
+            FROM notable_person_candidate
+            ORDER BY
+              CASE risk_level
+                WHEN 'high' THEN 1
+                WHEN 'medium-high' THEN 2
+                WHEN 'medium' THEN 3
+                ELSE 4
+              END,
+              generation,
+              person_name
+            """,
+        ).to_csv(EXPORTS_DIR / "notable_people_review.csv", index=False)
+        read_sql(
+            con,
+            """
+            SELECT *
+            FROM notable_person_candidate
+            ORDER BY
+              CASE risk_level
+                WHEN 'high' THEN 1
+                WHEN 'medium-high' THEN 2
+                WHEN 'medium' THEN 3
+                ELSE 4
+              END,
+              generation,
+              person_name
+            """,
+        ).to_excel(EXPORTS_DIR / "notable_people_review.xlsx", index=False)
         read_sql(
             con,
             """

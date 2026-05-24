@@ -44,6 +44,8 @@ None.
   - Columns: relationship_id, family_id, person_id, related_person_id, relationship_type, notes
 - `import_batch`: 1 rows
   - Columns: import_batch_id, source_name, source_path, source_hash, source_type, gedcom_version, imported_at, parser_version, notes
+- `notable_person_candidate`: 281 rows
+  - Columns: notable_candidate_id, person_id, person_name, generation, relationship_to_root, birth_date, death_date, birth_place, death_place, category, notable_reason, risk_level, proof_status, review_notes
 - `people`: 3761 rows
   - Columns: person_id, gedcom_id, full_name, given_name, surname, birth_date, birth_place, death_date, death_place, spouse_names, parent_names, generation, relationship_to_root, source_count, confidence_status, notes
 - `proposed_updates`: 0 rows

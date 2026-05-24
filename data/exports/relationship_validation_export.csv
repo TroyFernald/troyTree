@@ -1,201 +1,201 @@
 validation_issue_id,issue_type,severity,person_id,person_name,related_person_id,related_person_name,relationship_id,generation,description,review_status,created_at
-596,parent_too_young,high,@I322638418585@,Albert Andrieszen Bradt,@I322638418568@,Albert Andrieszen Bradt,130207.0,,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-597,parent_too_young,high,@I322638418568@,Albert Andrieszen Bradt,@I322638418552@,Albert Andrieszen Bradt,130215.0,,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-527,parent_too_young,high,@I322745624532@,Alice Fearnley Haley,@I322745624492@,Edmund (Edmond) G Haylye Hayley,121461.0,,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-585,parent_too_young,high,@I322614335650@,Enoch Bagley,@I322614336083@,Thomas Bagley,129815.0,,Parent appears age 9 at child birth,open,2026-05-23 23:28:23
-520,child_after_parent_death,high,@I322614338732@,Eunice Bagley,@I322614339185@,Newell Bagley,120053.0,,Child birth 3 Jun 1906 is after parent death 27 August 1868,open,2026-05-23 23:28:23
-518,child_after_parent_death,high,@I322614336910@,Jonathan Bagley,@I322614339185@,Newell Bagley,120051.0,,Child birth 3 Jun 1906 is after parent death 8 March 1881,open,2026-05-23 23:28:23
-532,parent_too_young,high,@I322614335829@,Mahala A Bagley,@I322614335828@,Marion Bagley,122701.0,,Parent appears age 8 at child birth,open,2026-05-23 23:28:23
-570,parent_too_young,high,@I322454167419@,Martha Files,@I322589957495@,Freeman Fernald,127973.0,,Parent appears age 10 at child birth,open,2026-05-23 23:28:23
-415,death_before_birth,high,@I322614339185@,Newell Bagley,,,,,Death date 2 Jun 1906 is before birth date 3 Jun 1906,open,2026-05-23 23:28:22
-549,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425156@,Joseph Bagley,125851.0,,Child birth 26 January 1705 is after parent death 3 October 1701,open,2026-05-23 23:28:23
-550,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425148@,Benjamin Bagley,125855.0,,Child birth 10 November 1707 is after parent death 3 October 1701,open,2026-05-23 23:28:23
-551,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425152@,Sarah Bagley,125859.0,,Child birth 1708 is after parent death 3 October 1701,open,2026-05-23 23:28:23
-552,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425154@,Anne Bagley,125863.0,,Child birth 14 August 1709 is after parent death 3 October 1701,open,2026-05-23 23:28:23
-553,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425157@,Hannah Bagley,125867.0,,Child birth 29 March 1712 is after parent death 3 October 1701,open,2026-05-23 23:28:23
-562,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414463@,James Alfred Grass,127705.0,,Child birth February 1859 is after parent death 14 May 1855,open,2026-05-23 23:28:23
-563,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414464@,Jonathan Woodsford Grass,127709.0,,Child birth 24 January 1862 is after parent death 14 May 1855,open,2026-05-23 23:28:23
-564,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414465@,Anna Bell Grass,127713.0,,Child birth 1866 is after parent death 14 May 1855,open,2026-05-23 23:28:23
-565,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414466@,Lory M Grass,127717.0,,Child birth February 1867 is after parent death 14 May 1855,open,2026-05-23 23:28:23
-566,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414468@,Flora Annett Grass,127721.0,,Child birth 14 July 1868 is after parent death 14 May 1855,open,2026-05-23 23:28:23
-567,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414470@,Elizabeth Blanch Grass,127725.0,,Child birth 12 September 1870 is after parent death 14 May 1855,open,2026-05-23 23:28:23
-524,child_after_parent_death,high,@I322454172189@,Hannah Parsons,@I322454172144@,Catherine Adams Adams,120719.0,7.0,Child birth 23 Apr 1744 baptized is after parent death 12 Dec 1741,open,2026-05-23 23:28:23
-530,child_after_parent_death,high,@I322454173594@,RACHEL PROCTER,@I322454172389@,Reuben COOKSON Sr.,122513.0,7.0,Child birth Abt. 1745 is after parent death Aft. 1715,open,2026-05-23 23:28:23
-540,parent_too_young,high,@I322756886562@,Patience Ingraham,@I322454173790@,Benjamin Ingraham,123901.0,8.0,Parent appears age -19 at child birth,open,2026-05-23 23:28:23
-539,parent_too_young,high,@I322756886759@,Samuel Tomlinson,@I322454173783@,Hannah Tomlinson,123757.0,8.0,Parent appears age -67 at child birth,open,2026-05-23 23:28:23
-548,child_after_parent_death,high,@I322668193648@,Elizabeth Stevenson,@I322668193616@,Thomas Everitt 1695,125121.0,9.0,Child birth 1700 is after parent death 1690,open,2026-05-23 23:28:23
-593,parent_too_young,high,@I322728137157@,Hannah Pressey,@I322728136648@,Susannah Colby,130149.0,9.0,Parent appears age 10 at child birth,open,2026-05-23 23:28:23
-547,child_after_parent_death,high,@I322668193645@,John Everett,@I322668193616@,Thomas Everitt 1695,125119.0,9.0,Child birth 1700 is after parent death 1691,open,2026-05-23 23:28:23
-574,parent_too_young,high,@I322680151793@,Lena Lewis,@I322622781953@,Jacobus Cromwell,129011.0,9.0,Parent appears age -81 at child birth,open,2026-05-23 23:28:23
-514,parent_too_young,high,@I322625937008@,MARY HASKINS,@I322625936962@,Thomas Haskins Phillips,119719.0,9.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-554,parent_too_young,high,@I322625939295@,Mary Abbie Hoyt,@I322625933214@,John Hodgdon,126005.0,9.0,Parent appears age 10 at child birth,open,2026-05-23 23:28:23
-546,parent_too_young,high,@I322625935838@,Mary Ashfield Adams Proctor,@I322625935779@,Richard Proctor,125079.0,9.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-581,parent_too_young,high,@I322625936202@,Mary Ashfield Adams Proctor,@I322625936017@,Richard Proctor,129597.0,9.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-573,parent_too_young,high,@I322680151792@,Philip Cromwell,@I322622781953@,Jacobus Cromwell,129009.0,9.0,Parent appears age -68 at child birth,open,2026-05-23 23:28:23
-525,parent_too_young,high,@I322625936411@,Richard Crooke,@I322625936346@,Charles Crooks Sergeant,121221.0,9.0,Parent appears age 10 at child birth,open,2026-05-23 23:28:23
-545,parent_too_young,high,@I322625935837@,Samuel Proctor,@I322625935779@,Richard Proctor,125077.0,9.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-602,child_after_parent_death,high,@I322743524563@,Thomas Badger,@I322681171662@,Joseph Badger,130391.0,10.0,Child birth ABT 1650 is after parent death Abt 1646,open,2026-05-23 23:28:23
-572,parent_too_young,high,@I322625941820@,DOROTHEA CLARKE,@I322625938714@,Lady Dorothy Kent Beauchamp,128987.0,11.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-544,parent_too_young,high,@I322728137632@,Hannah Pearce,@I322728137442@,Reverand Thomas Wells,124535.0,11.0,Parent appears age 2 at child birth,open,2026-05-23 23:28:23
-560,parent_too_young,high,@I322625938607@,Mary Brooke,@I322625933544@,Eleanor Moore,126513.0,11.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-584,parent_too_young,high,@I322728993325@,Timothy Williamson,@I322728993296@,Mary Howland Williamson,129761.0,11.0,Parent appears age 7 at child birth,open,2026-05-23 23:28:23
-569,parent_too_young,high,@I322743511545@,Jane Basset,@I322743511523@,Thomas Peverly,127871.0,12.0,Parent appears age 8 at child birth,open,2026-05-23 23:28:23
-521,parent_too_young,high,@I322728993971@,Margery Hartley,@I322728993949@,Humphrey Marshall II,120087.0,12.0,Parent appears age 5 at child birth,open,2026-05-23 23:28:23
-543,parent_too_young,high,@I322625935553@,Martha Mary Brewer,@I322625933939@,Catherine Smith,124433.0,12.0,Parent appears age 10 at child birth,open,2026-05-23 23:28:23
-568,parent_too_young,high,@I322743413243@,Temperance Mitchell,@I322743413048@,John Henry Rackliff I,127731.0,12.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-592,parent_too_young,high,@I322746015678@,**Robert John Johnson ( paternal 8x ggm of Lizzy Borden) 🇬🇧,@I322746015650@,"John David ""Davy""  15 Johnson #2072A",130073.0,13.0,Parent appears age 3 at child birth,open,2026-05-23 23:28:23
-598,parent_too_young,high,@I322625934205@,James Blackaller,@I322625933968@,James Blackaller,130247.0,13.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-523,child_after_parent_death,high,@I322730774042@,MARGARET ELIZABETH BURTON,@I322730771758@,*John Stephenson Jr.,120529.0,13.0,Child birth 8 Jun 1585 is after parent death Aug 1567,open,2026-05-23 23:28:23
-555,parent_too_young,high,@I322738277819@,Mary Elizabeth Hogge,@I322738275479@,Jane Woormall Wormeley Wormall,126117.0,13.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-528,parent_too_young,high,@I322741258125@,Mary Hallstaff,@I322741258101@,Mary Ann Williams,121753.0,13.0,Parent appears age 9 at child birth,open,2026-05-23 23:28:23
-542,parent_too_young,high,@I322454170201@,Richard Cookeson,@I322454170187@,Richard Cookeson,124399.0,13.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-587,parent_too_young,high,@I322744368519@,Robt Dooch,@I322744368482@,Robert John DUTCH,129895.0,13.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-586,parent_too_young,high,@I322745357141@,"Sir John Edward Baker, ""The Bloody Knight of Sissinghurst, Kent, Member of Parliament, Speaker of the House of Commons",@I322745356810@,John Alfred Baker,129819.0,13.0,Parent appears age 8 at child birth,open,2026-05-23 23:28:23
-601,parent_too_young,high,@I322625941741@,Dame Anne Sapcote Countess Fitzwilliam,@I322625941731@,Katherine Fitzwilliams,130345.0,14.0,Parent appears age 5 at child birth,open,2026-05-23 23:28:23
-558,parent_too_young,high,@I322745507696@,Isabella Normond Wilson,@I322745507635@,Thomas Lawrence Thompson,126361.0,14.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-582,parent_too_young,high,@I322625940248@,Joane Smithe,@I322625940244@,Katherine Raddon als Gifford,129653.0,14.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-559,parent_too_young,high,@I322745507666@,John Richard Bartholomew III,@I322745507650@,Sir John Richard Bartholomew Bartilmewe III,126413.0,14.0,Parent appears age -1 at child birth,open,2026-05-23 23:28:23
-533,parent_too_young,high,@I322725936110@,John Sir Holcroft,@I322589969204@,John Holcroft,123057.0,14.0,Parent appears age -11 at child birth,open,2026-05-23 23:28:23
-538,parent_too_young,high,@I322616879206@,Lady Alice (Alys) Gage Browne,@I322454169544@,Anne Browne,123741.0,14.0,Parent appears age 9 at child birth,open,2026-05-23 23:28:23
-531,child_after_parent_death,high,@I322668238048@,Lady Catharine Elizabeth Norreys\Norris\Nourse\Nurse Johnson Poulett\Paulet\Paulett More\Moore\Mooers of Rycote (12th GGM of Lady Diana),@I322668238036@,Sara Moore (More) (Dole),122607.0,14.0,Child birth 1605 is after parent death 24 March 1602,open,2026-05-23 23:28:23
-534,parent_too_young,high,@I322745639422@,"Lady Margaret ""Baroness Warrington, Lancashire Massey",@I322589969204@,John Holcroft,123059.0,14.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-588,parent_too_young,high,@I322725936097@,Ralph Standish,@I322725936065@,Anne Elizabeth Holcroft,129919.0,14.0,Parent appears age 2 at child birth,open,2026-05-23 23:28:23
-580,parent_too_young,high,@I322746343944@,Sir David Griffith Davys (Davis) Sr,@I322746343904@,Sir David Griffith Davys (Davis) Sr,129551.0,14.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-571,parent_too_young,high,@I322745629616@,William Mawer\Mowry,@I322745629596@,William Mawer (Mowry),128803.0,14.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-557,parent_too_young,high,@I322728996098@,Dorothy Boteler Butler,@I322728995374@,"Sir Francis Browne, of Luton, Knighted by Queen Elizabeth I",126141.0,15.0,Parent appears age 2 at child birth,open,2026-05-23 23:28:23
-575,parent_too_young,high,@I322743511685@,Editha Hyrdeford,@I322743511647@,Isabella or Jane Trenchard,129109.0,15.0,Parent appears age 10 at child birth,open,2026-05-23 23:28:23
-537,parent_too_young,high,@I322668230386@,Elizabeth Doty,@I322638420889@,*Samuel Oakman,123711.0,15.0,Parent appears age -25 at child birth,open,2026-05-23 23:28:23
-522,parent_too_young,high,@I322746016818@,John HATTON ADAMS II,@I322746016600@,Agnes Ridges Hatton,120489.0,15.0,Parent appears age 10 at child birth,open,2026-05-23 23:28:23
-535,parent_too_young,high,@I322745639344@,John Sir Holcroft,@I322725936110@,John Sir Holcroft,123103.0,15.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-526,parent_too_young,high,@I322744940519@,John Verryar,@I322681174384@,"Peter Godfrey 12th PGGF, Owner of Nod Estate",121447.0,15.0,Parent appears age 10 at child birth,open,2026-05-23 23:28:23
-578,parent_too_young,high,@I322625940908@,John Wrigley,@I322625940888@,John Wrigley of Langley Hall,129455.0,15.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-594,parent_too_young,high,@I322625941640@,"Katherine Elizabeth Lady of Bury, Hatley, Bedfordshire,Kilpeck\Peletoyt",@I322454169707@,Sir William Gibbons of Wiltshire De Boteler,130169.0,15.0,Parent appears age 11 at child birth,open,2026-05-23 23:28:23
-536,parent_too_young,high,@I322743414866@,Margaret Wentworth-Harvey,@I322743414839@,"Isabel (Radclyffe) Harvey (Hervey), Lady of Ellenstow)",123535.0,15.0,Parent appears age 10 at child birth,open,2026-05-23 23:28:23
-590,parent_too_young,high,@I322738278400@,Mrs. Charles Wormeley,@I322738277838@,"John Wormeley, of Hatfield",129963.0,15.0,Parent appears age 6 at child birth,open,2026-05-23 23:28:23
-556,parent_too_young,high,@I322728996097@,"Sir Anthony Browne, III Knight, 1st Viscount of Montagu",@I322728995374@,"Sir Francis Browne, of Luton, Knighted by Queen Elizabeth I",126139.0,15.0,Parent appears age 5 at child birth,open,2026-05-23 23:28:23
-541,parent_too_young,high,@I322746016651@,Thomas Lane Holmes Riggs,@I322746016557@,Miles Richard Rygge (Ridges) (Rigges) (Riggs),124233.0,15.0,Parent appears age 2 at child birth,open,2026-05-23 23:28:23
-561,parent_too_young,high,@I322725935482@,Williame Butterworth,@I322725935451@,Richard Butterworth *,126763.0,15.0,Parent appears age 7 at child birth,open,2026-05-23 23:28:23
-576,parent_too_young,high,@I322744629856@,Edmund Brydges Lord Chandos van Sudeley,@I322744489099@,Sir John Brydges 1st Baron Chandos of Sudeley,129289.0,16.0,Parent appears age -29 at child birth,open,2026-05-23 23:28:23
-600,parent_too_young,high,@I322638418056@,GEETRYT CORNELIS,@I322638418041@,Wyer Adriaensz,130337.0,16.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-599,parent_too_young,high,@I322728004492@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,@I322728004197@,"EN Ralph De Bigelow, 4th Lord of Ollerton 13 ggf",130325.0,16.0,Parent appears age 5 at child birth,open,2026-05-23 23:28:23
-583,parent_too_young,high,@I322686339048@,Sir Robert Morton,@I322686339009@,Sir Richard Robert Lee Moreton\Morton-Corbett,129727.0,16.0,Parent appears age 6 at child birth,open,2026-05-23 23:28:23
-579,parent_too_young,high,@I322734394659@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,@I322728004492@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,129489.0,17.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-591,parent_too_young,high,@I322668194469@,Richard Grymley,@I322668194452@,Richard Grimley,130051.0,17.0,Parent appears age -2 at child birth,open,2026-05-23 23:28:23
-595,parent_too_young,high,@I322668194647@,Richard Grymley,@I322668194609@,Richard Grimley,130177.0,17.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-589,parent_too_young,high,@I322735477776@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,@I322734394659@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,129957.0,18.0,Parent appears age 0 at child birth,open,2026-05-23 23:28:23
-475,date_parse,medium,@I322727245815@,Capt David Ives,,,,,Could not parse death date: 1820/21,open,2026-05-23 23:28:23
-494,date_parse,medium,@I322744641712@,Daffeney Nance,,,,,Could not parse death date: DECEASED,open,2026-05-23 23:28:23
-516,parent_too_old,medium,@I322459477365@,Elihu Fernald,@I322589969397@,Thomas C Fernald,119937.0,,Parent appears age 85 at child birth,open,2026-05-23 23:28:23
-503,date_parse,medium,@I322745923328@,Elizabeth Knight,,,,,Could not parse birth date: WFT Est. 1621-1649,open,2026-05-23 23:28:23
-504,date_parse,medium,@I322745923328@,Elizabeth Knight,,,,,Could not parse death date: WFT Est. 1638-1732,open,2026-05-23 23:28:23
-519,parent_too_old,medium,@I322614338732@,Eunice Bagley,@I322614339185@,Newell Bagley,120053.0,,Parent appears age 122 at child birth,open,2026-05-23 23:28:23
-458,date_parse,medium,@I322678115852@,Eunice Files,,,,,Could not parse death date: ?deceased,open,2026-05-23 23:28:23
-492,date_parse,medium,@I322744368451@,Hannah aka Anna Pilkington aka Gee,,,,,Could not parse birth date: Jan 1659/60,open,2026-05-23 23:28:23
-487,date_parse,medium,@I322743510149@,"John Scammons (12GGF) (Immigrant) (Eng to NH)(1598-1660)(mrd Elizabeth Teler Tailor) (mrd 6 Nov 1623 in Nettleton, Lincolnshire)",,,,,Could not parse death date: 1660 alt 29 Jun 1691,open,2026-05-23 23:28:23
-517,parent_too_old,medium,@I322614336910@,Jonathan Bagley,@I322614339185@,Newell Bagley,120051.0,,Parent appears age 123 at child birth,open,2026-05-23 23:28:23
-412,date_parse,medium,@I322459478791@,Joseph Fernald,,,,,Could not parse death date: 1754/1769,open,2026-05-23 23:28:22
-468,date_parse,medium,@I322682619308@,"Lady Katherine Elizabeth Cromwell, Lady of St Albans - Child of Lady Elisabeth Wykes (Wykys), Lady of Putney, Baroness of Cromwell, 1st Countess of Essex, 2nd Countess of Cromwell",,,,,Could not parse death date: 25 January 1579 (1567?),open,2026-05-23 23:28:23
-465,date_parse,medium,@I322682619302@,"Lord Henry Cromwell, 2nd Baron of Cromwell (of Oakham), Golden Knight - Child of Elizabeth Seymour, Lady Cromwell, Marchioness of Winchester, Baroness Cromwell of Oakman",,,,,Could not parse death date: 20 November 1592 - prev. 6 January 1604,open,2026-05-23 23:28:23
-416,date_parse,medium,@I322616878872@,Mary Anne West,,,,,Could not parse birth date: 1627/1618,open,2026-05-23 23:28:23
-476,date_parse,medium,@I322727245914@,Mary Leonard  d 1 jan 1723,,,,,Could not parse death date: 11 Mar 1723-24,open,2026-05-23 23:28:23
-457,date_parse,medium,@I322678115849@,Robert Files,,,,,Could not parse death date: Deceased,open,2026-05-23 23:28:23
-414,date_parse,medium,@I322481832456@,Sir Peter (Piers) Warburton of Areley,,,,,Could not parse birth date: October 1504/1500,open,2026-05-23 23:28:22
-466,date_parse,medium,@I322682619304@,"Thomas (John)  Cromwell I - Child of Elizabeth, Lady Seymour, Marchioness of Winchester, Baroness (Lady) Cromwell of Oakman, Cromwell - prev. Woodman",,,,,Could not parse birth date: 1540 - prev. 26 April 1549; 1541,open,2026-05-23 23:28:23
-467,date_parse,medium,@I322682619304@,"Thomas (John)  Cromwell I - Child of Elizabeth, Lady Seymour, Marchioness of Winchester, Baroness (Lady) Cromwell of Oakman, Cromwell - prev. Woodman",,,,,Could not parse death date: 1611 - prev. 17 March 1612; 1642,open,2026-05-23 23:28:23
-472,date_parse,medium,@I322686314983@,mary f clark,,,,,Could not parse birth date: 18nov1832,open,2026-05-23 23:28:23
-473,date_parse,medium,@I322686314983@,mary f clark,,,,,Could not parse death date: 30nov1907,open,2026-05-23 23:28:23
-469,date_parse,medium,@I322683774254@,nathaniel littlefield,,,,,Could not parse death date: 20sep1899,open,2026-05-23 23:28:23
-470,date_parse,medium,@I322683774372@,william c littlefield,,,,,Could not parse birth date: 30oct1861,open,2026-05-23 23:28:23
-471,date_parse,medium,@I322683774372@,william c littlefield,,,,,Could not parse death date: 23jan1920,open,2026-05-23 23:28:23
-577,parent_too_old,medium,@I322625938119@,John Sutherland,@I322454167903@,"Elizabeth ""Betsy"" Sutherland",129375.0,5.0,Parent appears age 79 at child birth,open,2026-05-23 23:28:23
-403,date_parse,medium,@I322454167792@,Melinda W Adams,,,,5.0,Could not parse death date: Bet 1870-1874,open,2026-05-23 23:28:22
-407,date_parse,medium,@I322454171851@,Otis J Danforth,,,,5.0,Could not parse birth date: Abt 1840/41,open,2026-05-23 23:28:22
-515,parent_too_old,medium,@I322454168542@,Reuben H Cookson Sr,@I322454168178@,Lucy Cookson,119877.0,6.0,Parent appears age 71 at child birth,open,2026-05-23 23:28:23
-406,date_parse,medium,@I322454170933@,Benjamin Coombs,,,,7.0,Could not parse death date: After:1832-00-00,open,2026-05-23 23:28:22
-529,parent_too_old,medium,@I322454173518@,John Obadiah Cookeson-Cookson Sr,@I322454172389@,Reuben COOKSON Sr.,122511.0,7.0,Parent appears age 71 at child birth,open,2026-05-23 23:28:23
-410,date_parse,medium,@I322454173717@,Ann Staples,,,,8.0,Could not parse death date: BET 1846 AND 1848,open,2026-05-23 23:28:22
-442,date_parse,medium,@I322638416581@,Capt David Ives,,,,8.0,Could not parse death date: 1820/21,open,2026-05-23 23:28:23
-441,date_parse,medium,@I322627131104@,John Newton III,,,,8.0,Could not parse death date: 15 November 1763/65,open,2026-05-23 23:28:23
-418,date_parse,medium,@I322620175529@,Jonathan Paine,,,,8.0,Could not parse birth date: 20 Feb 1723/24,open,2026-05-23 23:28:23
-408,date_parse,medium,@I322454172545@,Margaret ... 2nd Cousin ... Stone Hammond Woodward,,,,8.0,Could not parse birth date: 01 Aug 1688   Alternate: 24 Aug 1688,open,2026-05-23 23:28:22
-423,date_parse,medium,@I322625937243@,Phebe Finney,,,,8.0,Could not parse birth date: 8 Feb 1724/5,open,2026-05-23 23:28:23
-417,date_parse,medium,@I322620058397@,Sarah Daggett (Paine),,,,8.0,Could not parse birth date: 26 Jan 1727/28,open,2026-05-23 23:28:23
-409,date_parse,medium,@I322454173624@,jane danford,,,,8.0,Could not parse birth date: 17* Jan 1741/42,open,2026-05-23 23:28:22
-411,date_parse,medium,@I322454173818@,jane danford,,,,8.0,Could not parse birth date: 17* Jan 1741/42,open,2026-05-23 23:28:22
-474,date_parse,medium,@I322686338080@,(Thomas) Joseph ? Berry,,,,9.0,Could not parse birth date: 5 Mar 1697 9169010,open,2026-05-23 23:28:23
-483,date_parse,medium,@I322741257932@,Benjamin Tibbetts 4,,,,9.0,Could not parse death date: Between 30 Jun-16 Dec 1761,open,2026-05-23 23:28:23
-443,date_parse,medium,@I322638417676@,Cornelia Bradt MIN,,,,9.0,Could not parse death date: WFT Est 1750-1813,open,2026-05-23 23:28:23
-421,date_parse,medium,@I322625936992@,Edward (1684-1749 Plymouth father Nathaniel) Southworth (m Bosworth 1711) I,,,,9.0,Could not parse birth date: 23 Nov 1684 or 1688,open,2026-05-23 23:28:23
-419,date_parse,medium,@I322625929420@,Jane or Geine _____,,,,9.0,Could not parse death date: Bef. 14 Feb 1740/1,open,2026-05-23 23:28:23
-404,date_parse,medium,@I322454168770@,Sarah Harmon(Colbreath),,,,9.0,Could not parse birth date: 1713-1714,open,2026-05-23 23:28:22
-488,date_parse,medium,@I322743524766@,✝️Rev. Nathaniel Denison Rogers MAYFLOWER,,,,9.0,Could not parse birth date: 22 Feb 1669/ 1670,open,2026-05-23 23:28:23
-497,date_parse,medium,@I322745508339@,"""John I ( Smith-Folsham",,,,10.0,Could not parse birth date: 2 Dec 1613 XXX/1614/1615 xxxxx,open,2026-05-23 23:28:23
-428,date_parse,medium,@I322625937795@,Elizabeth HARRADEN,,,,10.0,Could not parse birth date: j1656,open,2026-05-23 23:28:23
-462,date_parse,medium,@I322681142127@,Hanß Jacob Graß,,,,10.0,Could not parse death date: 13. Mai 1722,open,2026-05-23 23:28:23
-438,date_parse,medium,@I322625940191@,John Pullen,,,,10.0,Could not parse death date: BET 1687 AND 1748,open,2026-05-23 23:28:23
-447,date_parse,medium,@I322638420597@,Margaret DeCrow,,,,10.0,Could not parse birth date: 10 Jan 1679/80,open,2026-05-23 23:28:23
-422,date_parse,medium,@I322625937112@,Nathaniel Southworth,,,,10.0,Could not parse death date: 14 Jan 1710/1,open,2026-05-23 23:28:23
-481,date_parse,medium,@I322738217177@,Samuel Bridges,,,,10.0,Could not parse death date: DECEASED,open,2026-05-23 23:28:23
-449,date_parse,medium,@I322638421660@,Sarah Burnham CHOATE*,,,,10.0,Could not parse birth date: Abt. 1662/70,open,2026-05-23 23:28:23
-413,date_parse,medium,@I322475425153@,Sarah Sargent,,,,10.0,Could not parse birth date: 29 February 1651,open,2026-05-23 23:28:22
-424,date_parse,medium,@I322625937248@,Thomas Tho T. Adams JS DNA w\CH; BR; VM,,,,10.0,Could not parse birth date: 1650-1659,open,2026-05-23 23:28:23
-425,date_parse,medium,@I322625937248@,Thomas Tho T. Adams JS DNA w\CH; BR; VM,,,,10.0,Could not parse death date: abt 1726-1737,open,2026-05-23 23:28:23
-426,date_parse,medium,@I322625937295@,Thomas Tho T. Adams JS DNA w\CH; BR; VM,,,,10.0,Could not parse birth date: 1650-1659,open,2026-05-23 23:28:23
-427,date_parse,medium,@I322625937295@,Thomas Tho T. Adams JS DNA w\CH; BR; VM,,,,10.0,Could not parse death date: abt 1726-1737,open,2026-05-23 23:28:23
-432,date_parse,medium,@I322625939269@,Walter Warren,,,,10.0,Could not parse birth date: 1689-95,open,2026-05-23 23:28:23
-510,date_parse,medium,@I322746646937@,Andrew Ring,,,,11.0,Could not parse death date: 22 Feb 1693/4,open,2026-05-23 23:28:23
-444,date_parse,medium,@I322638417786@,Cornelia Janse Damen,,,,11.0,Could not parse birth date: 6 Jan 1666 / 20 Sep 1666,open,2026-05-23 23:28:23
-446,date_parse,medium,@I322638420480@,Edward Doty,,,,11.0,Could not parse death date: 8 Feb 1689/90,open,2026-05-23 23:28:23
-482,date_parse,medium,@I322738218697@,Elizabeth Bartlett,,,,11.0,Could not parse death date: 17 Feb 1712/3,open,2026-05-23 23:28:23
-430,date_parse,medium,@I322625938715@,John Howland,,,,11.0,Could not parse death date: 23 Feb 1672/3,open,2026-05-23 23:28:23
-512,date_parse,medium,@I322746904668@,Samuel Cash,,,,11.0,Could not parse birth date: 1690-1694,open,2026-05-23 23:28:23
-507,date_parse,medium,@I322746343852@,Degory Priest,,,,12.0,Could not parse death date: 1 Jan 1620/1,open,2026-05-23 23:28:23
-493,date_parse,medium,@I322744368472@,Esther (DUTCH) ELWELL,,,,12.0,Could not parse death date: DEC1684,open,2026-05-23 23:28:23
-513,date_parse,medium,@I322757512956@,Esther or Hester Briggs Penquite,,,,12.0,Could not parse birth date: 21 Feb 1694; 2 Apr 1694,open,2026-05-23 23:28:23
-437,date_parse,medium,@I322625939939@,George Johnson K HFR,,,,12.0,Could not parse birth date: 1545/48,open,2026-05-23 23:28:23
-431,date_parse,medium,@I322625938846@,Jean Clement Messervy,,,,12.0,"Could not parse death date: February 1, 1664/1665",open,2026-05-23 23:28:23
-509,date_parse,medium,@I322746646681@,Lucretia Oldham,,,,12.0,Could not parse death date: 4 Mar 1678/9,open,2026-05-23 23:28:23
-477,date_parse,medium,@I322728137464@,Peter Wells\I,,,,12.0,Could not parse birth date: 1630 or 1646,open,2026-05-23 23:28:23
-508,date_parse,medium,@I322746646564@,Samuel Fuller,,,,12.0,Could not parse death date: Btn. 9 Aug and 26 Sep 1633,open,2026-05-23 23:28:23
-496,date_parse,medium,@I322745507561@,Samuel Simon Waite 10thGG,,,,12.0,Could not parse death date: 29 Mar or Jul 1648,open,2026-05-23 23:28:23
-511,date_parse,medium,@I322746646960@,Stephen Hopkins,,,,12.0,Could not parse death date: Btn. 6 Jun and 17 Jul 1644,open,2026-05-23 23:28:23
-491,date_parse,medium,@I322743744966@,Susannah\Susanna\Susan Bacon,,,,12.0,Could not parse death date: 30Apr1664,open,2026-05-23 23:28:23
-506,date_parse,medium,@I322746016361@,"THOMAS RIGGS Thomas Riggs (Riges Thomas Riggs of Hawkshead who was in Gloucester, Mass by about 1658 RIGGS Riges ENG IMM 1631 ggf 9 (MA BnB) -- Father Edward Riggs b. c 1593, d. 1672 Mother Elizabeth Holmes b. c 1595,)(m MARY MILLETT gg9",,,,12.0,Could not parse death date: 26 Feb 1721/22,open,2026-05-23 23:28:23
-453,date_parse,medium,@I322668237336@,Thomas Chandler 8thGG,,,,12.0,Could not parse birth date: 9 August 1628/30,open,2026-05-23 23:28:23
-405,date_parse,medium,@I322454170513@,William Furber,,,,12.0,Could not parse death date: 1687-1689,open,2026-05-23 23:28:22
-490,date_parse,medium,@I322743530896@,Eleanor Ann Cleeves,,,,13.0,Could not parse death date: 28 / 29 September 1691,open,2026-05-23 23:28:23
-454,date_parse,medium,@I322668237416@,"George, the 1st. Gray",,,,13.0,Could not parse death date: DECEASED,open,2026-05-23 23:28:23
-445,date_parse,medium,@I322638418370@,Gijsje Barents,,,,13.0,Could not parse death date: 1642-1657,open,2026-05-23 23:28:23
-433,date_parse,medium,@I322625939326@,James Bennet,,,,13.0,Could not parse death date: ?,open,2026-05-23 23:28:23
-480,date_parse,medium,@I322730771476@,James Bennet,,,,13.0,Could not parse death date: ?,open,2026-05-23 23:28:23
-502,date_parse,medium,@I322745923208@,Mary Shaw,,,,13.0,Could not parse birth date: 31Mar1588,open,2026-05-23 23:28:23
-501,date_parse,medium,@I322745629560@,Thomas Mawer,,,,13.0,Could not parse birth date: 1535-1537,open,2026-05-23 23:28:23
-435,date_parse,medium,@I322625939455@,Edward BALLARD,,,,14.0,Could not parse death date: ??,open,2026-05-23 23:28:23
-459,date_parse,medium,@I322680555850@,Grace Turner,,,,14.0,Could not parse birth date: 1554/55,open,2026-05-23 23:28:23
-463,date_parse,medium,@I322681172125@,Grace Turner,,,,14.0,Could not parse birth date: 1554/55,open,2026-05-23 23:28:23
-489,date_parse,medium,@I322743525856@,Sarah Couch *,,,,14.0,Could not parse death date: ?,open,2026-05-23 23:28:23
-485,date_parse,medium,@I322741258157@,Sir Robert Kinne Keeny Kinney Kyne,,,,14.0,Could not parse death date: 1 Nov or 21 Dec 1596,open,2026-05-23 23:28:23
-434,date_parse,medium,@I322625939441@,Sislie Lander,,,,14.0,Could not parse death date: ?unknown,open,2026-05-23 23:28:23
-429,date_parse,medium,@I322625938646@,Amye Sellman,,,,15.0,Could not parse death date: DECEASED,open,2026-05-23 23:28:23
-460,date_parse,medium,@I322680555863@,"John (""Astronomer"") Feilde",,,,15.0,Could not parse birth date: 1520/25,open,2026-05-23 23:28:23
-464,date_parse,medium,@I322681172176@,"John (""Astronomer"") Feilde",,,,15.0,Could not parse birth date: 1520/25,open,2026-05-23 23:28:23
-486,date_parse,medium,@I322743414962@,Matthew Wytham Lord Bretonley,,,,15.0,Could not parse birth date: bet. 1463-1512,open,2026-05-23 23:28:23
-484,date_parse,medium,@I322741258016@,Sir George Vessey Yeardley II,,,,15.0,Could not parse birth date: ca 1525/35,open,2026-05-23 23:28:23
-495,date_parse,medium,@I322744906347@,Sir Robert John Goodall\Goodale,,,,15.0,Could not parse birth date: 1525-1530 or 1538,open,2026-05-23 23:28:23
-499,date_parse,medium,@I322745626160@,"Sir William\Wilia IV Yelverton-Pekerton, Esq.",,,,15.0,Could not parse birth date: 1512-1525,open,2026-05-23 23:28:23
-420,date_parse,medium,@I322625934875@,elizabeth (mrs.) Ć kirton,,,,15.0,Could not parse death date: unknown,open,2026-05-23 23:28:23
-505,date_parse,medium,@I322746014625@,James Gilbert Shawe,,,,16.0,Could not parse death date: 2 March 1549 - 2 Jun 1552,open,2026-05-23 23:28:23
-450,date_parse,medium,@I322668195245@,Jone Hall,,,,16.0,Could not parse death date: 05Apr1589,open,2026-05-23 23:28:23
-439,date_parse,medium,@I322625941677@,Lady Ann (Marshall\Lokyer\Fidler) Doane,,,,16.0,Could not parse birth date: 1495/1500,open,2026-05-23 23:28:23
-478,date_parse,medium,@I322728995935@,Mary Tilley 0\6,,,,16.0,Could not parse death date: 1585 or 1579,open,2026-05-23 23:28:23
-440,date_parse,medium,@I322625942338@,Matthieu Hicques,,,,16.0,Could not parse death date: DECEASED,open,2026-05-23 23:28:23
-436,date_parse,medium,@I322625939469@,Mstr ? Powrtney (Pountney),,,,16.0,Could not parse death date: ??,open,2026-05-23 23:28:23
-461,date_parse,medium,@I322680555878@,Sir Richard I De La Felde (Field),,,,16.0,Could not parse birth date: 5 Apr or May 1500,open,2026-05-23 23:28:23
-500,date_parse,medium,@I322745626197@,"Sir William III Yelverton, the Elder",,,,16.0,Could not parse birth date: 1480 or 1490 or 1500,open,2026-05-23 23:28:23
-448,date_parse,medium,@I322638420920@,Tobias Oakman,,,,16.0,Could not parse death date: 16 JUN,open,2026-05-23 23:28:23
-455,date_parse,medium,@I322668237492@,William Berdsley,,,,16.0,Could not parse death date: Deceased,open,2026-05-23 23:28:23
-451,date_parse,medium,@I322668195254@,Wyllam Kente,,,,16.0,Could not parse death date: 01Feb1597,open,2026-05-23 23:28:23
-456,date_parse,medium,@I322668239230@,Catherine VOCKE,,,,17.0,Could not parse birth date: 1508/21,open,2026-05-23 23:28:23
-479,date_parse,medium,@I322728995958@,Elizabeth Lady Morton Moreton (Rosier) (Walden) (de la Warre West) *+13gm,,,,17.0,Could not parse death date: 1554 or Aft. 17 Nov 1567 or 1570 or May 1592,open,2026-05-23 23:28:23
-452,date_parse,medium,@I322668195265@,Johanne Halle,,,,17.0,Could not parse death date: 02Apr1551,open,2026-05-23 23:28:23
-498,date_parse,medium,@I322745523329@,Lady Alice (Anne) Horde\Hoorde,,,,17.0,Could not parse birth date: 1470/1483,open,2026-05-23 23:28:23
+996,parent_too_young,high,@I322638418585@,Albert Andrieszen Bradt,@I322638418568@,Albert Andrieszen Bradt,151951.0,,Parent appears age 0 at child birth,open,2026-05-24 00:04:50
+997,parent_too_young,high,@I322638418568@,Albert Andrieszen Bradt,@I322638418552@,Albert Andrieszen Bradt,151959.0,,Parent appears age 0 at child birth,open,2026-05-24 00:04:50
+927,parent_too_young,high,@I322745624532@,Alice Fearnley Haley,@I322745624492@,Edmund (Edmond) G Haylye Hayley,143205.0,,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+985,parent_too_young,high,@I322614335650@,Enoch Bagley,@I322614336083@,Thomas Bagley,151559.0,,Parent appears age 9 at child birth,open,2026-05-24 00:04:49
+920,child_after_parent_death,high,@I322614338732@,Eunice Bagley,@I322614339185@,Newell Bagley,141797.0,,Child birth 3 Jun 1906 is after parent death 27 August 1868,open,2026-05-24 00:04:49
+918,child_after_parent_death,high,@I322614336910@,Jonathan Bagley,@I322614339185@,Newell Bagley,141795.0,,Child birth 3 Jun 1906 is after parent death 8 March 1881,open,2026-05-24 00:04:49
+932,parent_too_young,high,@I322614335829@,Mahala A Bagley,@I322614335828@,Marion Bagley,144445.0,,Parent appears age 8 at child birth,open,2026-05-24 00:04:49
+970,parent_too_young,high,@I322454167419@,Martha Files,@I322589957495@,Freeman Fernald,149717.0,,Parent appears age 10 at child birth,open,2026-05-24 00:04:49
+815,death_before_birth,high,@I322614339185@,Newell Bagley,,,,,Death date 2 Jun 1906 is before birth date 3 Jun 1906,open,2026-05-24 00:04:49
+949,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425156@,Joseph Bagley,147595.0,,Child birth 26 January 1705 is after parent death 3 October 1701,open,2026-05-24 00:04:49
+950,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425148@,Benjamin Bagley,147599.0,,Child birth 10 November 1707 is after parent death 3 October 1701,open,2026-05-24 00:04:49
+951,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425152@,Sarah Bagley,147603.0,,Child birth 1708 is after parent death 3 October 1701,open,2026-05-24 00:04:49
+952,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425154@,Anne Bagley,147607.0,,Child birth 14 August 1709 is after parent death 3 October 1701,open,2026-05-24 00:04:49
+953,child_after_parent_death,high,@I322475425153@,Sarah Sargent,@I322475425157@,Hannah Bagley,147611.0,,Child birth 29 March 1712 is after parent death 3 October 1701,open,2026-05-24 00:04:49
+962,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414463@,James Alfred Grass,149449.0,,Child birth February 1859 is after parent death 14 May 1855,open,2026-05-24 00:04:49
+963,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414464@,Jonathan Woodsford Grass,149453.0,,Child birth 24 January 1862 is after parent death 14 May 1855,open,2026-05-24 00:04:49
+964,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414465@,Anna Bell Grass,149457.0,,Child birth 1866 is after parent death 14 May 1855,open,2026-05-24 00:04:49
+965,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414466@,Lory M Grass,149461.0,,Child birth February 1867 is after parent death 14 May 1855,open,2026-05-24 00:04:49
+966,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414468@,Flora Annett Grass,149465.0,,Child birth 14 July 1868 is after parent death 14 May 1855,open,2026-05-24 00:04:49
+967,child_after_parent_death,high,@I322638414471@,Susanna Grass,@I322638414470@,Elizabeth Blanch Grass,149469.0,,Child birth 12 September 1870 is after parent death 14 May 1855,open,2026-05-24 00:04:49
+924,child_after_parent_death,high,@I322454172189@,Hannah Parsons,@I322454172144@,Catherine Adams Adams,142463.0,7.0,Child birth 23 Apr 1744 baptized is after parent death 12 Dec 1741,open,2026-05-24 00:04:49
+930,child_after_parent_death,high,@I322454173594@,RACHEL PROCTER,@I322454172389@,Reuben COOKSON Sr.,144257.0,7.0,Child birth Abt. 1745 is after parent death Aft. 1715,open,2026-05-24 00:04:49
+940,parent_too_young,high,@I322756886562@,Patience Ingraham,@I322454173790@,Benjamin Ingraham,145645.0,8.0,Parent appears age -19 at child birth,open,2026-05-24 00:04:49
+939,parent_too_young,high,@I322756886759@,Samuel Tomlinson,@I322454173783@,Hannah Tomlinson,145501.0,8.0,Parent appears age -67 at child birth,open,2026-05-24 00:04:49
+948,child_after_parent_death,high,@I322668193648@,Elizabeth Stevenson,@I322668193616@,Thomas Everitt 1695,146865.0,9.0,Child birth 1700 is after parent death 1690,open,2026-05-24 00:04:49
+993,parent_too_young,high,@I322728137157@,Hannah Pressey,@I322728136648@,Susannah Colby,151893.0,9.0,Parent appears age 10 at child birth,open,2026-05-24 00:04:50
+947,child_after_parent_death,high,@I322668193645@,John Everett,@I322668193616@,Thomas Everitt 1695,146863.0,9.0,Child birth 1700 is after parent death 1691,open,2026-05-24 00:04:49
+974,parent_too_young,high,@I322680151793@,Lena Lewis,@I322622781953@,Jacobus Cromwell,150755.0,9.0,Parent appears age -81 at child birth,open,2026-05-24 00:04:49
+914,parent_too_young,high,@I322625937008@,MARY HASKINS,@I322625936962@,Thomas Haskins Phillips,141463.0,9.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+954,parent_too_young,high,@I322625939295@,Mary Abbie Hoyt,@I322625933214@,John Hodgdon,147749.0,9.0,Parent appears age 10 at child birth,open,2026-05-24 00:04:49
+946,parent_too_young,high,@I322625935838@,Mary Ashfield Adams Proctor,@I322625935779@,Richard Proctor,146823.0,9.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+981,parent_too_young,high,@I322625936202@,Mary Ashfield Adams Proctor,@I322625936017@,Richard Proctor,151341.0,9.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+973,parent_too_young,high,@I322680151792@,Philip Cromwell,@I322622781953@,Jacobus Cromwell,150753.0,9.0,Parent appears age -68 at child birth,open,2026-05-24 00:04:49
+925,parent_too_young,high,@I322625936411@,Richard Crooke,@I322625936346@,Charles Crooks Sergeant,142965.0,9.0,Parent appears age 10 at child birth,open,2026-05-24 00:04:49
+945,parent_too_young,high,@I322625935837@,Samuel Proctor,@I322625935779@,Richard Proctor,146821.0,9.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+1002,child_after_parent_death,high,@I322743524563@,Thomas Badger,@I322681171662@,Joseph Badger,152135.0,10.0,Child birth ABT 1650 is after parent death Abt 1646,open,2026-05-24 00:04:50
+972,parent_too_young,high,@I322625941820@,DOROTHEA CLARKE,@I322625938714@,Lady Dorothy Kent Beauchamp,150731.0,11.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+944,parent_too_young,high,@I322728137632@,Hannah Pearce,@I322728137442@,Reverand Thomas Wells,146279.0,11.0,Parent appears age 2 at child birth,open,2026-05-24 00:04:49
+960,parent_too_young,high,@I322625938607@,Mary Brooke,@I322625933544@,Eleanor Moore,148257.0,11.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+984,parent_too_young,high,@I322728993325@,Timothy Williamson,@I322728993296@,Mary Howland Williamson,151505.0,11.0,Parent appears age 7 at child birth,open,2026-05-24 00:04:49
+969,parent_too_young,high,@I322743511545@,Jane Basset,@I322743511523@,Thomas Peverly,149615.0,12.0,Parent appears age 8 at child birth,open,2026-05-24 00:04:49
+921,parent_too_young,high,@I322728993971@,Margery Hartley,@I322728993949@,Humphrey Marshall II,141831.0,12.0,Parent appears age 5 at child birth,open,2026-05-24 00:04:49
+943,parent_too_young,high,@I322625935553@,Martha Mary Brewer,@I322625933939@,Catherine Smith,146177.0,12.0,Parent appears age 10 at child birth,open,2026-05-24 00:04:49
+968,parent_too_young,high,@I322743413243@,Temperance Mitchell,@I322743413048@,John Henry Rackliff I,149475.0,12.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+992,parent_too_young,high,@I322746015678@,**Robert John Johnson ( paternal 8x ggm of Lizzy Borden) 🇬🇧,@I322746015650@,"John David ""Davy""  15 Johnson #2072A",151817.0,13.0,Parent appears age 3 at child birth,open,2026-05-24 00:04:50
+998,parent_too_young,high,@I322625934205@,James Blackaller,@I322625933968@,James Blackaller,151991.0,13.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:50
+923,child_after_parent_death,high,@I322730774042@,MARGARET ELIZABETH BURTON,@I322730771758@,*John Stephenson Jr.,142273.0,13.0,Child birth 8 Jun 1585 is after parent death Aug 1567,open,2026-05-24 00:04:49
+955,parent_too_young,high,@I322738277819@,Mary Elizabeth Hogge,@I322738275479@,Jane Woormall Wormeley Wormall,147861.0,13.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+928,parent_too_young,high,@I322741258125@,Mary Hallstaff,@I322741258101@,Mary Ann Williams,143497.0,13.0,Parent appears age 9 at child birth,open,2026-05-24 00:04:49
+942,parent_too_young,high,@I322454170201@,Richard Cookeson,@I322454170187@,Richard Cookeson,146143.0,13.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+987,parent_too_young,high,@I322744368519@,Robt Dooch,@I322744368482@,Robert John DUTCH,151639.0,13.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+986,parent_too_young,high,@I322745357141@,"Sir John Edward Baker, ""The Bloody Knight of Sissinghurst, Kent, Member of Parliament, Speaker of the House of Commons",@I322745356810@,John Alfred Baker,151563.0,13.0,Parent appears age 8 at child birth,open,2026-05-24 00:04:49
+1001,parent_too_young,high,@I322625941741@,Dame Anne Sapcote Countess Fitzwilliam,@I322625941731@,Katherine Fitzwilliams,152089.0,14.0,Parent appears age 5 at child birth,open,2026-05-24 00:04:50
+958,parent_too_young,high,@I322745507696@,Isabella Normond Wilson,@I322745507635@,Thomas Lawrence Thompson,148105.0,14.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+982,parent_too_young,high,@I322625940248@,Joane Smithe,@I322625940244@,Katherine Raddon als Gifford,151397.0,14.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+959,parent_too_young,high,@I322745507666@,John Richard Bartholomew III,@I322745507650@,Sir John Richard Bartholomew Bartilmewe III,148157.0,14.0,Parent appears age -1 at child birth,open,2026-05-24 00:04:49
+933,parent_too_young,high,@I322725936110@,John Sir Holcroft,@I322589969204@,John Holcroft,144801.0,14.0,Parent appears age -11 at child birth,open,2026-05-24 00:04:49
+938,parent_too_young,high,@I322616879206@,Lady Alice (Alys) Gage Browne,@I322454169544@,Anne Browne,145485.0,14.0,Parent appears age 9 at child birth,open,2026-05-24 00:04:49
+931,child_after_parent_death,high,@I322668238048@,Lady Catharine Elizabeth Norreys\Norris\Nourse\Nurse Johnson Poulett\Paulet\Paulett More\Moore\Mooers of Rycote (12th GGM of Lady Diana),@I322668238036@,Sara Moore (More) (Dole),144351.0,14.0,Child birth 1605 is after parent death 24 March 1602,open,2026-05-24 00:04:49
+934,parent_too_young,high,@I322745639422@,"Lady Margaret ""Baroness Warrington, Lancashire Massey",@I322589969204@,John Holcroft,144803.0,14.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:49
+988,parent_too_young,high,@I322725936097@,Ralph Standish,@I322725936065@,Anne Elizabeth Holcroft,151663.0,14.0,Parent appears age 2 at child birth,open,2026-05-24 00:04:49
+980,parent_too_young,high,@I322746343944@,Sir David Griffith Davys (Davis) Sr,@I322746343904@,Sir David Griffith Davys (Davis) Sr,151295.0,14.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+971,parent_too_young,high,@I322745629616@,William Mawer\Mowry,@I322745629596@,William Mawer (Mowry),150547.0,14.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+957,parent_too_young,high,@I322728996098@,Dorothy Boteler Butler,@I322728995374@,"Sir Francis Browne, of Luton, Knighted by Queen Elizabeth I",147885.0,15.0,Parent appears age 2 at child birth,open,2026-05-24 00:04:49
+975,parent_too_young,high,@I322743511685@,Editha Hyrdeford,@I322743511647@,Isabella or Jane Trenchard,150853.0,15.0,Parent appears age 10 at child birth,open,2026-05-24 00:04:49
+937,parent_too_young,high,@I322668230386@,Elizabeth Doty,@I322638420889@,*Samuel Oakman,145455.0,15.0,Parent appears age -25 at child birth,open,2026-05-24 00:04:49
+922,parent_too_young,high,@I322746016818@,John HATTON ADAMS II,@I322746016600@,Agnes Ridges Hatton,142233.0,15.0,Parent appears age 10 at child birth,open,2026-05-24 00:04:49
+935,parent_too_young,high,@I322745639344@,John Sir Holcroft,@I322725936110@,John Sir Holcroft,144847.0,15.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+926,parent_too_young,high,@I322744940519@,John Verryar,@I322681174384@,"Peter Godfrey 12th PGGF, Owner of Nod Estate",143191.0,15.0,Parent appears age 10 at child birth,open,2026-05-24 00:04:49
+978,parent_too_young,high,@I322625940908@,John Wrigley,@I322625940888@,John Wrigley of Langley Hall,151199.0,15.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+994,parent_too_young,high,@I322625941640@,"Katherine Elizabeth Lady of Bury, Hatley, Bedfordshire,Kilpeck\Peletoyt",@I322454169707@,Sir William Gibbons of Wiltshire De Boteler,151913.0,15.0,Parent appears age 11 at child birth,open,2026-05-24 00:04:50
+936,parent_too_young,high,@I322743414866@,Margaret Wentworth-Harvey,@I322743414839@,"Isabel (Radclyffe) Harvey (Hervey), Lady of Ellenstow)",145279.0,15.0,Parent appears age 10 at child birth,open,2026-05-24 00:04:49
+990,parent_too_young,high,@I322738278400@,Mrs. Charles Wormeley,@I322738277838@,"John Wormeley, of Hatfield",151707.0,15.0,Parent appears age 6 at child birth,open,2026-05-24 00:04:49
+956,parent_too_young,high,@I322728996097@,"Sir Anthony Browne, III Knight, 1st Viscount of Montagu",@I322728995374@,"Sir Francis Browne, of Luton, Knighted by Queen Elizabeth I",147883.0,15.0,Parent appears age 5 at child birth,open,2026-05-24 00:04:49
+941,parent_too_young,high,@I322746016651@,Thomas Lane Holmes Riggs,@I322746016557@,Miles Richard Rygge (Ridges) (Rigges) (Riggs),145977.0,15.0,Parent appears age 2 at child birth,open,2026-05-24 00:04:49
+961,parent_too_young,high,@I322725935482@,Williame Butterworth,@I322725935451@,Richard Butterworth *,148507.0,15.0,Parent appears age 7 at child birth,open,2026-05-24 00:04:49
+976,parent_too_young,high,@I322744629856@,Edmund Brydges Lord Chandos van Sudeley,@I322744489099@,Sir John Brydges 1st Baron Chandos of Sudeley,151033.0,16.0,Parent appears age -29 at child birth,open,2026-05-24 00:04:49
+1000,parent_too_young,high,@I322638418056@,GEETRYT CORNELIS,@I322638418041@,Wyer Adriaensz,152081.0,16.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:50
+999,parent_too_young,high,@I322728004492@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,@I322728004197@,"EN Ralph De Bigelow, 4th Lord of Ollerton 13 ggf",152069.0,16.0,Parent appears age 5 at child birth,open,2026-05-24 00:04:50
+983,parent_too_young,high,@I322686339048@,Sir Robert Morton,@I322686339009@,Sir Richard Robert Lee Moreton\Morton-Corbett,151471.0,16.0,Parent appears age 6 at child birth,open,2026-05-24 00:04:49
+979,parent_too_young,high,@I322734394659@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,@I322728004492@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,151233.0,17.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+991,parent_too_young,high,@I322668194469@,Richard Grymley,@I322668194452@,Richard Grimley,151795.0,17.0,Parent appears age -2 at child birth,open,2026-05-24 00:04:50
+995,parent_too_young,high,@I322668194647@,Richard Grymley,@I322668194609@,Richard Grimley,151921.0,17.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:50
+989,parent_too_young,high,@I322735477776@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,@I322734394659@,Lord Ralph De Baguley (Bigelow) Of Ollerton IV,151701.0,18.0,Parent appears age 0 at child birth,open,2026-05-24 00:04:49
+875,date_parse,medium,@I322727245815@,Capt David Ives,,,,,Could not parse death date: 1820/21,open,2026-05-24 00:04:49
+894,date_parse,medium,@I322744641712@,Daffeney Nance,,,,,Could not parse death date: DECEASED,open,2026-05-24 00:04:49
+916,parent_too_old,medium,@I322459477365@,Elihu Fernald,@I322589969397@,Thomas C Fernald,141681.0,,Parent appears age 85 at child birth,open,2026-05-24 00:04:49
+903,date_parse,medium,@I322745923328@,Elizabeth Knight,,,,,Could not parse birth date: WFT Est. 1621-1649,open,2026-05-24 00:04:49
+904,date_parse,medium,@I322745923328@,Elizabeth Knight,,,,,Could not parse death date: WFT Est. 1638-1732,open,2026-05-24 00:04:49
+919,parent_too_old,medium,@I322614338732@,Eunice Bagley,@I322614339185@,Newell Bagley,141797.0,,Parent appears age 122 at child birth,open,2026-05-24 00:04:49
+858,date_parse,medium,@I322678115852@,Eunice Files,,,,,Could not parse death date: ?deceased,open,2026-05-24 00:04:49
+892,date_parse,medium,@I322744368451@,Hannah aka Anna Pilkington aka Gee,,,,,Could not parse birth date: Jan 1659/60,open,2026-05-24 00:04:49
+887,date_parse,medium,@I322743510149@,"John Scammons (12GGF) (Immigrant) (Eng to NH)(1598-1660)(mrd Elizabeth Teler Tailor) (mrd 6 Nov 1623 in Nettleton, Lincolnshire)",,,,,Could not parse death date: 1660 alt 29 Jun 1691,open,2026-05-24 00:04:49
+917,parent_too_old,medium,@I322614336910@,Jonathan Bagley,@I322614339185@,Newell Bagley,141795.0,,Parent appears age 123 at child birth,open,2026-05-24 00:04:49
+812,date_parse,medium,@I322459478791@,Joseph Fernald,,,,,Could not parse death date: 1754/1769,open,2026-05-24 00:04:49
+868,date_parse,medium,@I322682619308@,"Lady Katherine Elizabeth Cromwell, Lady of St Albans - Child of Lady Elisabeth Wykes (Wykys), Lady of Putney, Baroness of Cromwell, 1st Countess of Essex, 2nd Countess of Cromwell",,,,,Could not parse death date: 25 January 1579 (1567?),open,2026-05-24 00:04:49
+865,date_parse,medium,@I322682619302@,"Lord Henry Cromwell, 2nd Baron of Cromwell (of Oakham), Golden Knight - Child of Elizabeth Seymour, Lady Cromwell, Marchioness of Winchester, Baroness Cromwell of Oakman",,,,,Could not parse death date: 20 November 1592 - prev. 6 January 1604,open,2026-05-24 00:04:49
+816,date_parse,medium,@I322616878872@,Mary Anne West,,,,,Could not parse birth date: 1627/1618,open,2026-05-24 00:04:49
+876,date_parse,medium,@I322727245914@,Mary Leonard  d 1 jan 1723,,,,,Could not parse death date: 11 Mar 1723-24,open,2026-05-24 00:04:49
+857,date_parse,medium,@I322678115849@,Robert Files,,,,,Could not parse death date: Deceased,open,2026-05-24 00:04:49
+814,date_parse,medium,@I322481832456@,Sir Peter (Piers) Warburton of Areley,,,,,Could not parse birth date: October 1504/1500,open,2026-05-24 00:04:49
+866,date_parse,medium,@I322682619304@,"Thomas (John)  Cromwell I - Child of Elizabeth, Lady Seymour, Marchioness of Winchester, Baroness (Lady) Cromwell of Oakman, Cromwell - prev. Woodman",,,,,Could not parse birth date: 1540 - prev. 26 April 1549; 1541,open,2026-05-24 00:04:49
+867,date_parse,medium,@I322682619304@,"Thomas (John)  Cromwell I - Child of Elizabeth, Lady Seymour, Marchioness of Winchester, Baroness (Lady) Cromwell of Oakman, Cromwell - prev. Woodman",,,,,Could not parse death date: 1611 - prev. 17 March 1612; 1642,open,2026-05-24 00:04:49
+872,date_parse,medium,@I322686314983@,mary f clark,,,,,Could not parse birth date: 18nov1832,open,2026-05-24 00:04:49
+873,date_parse,medium,@I322686314983@,mary f clark,,,,,Could not parse death date: 30nov1907,open,2026-05-24 00:04:49
+869,date_parse,medium,@I322683774254@,nathaniel littlefield,,,,,Could not parse death date: 20sep1899,open,2026-05-24 00:04:49
+870,date_parse,medium,@I322683774372@,william c littlefield,,,,,Could not parse birth date: 30oct1861,open,2026-05-24 00:04:49
+871,date_parse,medium,@I322683774372@,william c littlefield,,,,,Could not parse death date: 23jan1920,open,2026-05-24 00:04:49
+977,parent_too_old,medium,@I322625938119@,John Sutherland,@I322454167903@,"Elizabeth ""Betsy"" Sutherland",151119.0,5.0,Parent appears age 79 at child birth,open,2026-05-24 00:04:49
+803,date_parse,medium,@I322454167792@,Melinda W Adams,,,,5.0,Could not parse death date: Bet 1870-1874,open,2026-05-24 00:04:49
+807,date_parse,medium,@I322454171851@,Otis J Danforth,,,,5.0,Could not parse birth date: Abt 1840/41,open,2026-05-24 00:04:49
+915,parent_too_old,medium,@I322454168542@,Reuben H Cookson Sr,@I322454168178@,Lucy Cookson,141621.0,6.0,Parent appears age 71 at child birth,open,2026-05-24 00:04:49
+806,date_parse,medium,@I322454170933@,Benjamin Coombs,,,,7.0,Could not parse death date: After:1832-00-00,open,2026-05-24 00:04:49
+929,parent_too_old,medium,@I322454173518@,John Obadiah Cookeson-Cookson Sr,@I322454172389@,Reuben COOKSON Sr.,144255.0,7.0,Parent appears age 71 at child birth,open,2026-05-24 00:04:49
+810,date_parse,medium,@I322454173717@,Ann Staples,,,,8.0,Could not parse death date: BET 1846 AND 1848,open,2026-05-24 00:04:49
+842,date_parse,medium,@I322638416581@,Capt David Ives,,,,8.0,Could not parse death date: 1820/21,open,2026-05-24 00:04:49
+841,date_parse,medium,@I322627131104@,John Newton III,,,,8.0,Could not parse death date: 15 November 1763/65,open,2026-05-24 00:04:49
+818,date_parse,medium,@I322620175529@,Jonathan Paine,,,,8.0,Could not parse birth date: 20 Feb 1723/24,open,2026-05-24 00:04:49
+808,date_parse,medium,@I322454172545@,Margaret ... 2nd Cousin ... Stone Hammond Woodward,,,,8.0,Could not parse birth date: 01 Aug 1688   Alternate: 24 Aug 1688,open,2026-05-24 00:04:49
+823,date_parse,medium,@I322625937243@,Phebe Finney,,,,8.0,Could not parse birth date: 8 Feb 1724/5,open,2026-05-24 00:04:49
+817,date_parse,medium,@I322620058397@,Sarah Daggett (Paine),,,,8.0,Could not parse birth date: 26 Jan 1727/28,open,2026-05-24 00:04:49
+809,date_parse,medium,@I322454173624@,jane danford,,,,8.0,Could not parse birth date: 17* Jan 1741/42,open,2026-05-24 00:04:49
+811,date_parse,medium,@I322454173818@,jane danford,,,,8.0,Could not parse birth date: 17* Jan 1741/42,open,2026-05-24 00:04:49
+874,date_parse,medium,@I322686338080@,(Thomas) Joseph ? Berry,,,,9.0,Could not parse birth date: 5 Mar 1697 9169010,open,2026-05-24 00:04:49
+883,date_parse,medium,@I322741257932@,Benjamin Tibbetts 4,,,,9.0,Could not parse death date: Between 30 Jun-16 Dec 1761,open,2026-05-24 00:04:49
+843,date_parse,medium,@I322638417676@,Cornelia Bradt MIN,,,,9.0,Could not parse death date: WFT Est 1750-1813,open,2026-05-24 00:04:49
+821,date_parse,medium,@I322625936992@,Edward (1684-1749 Plymouth father Nathaniel) Southworth (m Bosworth 1711) I,,,,9.0,Could not parse birth date: 23 Nov 1684 or 1688,open,2026-05-24 00:04:49
+819,date_parse,medium,@I322625929420@,Jane or Geine _____,,,,9.0,Could not parse death date: Bef. 14 Feb 1740/1,open,2026-05-24 00:04:49
+804,date_parse,medium,@I322454168770@,Sarah Harmon(Colbreath),,,,9.0,Could not parse birth date: 1713-1714,open,2026-05-24 00:04:49
+888,date_parse,medium,@I322743524766@,✝️Rev. Nathaniel Denison Rogers MAYFLOWER,,,,9.0,Could not parse birth date: 22 Feb 1669/ 1670,open,2026-05-24 00:04:49
+897,date_parse,medium,@I322745508339@,"""John I ( Smith-Folsham",,,,10.0,Could not parse birth date: 2 Dec 1613 XXX/1614/1615 xxxxx,open,2026-05-24 00:04:49
+828,date_parse,medium,@I322625937795@,Elizabeth HARRADEN,,,,10.0,Could not parse birth date: j1656,open,2026-05-24 00:04:49
+862,date_parse,medium,@I322681142127@,Hanß Jacob Graß,,,,10.0,Could not parse death date: 13. Mai 1722,open,2026-05-24 00:04:49
+838,date_parse,medium,@I322625940191@,John Pullen,,,,10.0,Could not parse death date: BET 1687 AND 1748,open,2026-05-24 00:04:49
+847,date_parse,medium,@I322638420597@,Margaret DeCrow,,,,10.0,Could not parse birth date: 10 Jan 1679/80,open,2026-05-24 00:04:49
+822,date_parse,medium,@I322625937112@,Nathaniel Southworth,,,,10.0,Could not parse death date: 14 Jan 1710/1,open,2026-05-24 00:04:49
+881,date_parse,medium,@I322738217177@,Samuel Bridges,,,,10.0,Could not parse death date: DECEASED,open,2026-05-24 00:04:49
+849,date_parse,medium,@I322638421660@,Sarah Burnham CHOATE*,,,,10.0,Could not parse birth date: Abt. 1662/70,open,2026-05-24 00:04:49
+813,date_parse,medium,@I322475425153@,Sarah Sargent,,,,10.0,Could not parse birth date: 29 February 1651,open,2026-05-24 00:04:49
+824,date_parse,medium,@I322625937248@,Thomas Tho T. Adams JS DNA w\CH; BR; VM,,,,10.0,Could not parse birth date: 1650-1659,open,2026-05-24 00:04:49
+825,date_parse,medium,@I322625937248@,Thomas Tho T. Adams JS DNA w\CH; BR; VM,,,,10.0,Could not parse death date: abt 1726-1737,open,2026-05-24 00:04:49
+826,date_parse,medium,@I322625937295@,Thomas Tho T. Adams JS DNA w\CH; BR; VM,,,,10.0,Could not parse birth date: 1650-1659,open,2026-05-24 00:04:49
+827,date_parse,medium,@I322625937295@,Thomas Tho T. Adams JS DNA w\CH; BR; VM,,,,10.0,Could not parse death date: abt 1726-1737,open,2026-05-24 00:04:49
+832,date_parse,medium,@I322625939269@,Walter Warren,,,,10.0,Could not parse birth date: 1689-95,open,2026-05-24 00:04:49
+910,date_parse,medium,@I322746646937@,Andrew Ring,,,,11.0,Could not parse death date: 22 Feb 1693/4,open,2026-05-24 00:04:49
+844,date_parse,medium,@I322638417786@,Cornelia Janse Damen,,,,11.0,Could not parse birth date: 6 Jan 1666 / 20 Sep 1666,open,2026-05-24 00:04:49
+846,date_parse,medium,@I322638420480@,Edward Doty,,,,11.0,Could not parse death date: 8 Feb 1689/90,open,2026-05-24 00:04:49
+882,date_parse,medium,@I322738218697@,Elizabeth Bartlett,,,,11.0,Could not parse death date: 17 Feb 1712/3,open,2026-05-24 00:04:49
+830,date_parse,medium,@I322625938715@,John Howland,,,,11.0,Could not parse death date: 23 Feb 1672/3,open,2026-05-24 00:04:49
+912,date_parse,medium,@I322746904668@,Samuel Cash,,,,11.0,Could not parse birth date: 1690-1694,open,2026-05-24 00:04:49
+907,date_parse,medium,@I322746343852@,Degory Priest,,,,12.0,Could not parse death date: 1 Jan 1620/1,open,2026-05-24 00:04:49
+893,date_parse,medium,@I322744368472@,Esther (DUTCH) ELWELL,,,,12.0,Could not parse death date: DEC1684,open,2026-05-24 00:04:49
+913,date_parse,medium,@I322757512956@,Esther or Hester Briggs Penquite,,,,12.0,Could not parse birth date: 21 Feb 1694; 2 Apr 1694,open,2026-05-24 00:04:49
+837,date_parse,medium,@I322625939939@,George Johnson K HFR,,,,12.0,Could not parse birth date: 1545/48,open,2026-05-24 00:04:49
+831,date_parse,medium,@I322625938846@,Jean Clement Messervy,,,,12.0,"Could not parse death date: February 1, 1664/1665",open,2026-05-24 00:04:49
+909,date_parse,medium,@I322746646681@,Lucretia Oldham,,,,12.0,Could not parse death date: 4 Mar 1678/9,open,2026-05-24 00:04:49
+877,date_parse,medium,@I322728137464@,Peter Wells\I,,,,12.0,Could not parse birth date: 1630 or 1646,open,2026-05-24 00:04:49
+908,date_parse,medium,@I322746646564@,Samuel Fuller,,,,12.0,Could not parse death date: Btn. 9 Aug and 26 Sep 1633,open,2026-05-24 00:04:49
+896,date_parse,medium,@I322745507561@,Samuel Simon Waite 10thGG,,,,12.0,Could not parse death date: 29 Mar or Jul 1648,open,2026-05-24 00:04:49
+911,date_parse,medium,@I322746646960@,Stephen Hopkins,,,,12.0,Could not parse death date: Btn. 6 Jun and 17 Jul 1644,open,2026-05-24 00:04:49
+891,date_parse,medium,@I322743744966@,Susannah\Susanna\Susan Bacon,,,,12.0,Could not parse death date: 30Apr1664,open,2026-05-24 00:04:49
+906,date_parse,medium,@I322746016361@,"THOMAS RIGGS Thomas Riggs (Riges Thomas Riggs of Hawkshead who was in Gloucester, Mass by about 1658 RIGGS Riges ENG IMM 1631 ggf 9 (MA BnB) -- Father Edward Riggs b. c 1593, d. 1672 Mother Elizabeth Holmes b. c 1595,)(m MARY MILLETT gg9",,,,12.0,Could not parse death date: 26 Feb 1721/22,open,2026-05-24 00:04:49
+853,date_parse,medium,@I322668237336@,Thomas Chandler 8thGG,,,,12.0,Could not parse birth date: 9 August 1628/30,open,2026-05-24 00:04:49
+805,date_parse,medium,@I322454170513@,William Furber,,,,12.0,Could not parse death date: 1687-1689,open,2026-05-24 00:04:49
+890,date_parse,medium,@I322743530896@,Eleanor Ann Cleeves,,,,13.0,Could not parse death date: 28 / 29 September 1691,open,2026-05-24 00:04:49
+854,date_parse,medium,@I322668237416@,"George, the 1st. Gray",,,,13.0,Could not parse death date: DECEASED,open,2026-05-24 00:04:49
+845,date_parse,medium,@I322638418370@,Gijsje Barents,,,,13.0,Could not parse death date: 1642-1657,open,2026-05-24 00:04:49
+833,date_parse,medium,@I322625939326@,James Bennet,,,,13.0,Could not parse death date: ?,open,2026-05-24 00:04:49
+880,date_parse,medium,@I322730771476@,James Bennet,,,,13.0,Could not parse death date: ?,open,2026-05-24 00:04:49
+902,date_parse,medium,@I322745923208@,Mary Shaw,,,,13.0,Could not parse birth date: 31Mar1588,open,2026-05-24 00:04:49
+901,date_parse,medium,@I322745629560@,Thomas Mawer,,,,13.0,Could not parse birth date: 1535-1537,open,2026-05-24 00:04:49
+835,date_parse,medium,@I322625939455@,Edward BALLARD,,,,14.0,Could not parse death date: ??,open,2026-05-24 00:04:49
+859,date_parse,medium,@I322680555850@,Grace Turner,,,,14.0,Could not parse birth date: 1554/55,open,2026-05-24 00:04:49
+863,date_parse,medium,@I322681172125@,Grace Turner,,,,14.0,Could not parse birth date: 1554/55,open,2026-05-24 00:04:49
+889,date_parse,medium,@I322743525856@,Sarah Couch *,,,,14.0,Could not parse death date: ?,open,2026-05-24 00:04:49
+885,date_parse,medium,@I322741258157@,Sir Robert Kinne Keeny Kinney Kyne,,,,14.0,Could not parse death date: 1 Nov or 21 Dec 1596,open,2026-05-24 00:04:49
+834,date_parse,medium,@I322625939441@,Sislie Lander,,,,14.0,Could not parse death date: ?unknown,open,2026-05-24 00:04:49
+829,date_parse,medium,@I322625938646@,Amye Sellman,,,,15.0,Could not parse death date: DECEASED,open,2026-05-24 00:04:49
+860,date_parse,medium,@I322680555863@,"John (""Astronomer"") Feilde",,,,15.0,Could not parse birth date: 1520/25,open,2026-05-24 00:04:49
+864,date_parse,medium,@I322681172176@,"John (""Astronomer"") Feilde",,,,15.0,Could not parse birth date: 1520/25,open,2026-05-24 00:04:49
+886,date_parse,medium,@I322743414962@,Matthew Wytham Lord Bretonley,,,,15.0,Could not parse birth date: bet. 1463-1512,open,2026-05-24 00:04:49
+884,date_parse,medium,@I322741258016@,Sir George Vessey Yeardley II,,,,15.0,Could not parse birth date: ca 1525/35,open,2026-05-24 00:04:49
+895,date_parse,medium,@I322744906347@,Sir Robert John Goodall\Goodale,,,,15.0,Could not parse birth date: 1525-1530 or 1538,open,2026-05-24 00:04:49
+899,date_parse,medium,@I322745626160@,"Sir William\Wilia IV Yelverton-Pekerton, Esq.",,,,15.0,Could not parse birth date: 1512-1525,open,2026-05-24 00:04:49
+820,date_parse,medium,@I322625934875@,elizabeth (mrs.) Ć kirton,,,,15.0,Could not parse death date: unknown,open,2026-05-24 00:04:49
+905,date_parse,medium,@I322746014625@,James Gilbert Shawe,,,,16.0,Could not parse death date: 2 March 1549 - 2 Jun 1552,open,2026-05-24 00:04:49
+850,date_parse,medium,@I322668195245@,Jone Hall,,,,16.0,Could not parse death date: 05Apr1589,open,2026-05-24 00:04:49
+839,date_parse,medium,@I322625941677@,Lady Ann (Marshall\Lokyer\Fidler) Doane,,,,16.0,Could not parse birth date: 1495/1500,open,2026-05-24 00:04:49
+878,date_parse,medium,@I322728995935@,Mary Tilley 0\6,,,,16.0,Could not parse death date: 1585 or 1579,open,2026-05-24 00:04:49
+840,date_parse,medium,@I322625942338@,Matthieu Hicques,,,,16.0,Could not parse death date: DECEASED,open,2026-05-24 00:04:49
+836,date_parse,medium,@I322625939469@,Mstr ? Powrtney (Pountney),,,,16.0,Could not parse death date: ??,open,2026-05-24 00:04:49
+861,date_parse,medium,@I322680555878@,Sir Richard I De La Felde (Field),,,,16.0,Could not parse birth date: 5 Apr or May 1500,open,2026-05-24 00:04:49
+900,date_parse,medium,@I322745626197@,"Sir William III Yelverton, the Elder",,,,16.0,Could not parse birth date: 1480 or 1490 or 1500,open,2026-05-24 00:04:49
+848,date_parse,medium,@I322638420920@,Tobias Oakman,,,,16.0,Could not parse death date: 16 JUN,open,2026-05-24 00:04:49
+855,date_parse,medium,@I322668237492@,William Berdsley,,,,16.0,Could not parse death date: Deceased,open,2026-05-24 00:04:49
+851,date_parse,medium,@I322668195254@,Wyllam Kente,,,,16.0,Could not parse death date: 01Feb1597,open,2026-05-24 00:04:49
+856,date_parse,medium,@I322668239230@,Catherine VOCKE,,,,17.0,Could not parse birth date: 1508/21,open,2026-05-24 00:04:49
+879,date_parse,medium,@I322728995958@,Elizabeth Lady Morton Moreton (Rosier) (Walden) (de la Warre West) *+13gm,,,,17.0,Could not parse death date: 1554 or Aft. 17 Nov 1567 or 1570 or May 1592,open,2026-05-24 00:04:49
+852,date_parse,medium,@I322668195265@,Johanne Halle,,,,17.0,Could not parse death date: 02Apr1551,open,2026-05-24 00:04:49
+898,date_parse,medium,@I322745523329@,Lady Alice (Anne) Horde\Hoorde,,,,17.0,Could not parse birth date: 1470/1483,open,2026-05-24 00:04:49
