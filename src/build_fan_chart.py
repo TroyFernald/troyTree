@@ -144,7 +144,6 @@ _TEMPLATE = r"""<!doctype html>
   </div>
 </div>
 <div id="tip"></div>
-<div id="pop"></div>
 <svg id="fan"><g id="vp"></g></svg>
 <script>
 const SLOTS = __DATA__;
@@ -248,7 +247,7 @@ function zoomAround(cx, cy, f){
 }
 
 const pts = new Map(); let lastDist=0, lastMid=null, downPt=null, moved=false;
-svg.addEventListener('pointerdown', e => { svg.setPointerCapture(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); downPt={x:e.clientX,y:e.clientY}; moved=false; pop.classList.remove('open'); });
+svg.addEventListener('pointerdown', e => { svg.setPointerCapture(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); downPt={x:e.clientX,y:e.clientY}; moved=false; });
 svg.addEventListener('pointermove', e => {
   if (!pts.has(e.pointerId)) return;
   const prev = pts.get(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -270,7 +269,7 @@ const tip = document.getElementById('tip');
 function show(i, x, y){
   const s = SLOTS[i]; if(!s) return;
   tip.innerHTML = `<b>${esc(s.name)}</b><span>${esc([s.born,s.died].filter(Boolean).join(' – ')) || 'gen '+s.gen}</span>`
-    + (s.id ? `<span style="color:#8fd3a0">click for their story →</span>` : '');
+    + (s.id ? `<span style="color:#8fd3a0">click to open their story →</span>` : '');
   tip.style.display='block';
   tip.style.left = Math.min(x+12, innerWidth-tip.offsetWidth-6)+'px';
   tip.style.top = Math.min(y+12, innerHeight-tip.offsetHeight-6)+'px';
@@ -286,22 +285,11 @@ svg.addEventListener('pointermove', e => {
          tip.style.top=Math.min(e.clientY+12, innerHeight-tip.offsetHeight-6)+'px'; }
 });
 svg.addEventListener('pointerleave', ()=> tip.style.display='none');
-const pop=document.getElementById('pop');
-function showPop(i, x, y){
-  const s=SLOTS[i]; if(!s) return;
-  pop.innerHTML=`<b>${esc(s.name)}</b><div class="d">${esc([s.born,s.died].filter(Boolean).join(' – ')) || ('Generation '+s.gen)}</div>`
-    + (s.id ? `<a href="story.html#${encodeURIComponent(s.id)}">📖 Open their story →</a>` : '');
-  pop.classList.add('open');
-  pop.style.left=Math.min(x+10, innerWidth-pop.offsetWidth-8)+'px';
-  pop.style.top=Math.min(y+10, innerHeight-pop.offsetHeight-8)+'px';
-}
 svg.addEventListener('click', e => {
-  const t=e.target.closest('.wedge');
-  if(!t || moved){ if(!t) pop.classList.remove('open'); return; }   // pan, or click on empty space
-  tip.style.display='none';
-  showPop(+t.dataset.i, e.clientX, e.clientY);
+  const t=e.target.closest('.wedge'); if(!t || moved) return;        // ignore pans / empty clicks
+  const s=SLOTS[+t.dataset.i];
+  if(s && s.id) location.href='story.html#'+encodeURIComponent(s.id);  // click the wedge -> their story
 });
-addEventListener('keydown', e => { if(e.key==='Escape') pop.classList.remove('open'); });
 document.getElementById('reset').addEventListener('click', fit);
 document.getElementById('all').addEventListener('click', fitAll);
 document.getElementById('zin').addEventListener('click', ()=> zoomAround(innerWidth/2, innerHeight/2, 1.5));
