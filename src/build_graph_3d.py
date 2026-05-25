@@ -116,6 +116,9 @@ _TEMPLATE = r"""<!doctype html>
   .ctl { flex:1; background:#1b2330; color:#cdd6e2; border:1px solid #2a3340; border-radius:6px; padding:6px 4px; font-size:12px; cursor:pointer; }
   .ctl.on { background:#2e6b4a; color:#fff; border-color:#3f8a61; }
   #flykeys { position:fixed; bottom:46px; right:12px; z-index:10; display:none; color:#9fb0c2; font-size:12px; text-align:right; line-height:1.6; }
+  #labels { position:fixed; inset:0; pointer-events:none; z-index:8; }
+  .nlab { position:absolute; transform:translate(-50%,-150%); color:#fff; font-size:12px; font-weight:600;
+    white-space:nowrap; text-shadow:0 1px 2px #000, 0 0 5px #000; }
   #legend { position:fixed; bottom:12px; left:12px; z-index:10; background:rgba(16,20,28,.82);
     border:1px solid #2a3340; border-radius:9px; padding:9px 12px; font-size:12px; color:#aab4c2; }
   #legend .bar { height:9px; width:180px; border-radius:5px; margin:5px 0 3px;
@@ -215,6 +218,34 @@ const ctrl = Graph.controls();
 const cam = Graph.camera();
 let flyOn = false; const keys = {};
 ctrl.addEventListener('start', () => spin = false);
+
+// proximity name labels: show the names of nodes you get close to (HTML overlay)
+const labelsEl = document.createElement('div'); labelsEl.id='labels'; document.body.appendChild(labelsEl);
+const labPool = []; const LAB_D2 = 330*330, LAB_MAX = 60;
+function updateLabels(){
+  const cp=cam.position, tg=ctrl.target;
+  let fx=tg.x-cp.x, fy=tg.y-cp.y, fz=tg.z-cp.z; const fl=Math.hypot(fx,fy,fz)||1; fx/=fl; fy/=fl; fz/=fl;
+  const near=[];
+  for (const n of CUR.nodes){
+    if (n.x==null) continue;
+    const vx=n.x-cp.x, vy=n.y-cp.y, vz=n.z-cp.z, dd=vx*vx+vy*vy+vz*vz;
+    if (dd>=LAB_D2) continue;
+    if (vx*fx+vy*fy+vz*fz<=0) continue;            // skip nodes behind the camera
+    near.push([dd,n]);
+  }
+  near.sort((a,b)=>a[0]-b[0]);
+  const show=near.slice(0,LAB_MAX);
+  while (labPool.length<show.length){ const d=document.createElement('div'); d.className='nlab'; labelsEl.appendChild(d); labPool.push(d); }
+  for (let i=0;i<labPool.length;i++){
+    const el=labPool[i];
+    if (i<show.length){
+      const n=show[i][1], sc=Graph.graph2ScreenCoords(n.x,n.y,n.z);
+      if (sc && sc.x>=-60 && sc.x<=innerWidth+60 && sc.y>=0 && sc.y<=innerHeight){
+        el.textContent=n.name; el.style.left=sc.x+'px'; el.style.top=sc.y+'px'; el.style.display='block';
+      } else el.style.display='none';
+    } else el.style.display='none';
+  }
+}
 function flyStep(){                                   // WASD spaceship movement
   if (!flyOn) return;
   const cp=cam.position, tg=ctrl.target;
@@ -234,6 +265,7 @@ let angle = 0;
   if (spin) { angle += 0.0015; const d = 1400;
     Graph.cameraPosition({ x: d*Math.sin(angle), z: d*Math.cos(angle) }); }
   flyStep();
+  updateLabels();
   requestAnimationFrame(rotate);
 })();
 
