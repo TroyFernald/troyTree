@@ -136,7 +136,7 @@ def _collect(con, redact_living: bool, media_base: str, ni_map: dict) -> list[di
     ):
         papers[r["person_id"]].append({
             "title": r["source_title"] or "Newspaper", "url": r["source_url"] or "",
-            "when": r["notes"] or "", "text": (r["snippet"] or r["claimed_facts"] or "")[:280],
+            "when": r["notes"] or "", "text": (r["snippet"] or r["claimed_facts"] or "")[:1600],
         })
 
     military = defaultdict(list)
