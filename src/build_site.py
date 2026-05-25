@@ -74,6 +74,12 @@ def build_site(media_base: str = "", redact_living: bool = True, out_dir=DEFAULT
     )
     (out_dir / ".gitignore").write_text(_GITIGNORE, encoding="utf-8")
     (out_dir / "README.md").write_text(_README, encoding="utf-8")
+    # Cloudflare Pages: always revalidate HTML so visitors get the latest build (304 if
+    # unchanged), while the big vendored JS lib can cache for a year by its stable name.
+    (out_dir / "_headers").write_text(
+        "/*\n  Cache-Control: no-cache\n/lib/*\n  Cache-Control: public, max-age=31536000, immutable\n",
+        encoding="utf-8",
+    )
 
     # Password gate (Cloudflare Pages advanced-mode worker). Written only when a
     # password is configured; keeps the whole site behind a shared family password.

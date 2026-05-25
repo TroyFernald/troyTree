@@ -155,8 +155,9 @@ _TEMPLATE = r"""<!doctype html>
   <div class="meta">__NODES__ people · __LINKS__ links · click anyone to fly to them</div>
   <div id="sides"></div>
   <div style="display:flex;gap:5px;margin-top:8px">
-    <button id="flyBtn" class="ctl">🚀 Fly mode</button>
-    <button id="tourBtn" class="ctl">▶ Auto-tour</button>
+    <button id="flyBtn" class="ctl">🚀 Fly</button>
+    <button id="tourBtn" class="ctl">▶ Tour</button>
+    <button id="nameBtn" class="ctl on">🏷 Names</button>
   </div>
   <input id="q" type="search" placeholder="Find a person…" autocomplete="off" style="margin-top:8px">
   <div id="results"></div>
@@ -177,6 +178,8 @@ _TEMPLATE = r"""<!doctype html>
     <li><b>Right-drag</b> (or two-finger drag) to slide sideways</li>
     <li><b>Click any person</b> to fly the camera to them and light up their connections</li>
     <li><b>Search</b> a name (top-left) to jump straight to anyone</li>
+    <li><b>🚀 Fly</b> = steer with <b>W A S D</b> (Q/E up·down, Shift to boost); <b>▶ Tour</b> flies you through the biggest family hubs on its own</li>
+    <li><b>🏷 Names</b> shows the nearest people's names automatically — no need to hover</li>
     <li>Click empty space to fly back out</li>
   </ul>
   <button onclick="document.getElementById('help').style.display='none'" ontouchend="document.getElementById('help').style.display='none'">Start exploring →</button>
@@ -213,63 +216,59 @@ const Graph = ForceGraph3D()(elem)
   .onNodeClick(focusNode)
   .onBackgroundClick(() => { hl.clear(); Graph.linkColor(Graph.linkColor()).linkWidth(Graph.linkWidth()); info.style.display='none'; });
 
-// gentle ambient rotation until the user interacts
+// camera + interaction state
 let spin = true;
 const ctrl = Graph.controls();
 const cam = Graph.camera();
 let flyOn = false; const keys = {};
-ctrl.addEventListener('start', () => spin = false);
+ctrl.addEventListener('start', () => { spin = false; });
 
-// proximity name labels: show the names of nodes you get close to (HTML overlay)
+// name labels overlay — the names of the nearest people, shown automatically (no hover needed)
 const labelsEl = document.createElement('div'); labelsEl.id='labels'; document.body.appendChild(labelsEl);
-const labPool = []; const LAB_D2 = 330*330, LAB_MAX = 60;
+const labPool = []; const LAB_MAX = 36;
+let labelsOn = true;
+const tmpV = cam.position.clone();                       // reused Vector3 for projecting nodes onto the screen
+function hideLabels(){ for (const el of labPool) el.style.display='none'; }
 function updateLabels(){
-  if (typeof Graph.graph2ScreenCoords !== 'function') return;   // older lib: skip proximity labels gracefully
-  const cp=cam.position, tg=ctrl.target;
-  let fx=tg.x-cp.x, fy=tg.y-cp.y, fz=tg.z-cp.z; const fl=Math.hypot(fx,fy,fz)||1; fx/=fl; fy/=fl; fz/=fl;
+  if (!labelsOn){ hideLabels(); return; }
+  const cp = cam.position;
   const near=[];
   for (const n of CUR.nodes){
     if (n.x==null) continue;
-    const vx=n.x-cp.x, vy=n.y-cp.y, vz=n.z-cp.z, dd=vx*vx+vy*vy+vz*vz;
-    if (dd>=LAB_D2) continue;
-    if (vx*fx+vy*fy+vz*fz<=0) continue;            // skip nodes behind the camera
-    near.push([dd,n]);
+    const vx=n.x-cp.x, vy=n.y-cp.y, vz=n.z-cp.z;
+    near.push([vx*vx+vy*vy+vz*vz, n]);                   // rank by distance to the camera
   }
   near.sort((a,b)=>a[0]-b[0]);
-  const show=near.slice(0,LAB_MAX);
+  const show = near.slice(0, LAB_MAX);                   // the nearest people always get a name tag
   while (labPool.length<show.length){ const d=document.createElement('div'); d.className='nlab'; labelsEl.appendChild(d); labPool.push(d); }
   for (let i=0;i<labPool.length;i++){
     const el=labPool[i];
     if (i<show.length){
-      const n=show[i][1], sc=Graph.graph2ScreenCoords(n.x,n.y,n.z);
-      if (sc && sc.x>=-60 && sc.x<=innerWidth+60 && sc.y>=0 && sc.y<=innerHeight){
-        el.textContent=n.name; el.style.left=sc.x+'px'; el.style.top=sc.y+'px'; el.style.display='block';
+      const n=show[i][1];
+      tmpV.set(n.x,n.y,n.z); tmpV.project(cam);           // THREE projection → normalized device coords (no library dependency)
+      if (tmpV.z<=1 && tmpV.x>=-1.05 && tmpV.x<=1.05 && tmpV.y>=-1.05 && tmpV.y<=1.05){
+        el.textContent=n.name;
+        el.style.left=((tmpV.x*0.5+0.5)*innerWidth)+'px';
+        el.style.top=((-tmpV.y*0.5+0.5)*innerHeight)+'px';
+        el.style.display='block';
       } else el.style.display='none';
     } else el.style.display='none';
   }
 }
-function flyStep(){                                   // WASD spaceship movement
+function flyStep(){                                      // WASD: glide through the cloud (camera + look-target move together)
   if (!flyOn) return;
   const cp=cam.position, tg=ctrl.target;
   let fx=tg.x-cp.x, fy=tg.y-cp.y, fz=tg.z-cp.z; const fl=Math.hypot(fx,fy,fz)||1; fx/=fl; fy/=fl; fz/=fl;
-  const rx=-fz, rz=fx;                                // right = forward × up(0,1,0), in the xz-plane
-  const s = 18*(keys.ShiftLeft||keys.ShiftRight?3:1); let dx=0,dy=0,dz=0;
+  let rx=-fz, rz=fx; const rl=Math.hypot(rx,rz)||1; rx/=rl; rz/=rl;   // right = forward × up(0,1,0), in the xz-plane
+  const s = 24*((keys.ShiftLeft||keys.ShiftRight)?3:1); let dx=0,dy=0,dz=0;
   if (keys.KeyW){ dx+=fx*s; dy+=fy*s; dz+=fz*s; }
   if (keys.KeyS){ dx-=fx*s; dy-=fy*s; dz-=fz*s; }
   if (keys.KeyD){ dx+=rx*s; dz+=rz*s; }
   if (keys.KeyA){ dx-=rx*s; dz-=rz*s; }
   if (keys.KeyE||keys.Space){ dy+=s; }
   if (keys.KeyQ){ dy-=s; }
-  if (dx||dy||dz){ cp.x+=dx; cp.y+=dy; cp.z+=dz; tg.x+=dx; tg.y+=dy; tg.z+=dz; }  // move camera + look-target together
+  if (dx||dy||dz){ cp.x+=dx; cp.y+=dy; cp.z+=dz; tg.x+=dx; tg.y+=dy; tg.z+=dz; if (ctrl.update) ctrl.update(); }
 }
-let angle = 0;
-(function rotate(){
-  if (spin) { angle += 0.0015; const d = 1400;
-    Graph.cameraPosition({ x: d*Math.sin(angle), z: d*Math.cos(angle) }); }
-  flyStep();
-  updateLabels();
-  requestAnimationFrame(rotate);
-})();
 
 function focusNode(node) {
   spin = false;
@@ -345,26 +344,44 @@ function closeHelp(e){ if(e){ e.preventDefault(); e.stopPropagation(); } helpEl.
 helpEl.addEventListener('click', closeHelp);
 helpEl.addEventListener('touchend', closeHelp, {passive:false});
 
-// keyboard fly mode (WASD spaceship)
+// --- controls: fly, tour, names. Wire everything BEFORE starting the render loop. ---
+const flyBtn = document.getElementById('flyBtn');
+const tourBtn = document.getElementById('tourBtn');
+const nameBtn = document.getElementById('nameBtn');
+
+// keyboard fly mode (WASD)
 const FLYKEYS = ['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','Space','ShiftLeft','ShiftRight'];
 addEventListener('keydown', e => { if (flyOn && FLYKEYS.includes(e.code)){ keys[e.code]=true; e.preventDefault(); } });
 addEventListener('keyup', e => { keys[e.code]=false; });
-const flyBtn = document.getElementById('flyBtn');
-flyBtn.addEventListener('click', () => { flyOn=!flyOn; spin=false; stopTour();
-  flyBtn.classList.toggle('on', flyOn);
-  document.getElementById('flykeys').style.display = flyOn ? 'block' : 'none'; });
+function setFly(on){ flyOn=on; spin=false; if(on) stopTour();
+  flyBtn.classList.toggle('on', on); document.getElementById('flykeys').style.display = on ? 'block' : 'none'; }
+flyBtn.addEventListener('click', () => setFly(!flyOn));
 
 // auto-tour: fly from one key ancestor to the next on its own
-let tourT=null, tour=[], ti=0; const tourBtn=document.getElementById('tourBtn');
-function stopTour(){ if(tourT){ clearTimeout(tourT); tourT=null; } tourBtn.classList.remove('on'); tourBtn.textContent='▶ Auto-tour'; }
+let tourT=null, tour=[], ti=0;
+function stopTour(){ if(tourT){ clearTimeout(tourT); tourT=null; } tourBtn.classList.remove('on'); tourBtn.textContent='▶ Tour'; }
 function tourStep(){ if(ti>=tour.length){ stopTour(); return; } focusNode(tour[ti++]); tourT=setTimeout(tourStep, 4800); }
 tourBtn.addEventListener('click', () => {
   if (tourT){ stopTour(); return; }
-  spin=false; flyOn=false; flyBtn.classList.remove('on'); document.getElementById('flykeys').style.display='none';
+  setFly(false); spin=false;
   tour=[...CUR.nodes].sort((a,b)=>(b.val||0)-(a.val||0)).slice(0,15); ti=0;   // the most-connected family hubs
-  tourBtn.classList.add('on'); tourBtn.textContent='⏹ Stop tour'; tourStep();
+  tourBtn.classList.add('on'); tourBtn.textContent='⏹ Stop'; tourStep();
 });
 elem.addEventListener('pointerdown', () => { if(tourT) stopTour(); });   // grabbing the view ends the tour
+
+// names toggle (on by default)
+nameBtn.addEventListener('click', () => { labelsOn=!labelsOn; nameBtn.classList.toggle('on', labelsOn); if(!labelsOn) hideLabels(); });
+
+// --- render loop: started last, after every control is wired; one bad frame can't kill it ---
+let angle = 0;
+(function rotate(){
+  try {
+    if (spin && !flyOn){ angle += 0.0015; const d = 1400; Graph.cameraPosition({ x: d*Math.sin(angle), z: d*Math.cos(angle) }); }
+    flyStep();
+    updateLabels();
+  } catch (err) { /* never let a single frame stop the loop */ }
+  requestAnimationFrame(rotate);
+})();
 </script>
 </body>
 </html>

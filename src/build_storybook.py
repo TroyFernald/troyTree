@@ -125,7 +125,11 @@ def _collect(con, redact_living: bool, media_base: str, ni_map: dict) -> list[di
     for r in con.execute(
         "SELECT l.person_id, m.file_name, m.file_path, m.caption FROM media_person_link l "
         "JOIN media_object m ON m.media_id=l.media_id "
-        "WHERE m.kind='photo' AND l.link_type!='review_false_match' ORDER BY m.media_id"
+        "WHERE m.kind='photo' AND l.link_type!='review_false_match' "
+        # Primary/uploaded family photos lead; real portraits beat newspaper-clipping
+        # images; then by media_id. So an uploaded photo (link_type='primary') becomes
+        # the lead story photo automatically.
+        "ORDER BY (l.link_type='primary') DESC, (l.link_type='newspaper'), m.media_id"
     ):
         photos[r["person_id"]].append({"src": href(r["file_name"], r["file_path"]), "cap": r["caption"] or ""})
 
@@ -343,6 +347,8 @@ function html(p){
   if(p.dd){ const dd=p.dd;
     if(dd.tag==='legend') h+=`<div class="crest">🏰 ⚜ <b>Family legend</b> ⚜ 🏰<span>A claimed royal/noble ancestor — unproven through the colonial bridge. A wonderful story to chase, not established fact.</span></div>`;
     else h+=`<div class="dd-badge">📜 Featured life story</div>`;
+    // A real family photo, if we have one, leads the story — ahead of the historical illustrations.
+    if(p.photos&&p.photos.length) h+=`<img class="lead" src="${esc(p.photos[0].src)}" alt="" onerror="this.style.display='none'">`;
     if(dd.images&&dd.images.length) h+=`<div class="portraits">`+dd.images.map(im=>
       `<figure><img src="${esc(im.url)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>${esc(im.caption||'')}${im.credit?`<span class="cr">${esc(im.credit)}</span>`:''}</figcaption></figure>`).join('')+`</div>`;
     h+=`<div class="dd-narr">`+(dd.narrative||[]).map(par=>`<p>${esc(par)}</p>`).join('')+`</div>`;

@@ -1,0 +1,112 @@
+[
+  {
+    "pdf": "The_Bangor_Daily_News_1927_11_09_6.pdf",
+    "paper": "Bangor Daily News",
+    "date": "1927-11-09",
+    "page": 6,
+    "surname": "Fernald",
+    "names_mentioned": ["Medwin Fernald", "Mellie Fernald", "Clyde Fernald"],
+    "place": "Troy, Waldo, Maine",
+    "type": "social note",
+    "matched_id": "@I322454164374@",
+    "matched_name": "Medwin Joseph Fernald",
+    "confidence": "high",
+    "text": "Mr. and Mrs. Medwin Fernald and Mellie Fernald and Clyde Fernald motored to Skowhegan and were guests of relatives one day the past week."
+  },
+  {
+    "pdf": "The_Bangor_Daily_News_1928_12_01_16.pdf",
+    "no_match": true
+  },
+  {
+    "pdf": "The_Bangor_Daily_News_1924_09_25_7.pdf",
+    "no_match": true
+  },
+  {
+    "pdf": "Kennebec_Journal_1928_12_11_15.pdf",
+    "paper": "Kennebec Journal",
+    "date": "1928-12-11",
+    "page": 15,
+    "surname": "Fernald",
+    "names_mentioned": ["Fred A. Fernald", "Alva Spaulding", "Ralph Fernald", "Medwin Fernald", "Josiah Fernald"],
+    "place": "Troy / Canaan / Augusta / Pittsfield, Maine",
+    "type": "social note",
+    "matched_id": "@I322454164374@",
+    "matched_name": "Medwin Joseph Fernald",
+    "confidence": "high",
+    "text": "Out of town relatives who attended the funeral of Josiah Fernald and were not mentioned in last week's paper were Fred A. Fernald of Augusta, Mr. and Mrs. Alva Spaulding and Mr. and Mrs. Ralph Fernald of Pittsfield and Mr. and Mrs. Medwin Fernald of Troy and brought beautiful flowers."
+  },
+  {
+    "pdf": "Kennebec_Journal_1928_12_11_15.pdf",
+    "paper": "Kennebec Journal",
+    "date": "1928-12-11",
+    "page": 15,
+    "surname": "Fernald",
+    "names_mentioned": ["Julia Fernald", "Eva Reynolds", "Arthur Fernald", "Harry Fernald", "Josiah Fernald"],
+    "place": "Canaan, Somerset, Maine",
+    "type": "social note",
+    "matched_id": "",
+    "matched_name": "",
+    "confidence": "low",
+    "text": "Eva Reynolds of Winslow is staying with Mrs. Julia Fernald for the winter. ... Mr. and Mrs. Arthur Fernald of Lowell, Mass., and Harry Fernald of Ayer, Mass., who were called here by the death of their father, Josiah Fernald, returned to their homes Thursday."
+  },
+  {
+    "pdf": "Kennebec_Journal_1928_12_11_15.pdf",
+    "paper": "Kennebec Journal",
+    "date": "1928-12-11",
+    "page": 15,
+    "surname": "Clements",
+    "names_mentioned": ["Annie M. Clements", "James J. Clements", "Pelson Clements"],
+    "place": "Montville / Belfast, Waldo, Maine",
+    "type": "obituary",
+    "matched_id": "",
+    "matched_name": "",
+    "confidence": "low",
+    "text": "Mrs. Annie M. Clements -- Annie M. Clements, wife of James J. Clements, former member of the governor's staff, died at their home on Church street Sunday after an illness of about three years. Mrs. Clements was born in Newburyport, Mass., 65 years ago, the daughter of Albert and Hannah (Cushman) Currier. For many years they made their home in Montville, coming to Belfast about three years ago. One son, Pelson Clements, of Belfast survives. Funeral services will be held Wednesday at 10 A. M., Rev. W. F. Skerrye officiating and interment will be in Montville."
+  },
+  {
+    "pdf": "Kennebec_Journal_1921_06_15_8.pdf",
+    "paper": "Kennebec Journal",
+    "date": "1921-06-15",
+    "page": 8,
+    "surname": "Lenentine",
+    "names_mentioned": ["Guy Lenentine", "Mrs. Guy Lenentine"],
+    "place": "Troy, Waldo, Maine (visiting from Monticello)",
+    "type": "social note",
+    "matched_id": "@I322454165994@",
+    "matched_name": "Guy L. Lenentine",
+    "confidence": "high",
+    "text": "Mr. and Mrs. Guy Lenentine and two little daughters of Monticello are visiting relatives in town."
+  },
+  {
+    "pdf": "Kennebec_Journal_1921_06_15_8.pdf",
+    "paper": "Kennebec Journal",
+    "date": "1921-06-15",
+    "page": 8,
+    "surname": "Bagley",
+    "names_mentioned": ["Lawrence Bagley", "Kenton Bagley", "Lester Bagley"],
+    "place": "Troy, Waldo, Maine",
+    "type": "social note",
+    "matched_id": "",
+    "matched_name": "",
+    "confidence": "medium",
+    "text": "Lawrence Bagley has so recovered from his automobile accident as to return to his school last Friday. ... Kenton Bagley went to Pittsfield Saturday for the alumni prize speaking and baccalaureate sermon. ... Lester Bagley of Lewiston passed the week-end with relatives here."
+  },
+  {
+    "pdf": "Kennebec_Journal_1921_06_15_8.pdf",
+    "paper": "Kennebec Journal",
+    "date": "1921-06-15",
+    "page": 8,
+    "surname": "Danforth",
+    "names_mentioned": ["Mrs. N. E. Danforth"],
+    "place": "Troy, Waldo, Maine",
+    "type": "social note",
+    "matched_id": "@I322454171840@",
+    "matched_name": "Nora E Danforth",
+    "confidence": "medium",
+    "text": "Mrs. N. E. Danforth has been spending a week at Windemere."
+  },
+  {
+    "pdf": "The_Bangor_Daily_News_1930_11_22_16.pdf",
+    "no_match": true
+  }
+]

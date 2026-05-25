@@ -1,0 +1,76 @@
+[
+  {
+    "pdf": "The_Herald_News_1901_09_13_5.pdf",
+    "no_match": true
+  },
+  {
+    "pdf": "The_Republican_Journal_1882_04_20_3.pdf",
+    "paper": "Republican Journal",
+    "date": "1882-04-20",
+    "page": 3,
+    "surname": "Fernald",
+    "names_mentioned": ["Joseph F. Fernald"],
+    "place": "Troy, Waldo Co., Maine",
+    "type": "court/jury list",
+    "matched_id": "@I322454166450@",
+    "matched_name": "Joseph F Fernald",
+    "confidence": "high",
+    "text": "SUPREME JUDICIAL COURT. The April term of the S. J. Court for Waldo county began to-day (Tuesday). Justice Virgin on the bench. Court was opened by prayer by Rev. Wooster Parker, of Belfast. Woodbury Fuller is the Court reporter. The juries are as follows: FIRST JURY. F. A. Dickey, Northport, foreman; David Alexander, Belfast; Shepard Blanchard, Stockton; D. W. Bennett, Montville; J. H. Brown, Knox; Henry B. Coombs, Islesboro; Elisha W. Ellis, Searsmont; Joseph F. Fernald, Troy; Eli W. Gilbert, Belfast; Augustus G. Goodling, Brooks; Benjamin H. Grant, Winterport; Orrin B. Gray, Prospect. SECOND JURY. Harrington Osgood, Palermo, foreman; Warren Gerrish, Burnham; W. J. Heal, Belmont; Samuel Kingsbury, Waldo; Fred Knowlton, Liberty; Israel Massey, Unity; James W. Nash, Belfast; W. H. Sweet, Searsport; William S. Shaw, Winterport; [William Sibley, Freedom;] James Severance, Searsmont; J. Fred Tobey, Searsport. SUPERNUMERARY. Nathan T. Woodman, Monroe."
+  },
+  {
+    "pdf": "The_Republican_Journal_1888_05_17_2.pdf",
+    "paper": "Republican Journal",
+    "date": "1888-05-17",
+    "page": 2,
+    "surname": "Fernald",
+    "names_mentioned": ["Hannah P. Crowell", "Joseph F. Fernald"],
+    "place": "Troy, Waldo Co., Maine",
+    "type": "real estate transfer notice",
+    "matched_id": "@I322454166450@",
+    "matched_name": "Joseph F Fernald",
+    "confidence": "high",
+    "text": "The following are the transfers in real estate, in Waldo County, for the week ending May 13th -- Josiah Bigelow, Burnham, to Susan Bigelow, same town. A. D. Bumps, Thorndike, to Edwin Conforth, same town. Daniel S. Bray, Frankfort, to Anna L. Crockett, same town. Enson Benson, Frankfort, to Simeon J. Crockett, same town. Hannah P. Crowell, Troy, to Joseph F. Fernald, Troy. Mary A. Dodge, Islesboro, to Horace F. Hanson, [same town]. Wallace M. Ellis & ux., Swanville, to [F.] Scribner, Searsport. Ellis C. Freeman, [...ville], to W. E. Lewis, Boston. David P. [...], Belfast, to H. H. Carter, Jr., same town. [...], Burnham, to A. W. Fletcher, [same town]."
+  },
+  {
+    "pdf": "The_Republican_Journal_1900_11_08_8.pdf",
+    "paper": "Republican Journal",
+    "date": "1900-11-08",
+    "page": 8,
+    "surname": "Files",
+    "names_mentioned": ["Mr. and Mrs. S. F. Files"],
+    "place": "Thorndike / Bangor, Maine",
+    "type": "local correspondent social note (Thorndike column)",
+    "matched_id": "@I322454167419@",
+    "matched_name": "Martha Files",
+    "confidence": "low",
+    "text": "THORNDIKE. ... Mr. and Mrs. S. F. Files and infant daughter, who have been visiting at V. N. [Hig]gins, returned to their home in Bangor, Nov. 3d."
+  },
+  {
+    "pdf": "Morning_Sentinel_1905_10_14_3.pdf",
+    "paper": "Morning Sentinel",
+    "date": "1905-10-14",
+    "page": 3,
+    "surname": "Fernald",
+    "names_mentioned": ["Joseph F. Fernald", "Medwin J. Fernald"],
+    "place": "Troy (South Troy), Waldo Co., Maine",
+    "type": "real estate transfer notice (Waldo Land Deals)",
+    "matched_id": "@I322454166450@",
+    "matched_name": "Joseph F Fernald",
+    "confidence": "high",
+    "text": "WALDO LAND DEALS. Real Estate Transfers Recorded in the Registry of Deeds. ... Mark B. Elwell, Boston, to Alban F. Elwell, Northport; land in Northport. Joseph F. Fernald, Troy, to Medwin J. Fernald, Troy; land and buildings in South Troy. George W. Fish, Palermo, to Augustus M. Benner, Portland; land and buildings in Palermo."
+  },
+  {
+    "pdf": "The_Republican_Journal_1904_05_05_8.pdf",
+    "paper": "Republican Journal",
+    "date": "1904-05-05",
+    "page": 8,
+    "surname": "Meservey",
+    "names_mentioned": ["Morrill Meservey"],
+    "place": "Centre Montville / Searsmont / Camden, Waldo Co., Maine",
+    "type": "local correspondent social note (Centre Montville column)",
+    "matched_id": "@I322454164375@",
+    "matched_name": "Eldora \"Dora\" Meservie",
+    "confidence": "low",
+    "text": "CENTRE MONTVILLE. ... Morrill Meservey returned last week from a visit to friends in [Searsmont a]nd Camden."
+  }
+]

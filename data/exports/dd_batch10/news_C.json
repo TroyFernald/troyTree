@@ -1,0 +1,46 @@
+[
+  {
+    "pdf": "The_Bangor_Daily_News_1929_10_23_8.pdf",
+    "no_match": true
+  },
+  {
+    "pdf": "Commercial_1918_01_30_5.pdf",
+    "no_match": true
+  },
+  {
+    "pdf": "The_Bangor_Daily_News_1930_12_29_14.pdf",
+    "no_match": true
+  },
+  {
+    "pdf": "The_Bangor_Daily_News_1939_01_19_41.pdf",
+    "paper": "Bangor Daily News",
+    "date": "1939-01-19",
+    "page": 41,
+    "surname": "Bagley",
+    "names_mentioned": ["Fredrick Bagley", "Mr. Hunter"],
+    "place": "Troy, Waldo, Maine",
+    "type": "local correspondent note",
+    "matched_id": "@I322454165794@",
+    "matched_name": "Fredrick Herbert Bagley",
+    "confidence": "medium",
+    "text": "TROY\nThe annual installation of officers of Seven Star Grange was held Saturday night with the master, Fredrick Bagley presiding. The installing officer was Mr. Hunter of Thorndike. Following the program a bean supper was served to about [number cut off] people."
+  },
+  {
+    "pdf": "Portland_Press_Herald_1942_06_07_18.pdf",
+    "paper": "Portland Press Herald",
+    "date": "1942-06-07",
+    "page": 18,
+    "surname": "Bagley",
+    "names_mentioned": ["Grace Christine Lenentine", "Frederic J. Bagley", "Mr. and Mrs. Fred H. Bagley", "Mr. and Mrs. Guy Lenentine", "Pauline Carmichael", "Halston O. Lenentine", "Rev. Henry Beukleman"],
+    "place": "South Portland and Troy, Maine",
+    "type": "engagement / wedding notice",
+    "matched_id": "@I322454165151@",
+    "matched_name": "Frederic J Bagley",
+    "confidence": "high",
+    "text": "Bagley-Lenentine Wedding June 20\n[Mr. and Mrs. Guy Lenentine of South Portland announce] the engagement of their daughter, Miss Grace Christine Lenentine, to Frederic J. Bagley, son of Mr. and Mrs. Fred H. Bagley of Troy. The wedding will take place June 20 at the home of the bride's parents. Miss Pauline Carmichael of South Portland, a cousin of the bride, and Halston O. Lenentine of South Portland, a brother of the bride, will attend the bride and bridegroom. The Rev. Henry Beukleman of Camden will officiate at the ceremony. Miss Lenentine is a graduate of Ricker Classical Institute of Houlton, and attended the Maine School of Commerce. She has been employed as stenographer at Bangor. Mr. Bagley is a graduate of Unity High School and is engaged in farming.\n[Photo caption:] Miss Grace Christine Lenentine\n[Daughter of Mr. and] Mrs. Guy Lenentine of Stillwater [and] South Portland, [whose engagement to Frederic J. Bagley of Troy is] announce[d]."
+  },
+  {
+    "pdf": "Morning_Sentinel_1949_05_21_7.pdf",
+    "no_match": true
+  }
+]

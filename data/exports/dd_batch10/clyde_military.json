@@ -1,0 +1,30 @@
+{
+  "found": true,
+  "summary": "A free National Archives source records that Clyde M. Fernald of Waldo County, Maine (born 1907, a married farm hand with a grammar-school education) enlisted in the U.S. Army as a Private at Brewer, Maine, on 26 November 1943 (serial number 31352731). His Waldo County residence, birth year, occupation, and marital status all match Clyde Fernald of Troy, though the record's nativity field (mis)states New Hampshire. No further service details (unit, theater, discharge) are available from free sources because Maine's WWII draft cards and most individual Army service files were destroyed.",
+  "paragraphs": [
+    "Clyde Fernald served in the United States Army during World War II. According to the National Archives' Electronic Army Serial Number Merged File (the WWII Army Enlistment Records, 1938-1946), a Clyde M. Fernald of Waldo County, Maine — born in 1907, married, and working as a general farm hand — enlisted as a Private at Brewer, Maine, on 26 November 1943, receiving Army serial number 31352731. He entered as a selectee from civilian life for \"the duration of the War or other emergency, plus six months.\" The record's combination of birth year (1907), Waldo County residence (Troy lies in Waldo County), married status, grammar-school education, and farming occupation matches Clyde Fernald of Bagley Hill Road, Troy; the one discrepancy is the file's nativity field, which lists New Hampshire rather than Maine, a field commonly miscoded in this dataset.",
+    "Beyond this enlistment record, no further details of Clyde's service — his unit, rank advancement, overseas theater, or discharge — could be located in free sources. This is expected: Maine's WWII Selective Service (draft) registration cards were destroyed before they could be microfilmed or digitized, and roughly 80 percent of U.S. Army personnel service files for this era were lost in the 1973 National Personnel Records Center fire in St. Louis. As a man of 36 in late 1943, Clyde was drafted (a selectee) rather than a volunteer, consistent with an older married farmer being called up in the war's middle years."
+  ],
+  "sources": [
+    {
+      "title": "Clyde M. Fernald, WWII Army Enlistment Record (Waldo Co., enlisted 26 Nov 1943, ASN 31352731) — Maine Genealogy, indexing NARA Electronic Army Serial Number Merged File",
+      "url": "https://www.mainegenealogy.net/enlistment_record.asp?id=1324&lastname=fernald&firstname=clyde"
+    },
+    {
+      "title": "Maine World War II Enlistment Records search (source: NARA Electronic Army Serial Number Merged File, ca. 1938-1946)",
+      "url": "https://www.mainegenealogy.net/enlistment_search.asp"
+    },
+    {
+      "title": "NARA Access to Archival Databases — Electronic Army Serial Number Merged File, ca. 1938-1946 (Enlistment Records)",
+      "url": "https://aad.archives.gov/aad/fielded-search.jsp?dt=893&tf=F"
+    },
+    {
+      "title": "The World War II Army Enlistment Records File and Access to Archival Databases (NARA Prologue) — explains source and 1973 fire records loss",
+      "url": "https://www.archives.gov/publications/prologue/2006/spring/aad-ww2.html"
+    },
+    {
+      "title": "FamilySearch Wiki — US WWII Draft Registration Cards / Known Issues (Maine cards destroyed before microfilming)",
+      "url": "https://www.familysearch.org/en/wiki/United_States,_World_War_II_Draft_Registration_Cards_-_FamilySearch_Historical_Records/Known_Issues"
+    }
+  ]
+}

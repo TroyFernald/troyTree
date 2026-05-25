@@ -108,6 +108,50 @@ in plain English — it reads the real database (over 3,700 relatives) and answe
 the family tree (you'll see it call tools like <code>find_person</code> and
 <code>list_ancestors</code> as it works).</p>
 
+<h2>Connect with a standard OpenAI account (ChatGPT)</h2>
+<p>ChatGPT can talk to the family tree too, through its <b>custom connectors</b>. You'll
+need a <b>paid ChatGPT plan</b> (Plus, Pro, Business, or Enterprise) — custom connectors
+aren't available on the free tier.</p>
+<ol>
+  <li>In ChatGPT, open <b>Settings → Connectors</b> (also called "Apps &amp; connectors").</li>
+  <li>Open <b>Advanced settings</b> and turn on <b>Developer mode</b> (this is what lets you
+      add your own server).</li>
+  <li>Back on the Connectors page, click <b>Create</b> / <b>Add custom connector</b>.</li>
+  <li>Fill it in:
+    <ul>
+      <li><b>Name:</b> Troy Family Tree</li>
+      <li><b>MCP Server URL:</b> <code>__CONNECT__</code></li>
+      <li><b>Authentication:</b> choose <b>No authentication</b> — the family token is already
+          built into that URL.</li>
+    </ul>
+  </li>
+  <li>Create the connector and trust it. Then start a <b>new chat</b>, open the <b>+</b>
+      (tools / connectors) menu, switch on <b>Troy Family Tree</b>, and ask away.</li>
+</ol>
+<div class="note">
+If ChatGPT asks you to pick which tools to allow, allow them all — they're all read-only
+(<code>find_person</code>, <code>list_ancestors</code>, <code>search_records</code>, and so on).
+</div>
+
+<h2>Connect with the OpenAI API (for developers)</h2>
+<p>If you have an OpenAI API key, you can attach the family tree to any model with the
+Responses API — no extra setup:</p>
+<pre>from openai import OpenAI
+client = OpenAI()   # reads your OPENAI_API_KEY
+
+resp = client.responses.create(
+    model="gpt-5",
+    tools=[{
+        "type": "mcp",
+        "server_label": "troy_family_tree",
+        "server_url": "__URL__",
+        "headers": {"Authorization": "Bearer __TOKEN__"},
+        "require_approval": "never",
+    }],
+    input="How am I related to John Howland of the Mayflower?",
+)
+print(resp.output_text)</pre>
+
 <div class="note">
 Any MCP-capable AI client works — point it at the server address above with the token.
 The connection is read-only and protected by the token, so only people you share it with
