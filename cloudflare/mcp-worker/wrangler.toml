@@ -1,0 +1,13 @@
+name = "troytree-mcp"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# D1 database holding the redacted tree (created in the deploy steps below).
+# Paste the database_id that `wrangler d1 create troytree` prints.
+[[d1_databases]]
+binding = "DB"
+database_name = "troytree"
+database_id = "PASTE_DATABASE_ID_HERE"
+
+# FAMILY_TOKEN is NOT stored here — set it as a secret:
+#   wrangler secret put FAMILY_TOKEN

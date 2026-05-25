@@ -22,15 +22,16 @@ import shutil
 import sys
 
 from . import (build_castles, build_fan_chart, build_gallery, build_graph_3d,
-               build_guide, build_html_viewer, build_map, build_notable,
-               build_review, build_storybook)
+               build_guide, build_html_viewer, build_map, build_mcp_page,
+               build_notable, build_review, build_storybook)
 from .ancestral_sides import compute_sides
 from .init_database import connect
 from .paths import EXPORTS_DIR, PROJECT_ROOT, WORKING_DB
 
 DEFAULT_SITE_DIR = PROJECT_ROOT.parent / "troy-family-site"
 VIEW_FILES = ["family.html", "graph_3d.html", "fan.html", "story.html", "map.html",
-              "notable.html", "castles.html", "gallery.html", "review.html", "guide.html"]
+              "notable.html", "castles.html", "gallery.html", "review.html", "guide.html",
+              "connect.html"]
 
 
 def _site_password() -> str:
@@ -55,6 +56,7 @@ def build_site(media_base: str = "", redact_living: bool = True, out_dir=DEFAULT
     build_gallery.build(media_base=media_base)
     build_review.build()
     build_guide.build()
+    build_mcp_page.build()
 
     with connect(WORKING_DB) as con:
         _, side_labels, side_keys = compute_sides(con)
@@ -139,6 +141,7 @@ _LANDING = r"""<!doctype html>
   <a class="card" data-view="story.html"><div class="ico">📖</div><h2>Storybook</h2><p>Each life as a narrative you can page through.</p></a>
   <a class="card" data-view="guide.html"><div class="ico">🧭</div><h2>Research Guide</h2><p>Where to look next — the best archives and records for our lines.</p></a>
   <a class="card" data-view="review.html"><div class="ico">🛠️</div><h2>Review &amp; Corrections</h2><p>Open questions, possible duplicates, and dates to double-check.</p></a>
+  <a class="card" data-view="connect.html"><div class="ico">🤖</div><h2>Ask the AI</h2><p>Connect your own AI assistant and ask the family database questions.</p></a>
 </div>
 <p id="dlwrap"><a id="dl" class="dlbtn" download>⬇ Download the whole archive (offline backup)</a></p>
 <footer>troytree.org · private family archive</footer>
