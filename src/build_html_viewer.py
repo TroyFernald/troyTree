@@ -296,7 +296,7 @@ function filtered() {
     (!q || p.name.toLowerCase().includes(q)) &&
     (g==="" || String(p.gen)===g) &&
     (!c || p.conf===c) &&
-    (!side || (p.side && p.side.includes(side))) &&
+    (!side || q || (p.side && p.side.includes(side))) &&
     (!direct || /direct/i.test(p.rel)) &&
     (!hasev || p.ev));
 }
