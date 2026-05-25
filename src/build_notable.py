@@ -17,7 +17,7 @@ import json
 from collections import defaultdict
 
 from .ancestral_sides import compute_sides
-from .build_storybook import noble_images
+from .build_storybook import deep_dives, noble_images
 from .init_database import connect
 from .paths import EXPORTS_DIR, WORKING_DB
 
@@ -37,6 +37,7 @@ PRIORITY = {k: i for i, (k, _, _) in enumerate(SECTIONS)}
 def _collect(con) -> list[dict]:
     sides, _, _ = compute_sides(con)
     ni_map = noble_images()
+    dd_map = deep_dives()
     people: dict[str, dict] = {}
     for r in con.execute(
         "SELECT person_id, person_name, generation, birth_date, death_date, birth_place, "
@@ -44,11 +45,13 @@ def _collect(con) -> list[dict]:
     ):
         pid = r["person_id"]
         e = people.setdefault(pid, {
-            "name": r["person_name"] or "(unknown)", "gen": r["generation"],
+            "pid": pid, "name": r["person_name"] or "(unknown)", "gen": r["generation"],
             "born": r["birth_date"] or "", "died": r["death_date"] or "",
             "place": r["birth_place"] or r["death_place"] or "",
             "cats": set(), "reasons": set(), "side": sides.get(pid, []),
             "ni": ni_map.get(pid),
+            "dd": pid in dd_map,
+            "ddimg": (dd_map.get(pid, {}).get("images") or [{}])[0].get("url"),
         })
         if r["category"]:
             e["cats"].add(r["category"])
@@ -115,6 +118,9 @@ _TEMPLATE = r"""<!doctype html>
   .card .meta { color:#8a7866; font-size:12.5px; margin-bottom:6px; }
   .card .reason { font-size:13.5px; }
   .badge { display:inline-block; font-size:11px; padding:1px 7px; border-radius:10px; background:#efe6d8; color:#6b513a; margin-right:4px; }
+  a.story { display:inline-block; margin-top:8px; font-size:13px; color:#fff; background:var(--accent); text-decoration:none;
+    padding:5px 11px; border-radius:16px; }
+  a.story:hover { background:#624829; }
   footer { text-align:center; color:#a3937f; font-size:13px; padding-bottom:24px; }
   @media (max-width:600px){ header h1{font-size:26px} .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))} }
 </style>
@@ -136,12 +142,14 @@ let side=new URLSearchParams(location.search).get('side')||''; if(!SIDE_KEYS.inc
 function card(p){
   const dates=[p.born,p.died].filter(Boolean).join(' – ');
   const sideb=(p.side||[]).map(s=>`<span class="badge">${esc(SIDE_LABELS[s]||s)}</span>`).join('');
-  const img=p.ni?`<img src="${esc(p.ni.portrait)}" alt="" onerror="this.style.display='none'">`:'';
+  const src=p.ddimg||(p.ni?p.ni.portrait:'');
+  const img=src?`<img src="${esc(src)}" alt="" onerror="this.style.display='none'">`:'';
+  const story=p.dd?`<a class="story" href="story.html#${encodeURIComponent(p.pid)}">📜 Read the full story</a>`:'';
   return `<div class="card">${img}<div class="body"><h3>${esc(p.name)}</h3>`
     +`<div class="meta">${p.gen==null?'':'Gen '+p.gen} ${sideb}</div>`
     +(dates?`<div class="meta">${esc(dates)}</div>`:'')
     +(p.place?`<div class="meta">📍 ${esc(p.place)}</div>`:'')
-    +`<div class="reason">${esc(p.reasons.join('; '))}</div></div></div>`;
+    +`<div class="reason">${esc(p.reasons.join('; '))}</div>${story}</div></div>`;
 }
 function render(){
   const main=document.getElementById('main'); let h='';

@@ -101,6 +101,19 @@ def noble_images() -> dict:
     return imgs
 
 
+def deep_dives() -> dict:
+    """Curated long-form narratives + verified imagery for marquee ancestors,
+    keyed by person_id. Authored in ``data/exports/deep_dives.json``; rendered as
+    a featured story on that person's storybook page."""
+    f = EXPORTS_DIR / "deep_dives.json"
+    if f.exists():
+        try:
+            return json.loads(f.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+
 def _collect(con, redact_living: bool, media_base: str, ni_map: dict) -> list[dict]:
     def href(file_name, file_path):
         if media_base:
@@ -154,6 +167,7 @@ def _collect(con, redact_living: bool, media_base: str, ni_map: dict) -> list[di
     ):
         noble.setdefault(r["person_id"], r["notable_reason"] or "Claimed noble or royal descent")
 
+    dd_map = deep_dives()
     sides, _, _ = compute_sides(con)
     pages = []
     for p in con.execute(
@@ -165,7 +179,7 @@ def _collect(con, redact_living: bool, media_base: str, ni_map: dict) -> list[di
             continue
         living = redact_living and is_living(p["birth_date"], p["death_date"], p["generation"])
         if living:
-            pages.append({"name": LIVING_NAME, "gen": p["generation"], "side": sides.get(pid, []),
+            pages.append({"id": pid, "name": LIVING_NAME, "gen": p["generation"], "side": sides.get(pid, []),
                           "text": "Details withheld for a living family member.",
                           "photos": [], "papers": [], "records": [], "facts": []})
             continue
@@ -176,7 +190,7 @@ def _collect(con, redact_living: bool, media_base: str, ni_map: dict) -> list[di
             ("Spouse", p["spouse_names"]), ("Parents", p["parent_names"]),
         ] if v]
         pages.append({
-            "name": name, "gen": p["generation"], "side": sides.get(pid, []),
+            "id": pid, "name": name, "gen": p["generation"], "side": sides.get(pid, []),
             "rel": p["relationship_to_root"] or "",
             "text": _narrate(name, p["birth_date"] or "", p["birth_place"] or "",
                              p["death_date"] or "", p["death_place"] or "",
@@ -188,6 +202,7 @@ def _collect(con, redact_living: bool, media_base: str, ni_map: dict) -> list[di
             "records": records.get(pid, [])[:4],
             "noble": noble.get(pid, ""),
             "ni": ni_map.get(pid),
+            "dd": dd_map.get(pid),
         })
     pages.sort(key=lambda x: (x["gen"] is None, x["gen"] if x["gen"] is not None else 0, x["name"]))
     return pages
@@ -252,6 +267,13 @@ _TEMPLATE = r"""<!doctype html>
   .portraits img { width:100%; max-height:300px; object-fit:cover; border-radius:5px; box-shadow:0 3px 12px rgba(0,0,0,.28); }
   .portraits figcaption { font-size:11.5px; color:#8a775c; font-style:italic; text-align:center; margin-top:3px; }
   .nicap { font-size:13.5px; color:#5b4a35; margin:0 0 14px; }
+  .dd-badge { display:inline-block; background:linear-gradient(180deg,#f7eccb,#f0e0bc); border:1px solid #d8c08a;
+    color:#6b4f25; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; padding:4px 13px; border-radius:20px; margin:0 0 14px; }
+  .dd-narr p { margin:0 0 13px; font-size:17px; }
+  .dd-narr p:first-letter { font-size:2.2em; line-height:.8; float:left; padding:6px 7px 0 0; color:var(--accent); font-weight:bold; }
+  .portraits figcaption .cr { display:block; color:#a18a63; font-size:10.5px; font-style:normal; margin-top:1px; }
+  .dd-src { font-size:12.5px; color:var(--muted); border-top:1px solid var(--rule); margin-top:20px; padding-top:8px; }
+  .dd-src a { color:var(--accent); } .dd-src b { color:var(--accent); font-weight:600; }
   h2.sec { font-size:14px; letter-spacing:1px; text-transform:uppercase; color:var(--accent);
     border-bottom:2px solid var(--accent); padding-bottom:3px; margin:22px 0 10px; }
   .clip { background:#f3ead4; border:1px solid #ddcba6; border-left:4px solid #b08949; padding:10px 13px;
@@ -315,15 +337,23 @@ if(usp&&SIDE_KEYS.includes(usp)) sideSel.value=usp;
 function html(p){
   if(!p) return '<p>No pages for this side.</p>';
   let h=`<div class="gen">${p.gen==null?'':'Generation '+p.gen}${p.rel?' · '+esc(p.rel):''}</div><h1 class="nm">${esc(p.name)}</h1>`;
-  if(p.noble) h+=`<div class="crest">🏰 ⚜ <b>Claimed noble line</b> ⚜ 🏰<span>Family legend — ${esc(p.noble)}. Unproven through the colonial bridge; treat as lore, not fact.</span></div>`;
-  if(p.ni){ const ni=p.ni; let pf='';
-    if(ni.portrait) pf+=`<figure><img src="${esc(ni.portrait)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>Illustrative portrait — claimed &amp; unverified</figcaption></figure>`;
-    if(ni.castle) pf+=`<figure><img src="${esc(ni.castle)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>🏰 ${ni.castle_name?esc(ni.castle_name):'Family seat'}</figcaption></figure>`;
-    if(pf) h+=`<div class="portraits">${pf}</div>`;
-    const story=ni.story||ni.caption||'';
-    if(story) h+=`<p class="nicap">${esc(story)}${ni.wiki?` · <a href="${esc(ni.wiki)}" target="_blank">Wikipedia ↗</a>`:''}</p>`; }
-  if(p.photos&&p.photos.length) h+=`<img class="lead" src="${esc(p.photos[0].src)}" alt="" onerror="this.style.display='none'">`;
-  h+=`<p class="body">${esc(p.text)}</p>`;
+  if(p.dd){ const dd=p.dd;
+    if(dd.tag==='legend') h+=`<div class="crest">🏰 ⚜ <b>Family legend</b> ⚜ 🏰<span>A claimed royal/noble ancestor — unproven through the colonial bridge. A wonderful story to chase, not established fact.</span></div>`;
+    else h+=`<div class="dd-badge">📜 Featured life story</div>`;
+    if(dd.images&&dd.images.length) h+=`<div class="portraits">`+dd.images.map(im=>
+      `<figure><img src="${esc(im.url)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>${esc(im.caption||'')}${im.credit?`<span class="cr">${esc(im.credit)}</span>`:''}</figcaption></figure>`).join('')+`</div>`;
+    h+=`<div class="dd-narr">`+(dd.narrative||[]).map(par=>`<p>${esc(par)}</p>`).join('')+`</div>`;
+  } else {
+    if(p.noble) h+=`<div class="crest">🏰 ⚜ <b>Claimed noble line</b> ⚜ 🏰<span>Family legend — ${esc(p.noble)}. Unproven through the colonial bridge; treat as lore, not fact.</span></div>`;
+    if(p.ni){ const ni=p.ni; let pf='';
+      if(ni.portrait) pf+=`<figure><img src="${esc(ni.portrait)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>Illustrative portrait — claimed &amp; unverified</figcaption></figure>`;
+      if(ni.castle) pf+=`<figure><img src="${esc(ni.castle)}" alt="" onerror="this.parentNode.style.display='none'"><figcaption>🏰 ${ni.castle_name?esc(ni.castle_name):'Family seat'}</figcaption></figure>`;
+      if(pf) h+=`<div class="portraits">${pf}</div>`;
+      const story=ni.story||ni.caption||'';
+      if(story) h+=`<p class="nicap">${esc(story)}${ni.wiki?` · <a href="${esc(ni.wiki)}" target="_blank">Wikipedia ↗</a>`:''}</p>`; }
+    if(p.photos&&p.photos.length) h+=`<img class="lead" src="${esc(p.photos[0].src)}" alt="" onerror="this.style.display='none'">`;
+    h+=`<p class="body">${esc(p.text)}</p>`;
+  }
   if(p.facts&&p.facts.length) h+=`<div class="facts">`+p.facts.map(f=>`<div><b>${esc(f[0])}:</b> ${esc(f[1])}</div>`).join('')+`</div>`;
   if(p.papers&&p.papers.length){
     h+=`<h2 class="sec">In the newspapers</h2>`+p.papers.map(n=>
@@ -340,6 +370,9 @@ function html(p){
   if(p.photos&&p.photos.length>1){
     h+=`<h2 class="sec">Photographs (${p.photos.length})</h2><div class="gallery">`+
       p.photos.map(ph=>`<img src="${esc(ph.src)}" title="${esc(ph.cap)}" alt="" onerror="this.style.display='none'">`).join('')+`</div>`;
+  }
+  if(p.dd&&p.dd.sources&&p.dd.sources.length){
+    h+=`<div class="dd-src"><b>Sources:</b> `+p.dd.sources.map(s=>s.url?`<a href="${esc(s.url)}" target="_blank">${esc(s.title)} ↗</a>`:esc(s.title)).join(' · ')+`</div>`;
   }
   return h;
 }
@@ -372,10 +405,18 @@ addEventListener('keydown',e=>{ if(e.key==='Escape'){ lb.classList.remove('open'
 const toc=document.getElementById('toc'), tocList=document.getElementById('tocList');
 document.getElementById('toc-btn').onclick=()=>toc.classList.toggle('open');
 function buildTOC(f=''){f=f.toLowerCase();
-  tocList.innerHTML=view.map((p,i)=>(!f||p.name.toLowerCase().includes(f))?`<div data-i="${i}">${esc(p.name)} <span style="color:#8a775c">${p.gen==null?'':'· g'+p.gen}</span></div>`:'').join('');}
+  tocList.innerHTML=view.map((p,i)=>(!f||p.name.toLowerCase().includes(f))?`<div data-i="${i}">${p.dd?'📜 ':''}${esc(p.name)} <span style="color:#8a775c">${p.gen==null?'':'· g'+p.gen}</span></div>`:'').join('');}
 tocList.onclick=e=>{const d=e.target.closest('div'); if(d){idx=+d.dataset.i; render(); toc.classList.remove('open');}};
 document.getElementById('tocq').oninput=e=>buildTOC(e.target.value);
 applySide();
+function gotoHash(){
+  const key=decodeURIComponent((location.hash||'').slice(1)); if(!key) return;
+  const match=p=>p.id===key||p.name===key;
+  let i=view.findIndex(match);
+  if(i<0){ sideSel.value=''; applySide(); i=view.findIndex(match); }
+  if(i>=0){ idx=i; render(); }
+}
+addEventListener('hashchange',gotoHash); gotoHash();
 </script>
 </body>
 </html>
