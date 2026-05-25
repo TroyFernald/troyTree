@@ -112,15 +112,15 @@ _TEMPLATE = r"""<!doctype html>
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden;
     display:flex; flex-direction:column; }
+  a.card { text-decoration:none; color:inherit; transition:transform .12s, box-shadow .12s; }
+  a.card:hover { transform:translateY(-3px); box-shadow:0 10px 26px rgba(90,70,50,.16); }
   .card img { width:100%; height:180px; object-fit:contain; background:#efe6d8; }
-  .card .body { padding:12px 14px; }
+  .card .body { padding:12px 14px; display:flex; flex-direction:column; flex:1; }
   .card h3 { margin:0 0 3px; font-size:17px; }
   .card .meta { color:#8a7866; font-size:12.5px; margin-bottom:6px; }
   .card .reason { font-size:13.5px; }
+  .card .go { margin-top:auto; padding-top:10px; font-size:13px; color:var(--accent); font-weight:600; }
   .badge { display:inline-block; font-size:11px; padding:1px 7px; border-radius:10px; background:#efe6d8; color:#6b513a; margin-right:4px; }
-  a.story { display:inline-block; margin-top:8px; font-size:13px; color:#fff; background:var(--accent); text-decoration:none;
-    padding:5px 11px; border-radius:16px; }
-  a.story:hover { background:#624829; }
   footer { text-align:center; color:#a3937f; font-size:13px; padding-bottom:24px; }
   @media (max-width:600px){ header h1{font-size:26px} .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))} }
 </style>
@@ -144,12 +144,12 @@ function card(p){
   const sideb=(p.side||[]).map(s=>`<span class="badge">${esc(SIDE_LABELS[s]||s)}</span>`).join('');
   const src=p.ddimg||(p.ni?p.ni.portrait:'');
   const img=src?`<img src="${esc(src)}" alt="" onerror="this.style.display='none'">`:'';
-  const story=p.dd?`<a class="story" href="story.html#${encodeURIComponent(p.pid)}">📜 Read the full story</a>`:'';
-  return `<div class="card">${img}<div class="body"><h3>${esc(p.name)}</h3>`
+  const go=`<div class="go">${p.dd?'📜 Read the full story':'📖 View in the storybook'} →</div>`;
+  return `<a class="card" href="story.html#${encodeURIComponent(p.pid)}">${img}<div class="body"><h3>${esc(p.name)}</h3>`
     +`<div class="meta">${p.gen==null?'':'Gen '+p.gen} ${sideb}</div>`
     +(dates?`<div class="meta">${esc(dates)}</div>`:'')
     +(p.place?`<div class="meta">📍 ${esc(p.place)}</div>`:'')
-    +`<div class="reason">${esc(p.reasons.join('; '))}</div>${story}</div></div>`;
+    +`<div class="reason">${esc(p.reasons.join('; '))}</div>${go}</div></a>`;
 }
 function render(){
   const main=document.getElementById('main'); let h='';

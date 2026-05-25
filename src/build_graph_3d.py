@@ -113,6 +113,9 @@ _TEMPLATE = r"""<!doctype html>
   #sides button { flex:1; background:#1b2330; color:#cdd6e2; border:1px solid #2a3340;
     border-radius:6px; padding:5px 4px; font-size:11.5px; cursor:pointer; }
   #sides button.on { background:#33415a; color:#fff; border-color:#46597a; }
+  .ctl { flex:1; background:#1b2330; color:#cdd6e2; border:1px solid #2a3340; border-radius:6px; padding:6px 4px; font-size:12px; cursor:pointer; }
+  .ctl.on { background:#2e6b4a; color:#fff; border-color:#3f8a61; }
+  #flykeys { position:fixed; bottom:46px; right:12px; z-index:10; display:none; color:#9fb0c2; font-size:12px; text-align:right; line-height:1.6; }
   #legend { position:fixed; bottom:12px; left:12px; z-index:10; background:rgba(16,20,28,.82);
     border:1px solid #2a3340; border-radius:9px; padding:9px 12px; font-size:12px; color:#aab4c2; }
   #legend .bar { height:9px; width:180px; border-radius:5px; margin:5px 0 3px;
@@ -148,7 +151,11 @@ _TEMPLATE = r"""<!doctype html>
   <h1>Family connections</h1>
   <div class="meta">__NODES__ people · __LINKS__ links · click anyone to fly to them</div>
   <div id="sides"></div>
-  <input id="q" type="search" placeholder="Find a person…" autocomplete="off">
+  <div style="display:flex;gap:5px;margin-top:8px">
+    <button id="flyBtn" class="ctl">🚀 Fly mode</button>
+    <button id="tourBtn" class="ctl">▶ Auto-tour</button>
+  </div>
+  <input id="q" type="search" placeholder="Find a person…" autocomplete="off" style="margin-top:8px">
   <div id="results"></div>
 </div>
 <div id="legend">Generation
@@ -156,6 +163,7 @@ _TEMPLATE = r"""<!doctype html>
   <div class="ends"><span>0 (you)</span><span>__MAXGEN__</span></div>
 </div>
 <div id="hint"><b>Drag</b> to rotate · <b>scroll / pinch</b> to zoom · <b>right-drag</b> to slide<br><b>Click a person</b> to fly to them</div>
+<div id="flykeys"><b>W A S D</b> to fly · <b>Q / E</b> up &amp; down · <b>Shift</b> = boost · drag to look</div>
 <div id="info"></div>
 <div id="help"><div class="box">
   <h2>🪐 Flying through the family</h2>
@@ -204,11 +212,28 @@ const Graph = ForceGraph3D()(elem)
 // gentle ambient rotation until the user interacts
 let spin = true;
 const ctrl = Graph.controls();
+const cam = Graph.camera();
+let flyOn = false; const keys = {};
 ctrl.addEventListener('start', () => spin = false);
+function flyStep(){                                   // WASD spaceship movement
+  if (!flyOn) return;
+  const cp=cam.position, tg=ctrl.target;
+  let fx=tg.x-cp.x, fy=tg.y-cp.y, fz=tg.z-cp.z; const fl=Math.hypot(fx,fy,fz)||1; fx/=fl; fy/=fl; fz/=fl;
+  const rx=-fz, rz=fx;                                // right = forward × up(0,1,0), in the xz-plane
+  const s = 18*(keys.ShiftLeft||keys.ShiftRight?3:1); let dx=0,dy=0,dz=0;
+  if (keys.KeyW){ dx+=fx*s; dy+=fy*s; dz+=fz*s; }
+  if (keys.KeyS){ dx-=fx*s; dy-=fy*s; dz-=fz*s; }
+  if (keys.KeyD){ dx+=rx*s; dz+=rz*s; }
+  if (keys.KeyA){ dx-=rx*s; dz-=rz*s; }
+  if (keys.KeyE||keys.Space){ dy+=s; }
+  if (keys.KeyQ){ dy-=s; }
+  if (dx||dy||dz){ cp.x+=dx; cp.y+=dy; cp.z+=dz; tg.x+=dx; tg.y+=dy; tg.z+=dz; }  // move camera + look-target together
+}
 let angle = 0;
 (function rotate(){
   if (spin) { angle += 0.0015; const d = 1400;
     Graph.cameraPosition({ x: d*Math.sin(angle), z: d*Math.cos(angle) }); }
+  flyStep();
   requestAnimationFrame(rotate);
 })();
 
@@ -282,6 +307,27 @@ applySide(SIDE_KEYS.includes(_usp) ? _usp : '');
 
 // one-time "how to navigate" card
 document.getElementById('helpGo').addEventListener('click', () => document.getElementById('help').classList.add('hide'));
+
+// keyboard fly mode (WASD spaceship)
+const FLYKEYS = ['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','Space','ShiftLeft','ShiftRight'];
+addEventListener('keydown', e => { if (flyOn && FLYKEYS.includes(e.code)){ keys[e.code]=true; e.preventDefault(); } });
+addEventListener('keyup', e => { keys[e.code]=false; });
+const flyBtn = document.getElementById('flyBtn');
+flyBtn.addEventListener('click', () => { flyOn=!flyOn; spin=false; stopTour();
+  flyBtn.classList.toggle('on', flyOn);
+  document.getElementById('flykeys').style.display = flyOn ? 'block' : 'none'; });
+
+// auto-tour: fly from one key ancestor to the next on its own
+let tourT=null, tour=[], ti=0; const tourBtn=document.getElementById('tourBtn');
+function stopTour(){ if(tourT){ clearTimeout(tourT); tourT=null; } tourBtn.classList.remove('on'); tourBtn.textContent='▶ Auto-tour'; }
+function tourStep(){ if(ti>=tour.length){ stopTour(); return; } focusNode(tour[ti++]); tourT=setTimeout(tourStep, 4800); }
+tourBtn.addEventListener('click', () => {
+  if (tourT){ stopTour(); return; }
+  spin=false; flyOn=false; flyBtn.classList.remove('on'); document.getElementById('flykeys').style.display='none';
+  tour=[...CUR.nodes].sort((a,b)=>(b.val||0)-(a.val||0)).slice(0,15); ti=0;   // the most-connected family hubs
+  tourBtn.classList.add('on'); tourBtn.textContent='⏹ Stop tour'; tourStep();
+});
+elem.addEventListener('pointerdown', () => { if(tourT) stopTour(); });   // grabbing the view ends the tour
 </script>
 </body>
 </html>
