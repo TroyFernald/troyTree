@@ -119,8 +119,8 @@ _TEMPLATE = r"""<!doctype html>
   #pop a:hover { background:#4a5d75; }
   .wedge { stroke:#13161d; stroke-width:.6; cursor:pointer; }
   .wedge:hover { stroke:#fff; stroke-width:1; }
-  text.lbl { fill:#10141b; font-weight:600; pointer-events:none;
-    paint-order:stroke; stroke:rgba(248,250,252,.62); stroke-width:1.5px; stroke-linejoin:round; }
+  text.lbl { fill:#10141b; font-weight:600; pointer-events:none; text-rendering:optimizeSpeed; }
+  #vp { will-change:transform; }          /* promote to a GPU layer so pan/zoom is composited, not re-painted */
   #sides { margin-top:7px; display:flex; gap:5px; }
   #sides button { flex:1; background:#222b38; color:#cdd6e2; border:1px solid #2a3340;
     border-radius:6px; padding:5px 4px; font-size:11.5px; cursor:pointer; }
@@ -207,19 +207,17 @@ function label(s) {
 
 const vp = document.getElementById('vp');
 let frag = '';
+SLOTS.forEach((s, i) => {                        // index instead of O(n^2) indexOf
+  frag += `<path class="wedge ${sideClass(s)}" d="${sector(s)}" fill="${colorFor(s.gen)}" data-i="${i}"></path>`;
+});
 for (const s of SLOTS) {
-  frag += `<path class="wedge ${sideClass(s)}" d="${sector(s)}" fill="${colorFor(s.gen)}"`
-        + ` data-i="${SLOTS.indexOf(s)}"></path>`;
-}
-for (const s of SLOTS) {
-  if (s.gen > LABEL_MAX) continue;             // (labels on every generation; zoom in to read the outer rim)
+  if (s.gen > LABEL_MAX) continue;
   const L = label(s);
-  const sw = Math.max(0.4, L.fs*0.16).toFixed(2);
   if (L.radial) {
     frag += `<g class="${sideClass(s)}" transform="rotate(${L.deg}) translate(${CR + (s.gen-1)*RW + 6} 0) rotate(${L.flip})">`
-          + `<text class="lbl" x="0" y="0" font-size="${L.fs.toFixed(1)}" style="stroke-width:${sw}px" dominant-baseline="middle" text-anchor="${L.anchor}">${esc(L.txt)}</text></g>`;
+          + `<text class="lbl" x="0" y="0" font-size="${L.fs.toFixed(1)}" dominant-baseline="middle" text-anchor="${L.anchor}">${esc(L.txt)}</text></g>`;
   } else {
-    frag += `<text class="lbl side-root" x="0" y="0" font-size="${L.fs}" style="stroke-width:${sw}px" text-anchor="middle" dominant-baseline="middle">${esc(L.txt)}</text>`;
+    frag += `<text class="lbl side-root" x="0" y="0" font-size="${L.fs}" text-anchor="middle" dominant-baseline="middle">${esc(L.txt)}</text>`;
   }
 }
 vp.innerHTML = frag;
@@ -227,8 +225,9 @@ function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 
 // ---- pan / zoom (mouse wheel, drag, two-finger pinch) ----
 const svg = document.getElementById('fan');
-let view = {k:1, x:0, y:0};
-function apply(){ vp.setAttribute('transform', `translate(${view.x} ${view.y}) scale(${view.k})`); }
+let view = {k:1, x:0, y:0}, _raf=0;
+function apply(){ if(_raf) return;               // coalesce many pointer/wheel events into one paint per frame
+  _raf = requestAnimationFrame(()=>{ _raf=0; vp.setAttribute('transform', `translate(${view.x} ${view.y}) scale(${view.k})`); }); }
 function frame(gens){
   // Zoom so `gens` rings fill the viewport (names stay readable); deeper rings sit
   // beyond the edges and can be reached by zooming out or panning.
@@ -276,9 +275,15 @@ function show(i, x, y){
   tip.style.left = Math.min(x+12, innerWidth-tip.offsetWidth-6)+'px';
   tip.style.top = Math.min(y+12, innerHeight-tip.offsetHeight-6)+'px';
 }
+let lastHover=-1;
 svg.addEventListener('pointermove', e => {
+  if (pts.size){ tip.style.display='none'; lastHover=-1; return; }   // panning/pinching: no tooltip
   const t = e.target.closest('.wedge');
-  if (t && pts.size===0) show(+t.dataset.i, e.clientX, e.clientY); else if(pts.size) tip.style.display='none';
+  if (!t){ if(lastHover!==-1){ tip.style.display='none'; lastHover=-1; } return; }
+  const i = +t.dataset.i;
+  if (i!==lastHover){ lastHover=i; show(i, e.clientX, e.clientY); }   // rebuild only when wedge changes
+  else { tip.style.left=Math.min(e.clientX+12, innerWidth-tip.offsetWidth-6)+'px';
+         tip.style.top=Math.min(e.clientY+12, innerHeight-tip.offsetHeight-6)+'px'; }
 });
 svg.addEventListener('pointerleave', ()=> tip.style.display='none');
 const pop=document.getElementById('pop');
