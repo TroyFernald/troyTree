@@ -118,7 +118,16 @@ _TEMPLATE = r"""<!doctype html>
   #legend .bar { height:9px; width:180px; border-radius:5px; margin:5px 0 3px;
     background:linear-gradient(90deg,hsl(205,80%,62%),hsl(285,70%,62%),hsl(20,85%,60%)); }
   #legend .ends { display:flex; justify-content:space-between; }
-  #hint { position:fixed; bottom:12px; right:12px; z-index:10; color:#5e6b7d; font-size:12px; }
+  #hint { position:fixed; bottom:12px; right:12px; z-index:10; color:#8b97a7; font-size:12px; text-align:right; line-height:1.6; }
+  #hint b { color:#c2ccd8; }
+  #help { position:fixed; inset:0; z-index:30; display:flex; align-items:center; justify-content:center; background:rgba(5,7,11,.62); }
+  #help.hide { display:none; }
+  #help .box { background:rgba(16,20,28,.98); border:1px solid #2a3340; border-radius:12px; padding:20px 24px; max-width:340px; box-shadow:0 12px 40px rgba(0,0,0,.6); }
+  #help h2 { margin:0 0 6px; font-size:18px; }
+  #help ul { margin:8px 0 16px; padding-left:18px; color:#c2ccd8; font-size:13.5px; line-height:1.7; }
+  #help b { color:#fff; }
+  #help button { background:#33415a; color:#fff; border:0; border-radius:7px; padding:10px 18px; font-size:14px; cursor:pointer; width:100%; }
+  #help button:hover { background:#46597a; }
   #info { position:fixed; top:12px; right:12px; z-index:15; width:262px; max-width:82vw;
     background:rgba(16,20,28,.93); border:1px solid #2a3340; border-radius:9px; padding:12px 14px;
     color:#e8e8e8; font-size:13px; display:none; backdrop-filter:blur(4px); }
@@ -137,7 +146,7 @@ _TEMPLATE = r"""<!doctype html>
 <div id="panel">
   <a href="index.html" style="color:#8b97a7;text-decoration:none;font-size:12px">‹ Home</a>
   <h1>Family connections</h1>
-  <div class="meta">__NODES__ people · __LINKS__ links · scroll to zoom, drag to rotate</div>
+  <div class="meta">__NODES__ people · __LINKS__ links · click anyone to fly to them</div>
   <div id="sides"></div>
   <input id="q" type="search" placeholder="Find a person…" autocomplete="off">
   <div id="results"></div>
@@ -146,8 +155,20 @@ _TEMPLATE = r"""<!doctype html>
   <div class="bar"></div>
   <div class="ends"><span>0 (you)</span><span>__MAXGEN__</span></div>
 </div>
-<div id="hint">tap a person for details · drag to rotate · scroll to zoom</div>
+<div id="hint"><b>Drag</b> to rotate · <b>scroll / pinch</b> to zoom · <b>right-drag</b> to slide<br><b>Click a person</b> to fly to them</div>
 <div id="info"></div>
+<div id="help"><div class="box">
+  <h2>🪐 Flying through the family</h2>
+  <ul>
+    <li><b>Drag</b> to rotate the whole cloud around</li>
+    <li><b>Scroll</b> or pinch to zoom in and out</li>
+    <li><b>Right-drag</b> (or two-finger drag) to slide sideways</li>
+    <li><b>Click any person</b> to fly the camera to them and light up their connections</li>
+    <li><b>Search</b> a name (top-left) to jump straight to anyone</li>
+    <li>Click empty space to fly back out</li>
+  </ul>
+  <button id="helpGo">Start exploring →</button>
+</div></div>
 <div id="graph"></div>
 <script src="./lib/3d-force-graph.min.js"></script>
 <script>
@@ -167,6 +188,7 @@ const elem = document.getElementById('graph');
 const Graph = ForceGraph3D()(elem)
   .graphData(DATA)
   .backgroundColor('#0b0e14')
+  .controlType('orbit')          // stable "up" — easier to fly around than free-tumbling trackball
   .nodeLabel(n => `${n.name}${n.gen==null?'':' · gen '+n.gen}`)
   .nodeColor(n => colorFor(n.gen))
   .nodeVal(n => n.val)
@@ -257,6 +279,9 @@ sidesEl.innerHTML = [['','Both']].concat(SIDE_KEYS.map(k => [k, SIDE_LABELS[k]])
 sidesEl.addEventListener('click', e => { const b=e.target.closest('button'); if(b) applySide(b.dataset.v); });
 const _usp = new URLSearchParams(location.search).get('side');
 applySide(SIDE_KEYS.includes(_usp) ? _usp : '');
+
+// one-time "how to navigate" card
+document.getElementById('helpGo').addEventListener('click', () => document.getElementById('help').classList.add('hide'));
 </script>
 </body>
 </html>
