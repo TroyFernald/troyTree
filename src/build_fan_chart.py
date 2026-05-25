@@ -135,6 +135,10 @@ _TEMPLATE = r"""<!doctype html>
   <div class="meta">__COUNT__ ancestors · __MAXGEN__ generations<br>click a wedge for that person (and a link to their story)<br>scroll / pinch to zoom · drag to pan</div>
   <div id="sides"></div>
   <div style="display:flex;gap:5px;margin-top:6px">
+    <button id="zout" style="flex:1;font-size:16px">－</button>
+    <button id="zin" style="flex:1;font-size:16px">＋</button>
+  </div>
+  <div style="display:flex;gap:5px;margin-top:5px">
     <button id="reset" style="flex:1">Reset view</button>
     <button id="all" style="flex:1">Whole tree</button>
   </div>
@@ -151,37 +155,48 @@ const sideClass = s => s.gen===0 ? 'side-root' : ((s.slot >> (s.gen-1))===0 ? 's
 const CR = 76, RW = 86;                  // center radius, ring width
 const TAU = Math.PI*2;
 const LABEL_MAX = 99;                     // label every generation (tiny far out; zoom in to read)
-const MINSPAN = 0.012;                    // min wedge angle (~0.7°) so sparse deep ancestors stay visible
 // Cool blue → teal → green → soft gold sweep (no red), darkening gently outward
 const colorFor = g => `hsl(${210 - (g/MAXGEN)*150}, 52%, ${60 - (g/MAXGEN)*16}%)`;
 const polar = (r,a) => [r*Math.cos(a), r*Math.sin(a)];
 
-function sector(g, slot) {
-  const n = Math.pow(2, g), nat = TAU/n;
-  const mid = -Math.PI/2 + (slot+0.5)*nat;               // wedge centre, starting at top, clockwise
-  const span = Math.max(nat, MINSPAN);                   // clamp so deep, sparse wedges remain visible
-  const a0 = mid - span/2, a1 = mid + span/2;
-  const ri = g===0 ? 0 : CR + (g-1)*RW, ro = g===0 ? CR : CR + g*RW;
+// ---- proportional (sunburst) layout ----------------------------------------
+// Each node claims an arc sized to how many ancestors branch off it, so sparse
+// deep lines spread into the empty space instead of piling onto adjacent slots,
+// while every parent still sits directly outside the child it belongs to.
+const PAD = 9;
+const firstTwo = s => s.split(' ').slice(0,2).join(' ');
+const byKey = new Map();
+for (const s of SLOTS) byKey.set(s.gen+':'+s.slot, s);
+function kidsOf(s){ const r=[]; const f=byKey.get((s.gen+1)+':'+(s.slot*2)); const m=byKey.get((s.gen+1)+':'+(s.slot*2+1)); if(f)r.push(f); if(m)r.push(m); return r; }
+function weigh(s){ if(s.w!=null) return s.w; const k=kidsOf(s); s.w = k.length ? k.reduce((t,c)=>t+weigh(c),0) : 1; return s.w; }
+const ROOT = byKey.get('0:0');
+if (ROOT){ weigh(ROOT); ROOT.a0 = -Math.PI/2; ROOT.a1 = -Math.PI/2 + TAU;
+  (function assign(s){ let a=s.a0; const span=s.a1-s.a0; for(const c of kidsOf(s)){ c.a0=a; c.a1=a+(c.w/s.w)*span; a=c.a1; assign(c); } })(ROOT);
+}
+
+function sector(s) {
+  const g=s.gen, ri = g===0 ? 0 : CR + (g-1)*RW, ro = g===0 ? CR : CR + g*RW;
   if (g===0) return `M ${-ri} 0 A ${ri} ${ri} 0 1 1 ${ri} 0 A ${ri} ${ri} 0 1 1 ${-ri} 0 Z`;
+  const a0=s.a0, a1=s.a1;
   const [x0,y0]=polar(ri,a0),[x1,y1]=polar(ro,a0),[x2,y2]=polar(ro,a1),[x3,y3]=polar(ri,a1);
-  const large = span>Math.PI ? 1 : 0;
+  const large = (a1-a0)>Math.PI ? 1 : 0;
   return `M ${x0} ${y0} L ${x1} ${y1} A ${ro} ${ro} 0 ${large} 1 ${x2} ${y2} `
        + `L ${x3} ${y3} A ${ri} ${ri} 0 ${large} 0 ${x0} ${y0} Z`;
 }
 
-const PAD = 9;                                  // radial padding inside a ring
-function label(g, slot, name) {
-  const n = Math.pow(2, g), span = TAU/n, mid = -Math.PI/2 + (slot+0.5)*span;
+function label(s) {
+  const g=s.gen, name=s.name;
   if (g===0) return {radial:false, fs:14, txt:firstTwo(name)};
   // Auto-fit: shrink the font so the WHOLE name fits along the ring width, and
   // never let it grow taller than the wedge is thick (so it stays inside the box).
-  const drawnSpan = Math.max(span, MINSPAN);
+  const span = s.a1 - s.a0, mid = (s.a0 + s.a1)/2;
   const midR = CR + (g-0.5)*RW;
-  const arcThick = midR * drawnSpan;            // room across the wedge (perpendicular)
+  const arcThick = midR * span;                 // room across the wedge (perpendicular)
   const radialRoom = RW - PAD;                  // room along the radius (text length)
+  const cap = arcThick * 0.82;                  // hard cap: never taller than the wedge (prevents overlap)
   let fs = radialRoom / (Math.max(name.length,1) * 0.55);
-  fs = Math.min(fs, arcThick * 0.80, 15);       // cap by wedge thickness and a sensible max
-  fs = Math.max(fs, 3.4);                        // floor
+  fs = Math.min(fs, cap, 15);
+  fs = Math.max(fs, Math.min(3.4, cap));        // floor, but never above the cap
   let txt = name;
   const maxChars = Math.floor(radialRoom / (fs*0.55));   // truncate only if even the floor won't fit
   if (txt.length > maxChars) txt = txt.slice(0, Math.max(1, maxChars-1)) + '…';
@@ -189,17 +204,16 @@ function label(g, slot, name) {
   if (deg>90 || deg<-90) { flip=180; anchor='end'; }
   return {radial:true, deg, anchor, flip, fs, txt};
 }
-const firstTwo = s => s.split(' ').slice(0,2).join(' ');
 
 const vp = document.getElementById('vp');
 let frag = '';
 for (const s of SLOTS) {
-  frag += `<path class="wedge ${sideClass(s)}" d="${sector(s.gen,s.slot)}" fill="${colorFor(s.gen)}"`
+  frag += `<path class="wedge ${sideClass(s)}" d="${sector(s)}" fill="${colorFor(s.gen)}"`
         + ` data-i="${SLOTS.indexOf(s)}"></path>`;
 }
 for (const s of SLOTS) {
   if (s.gen > LABEL_MAX) continue;             // (labels on every generation; zoom in to read the outer rim)
-  const L = label(s.gen, s.slot, s.name);
+  const L = label(s);
   const sw = Math.max(0.4, L.fs*0.16).toFixed(2);
   if (L.radial) {
     frag += `<g class="${sideClass(s)}" transform="rotate(${L.deg}) translate(${CR + (s.gen-1)*RW + 6} 0) rotate(${L.flip})">`
@@ -285,6 +299,8 @@ svg.addEventListener('click', e => {
 addEventListener('keydown', e => { if(e.key==='Escape') pop.classList.remove('open'); });
 document.getElementById('reset').addEventListener('click', fit);
 document.getElementById('all').addEventListener('click', fitAll);
+document.getElementById('zin').addEventListener('click', ()=> zoomAround(innerWidth/2, innerHeight/2, 1.5));
+document.getElementById('zout').addEventListener('click', ()=> zoomAround(innerWidth/2, innerHeight/2, 1/1.5));
 
 // ---- Fernald / Bagley side toggle ----
 const sidesEl = document.getElementById('sides');
