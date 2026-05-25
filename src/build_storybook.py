@@ -175,7 +175,7 @@ def _collect(con, redact_living: bool, media_base: str, ni_map: dict) -> list[di
         "spouse_names, parent_names, generation, relationship_to_root FROM people"
     ):
         pid = p["person_id"]
-        if not (pid in sides or pid in photos or pid in papers or pid in military or pid in records or pid in noble or pid in ni_map):
+        if not (pid in sides or pid in photos or pid in papers or pid in military or pid in records or pid in noble or pid in ni_map or pid in dd_map):
             continue
         living = redact_living and is_living(p["birth_date"], p["death_date"], p["generation"])
         if living:
@@ -217,6 +217,9 @@ def build(db_path=WORKING_DB, redact_living: bool = True, media_base: str = "") 
                 .replace("__SIDELABELS__", json.dumps(side_labels))
                 .replace("__SIDEKEYS__", json.dumps(side_keys)))
     OUT_PATH.write_text(html_doc, encoding="utf-8")
+    # sidecar: which person_ids actually have a story page, so other views only link where a story exists
+    (EXPORTS_DIR / "story_ids.json").write_text(
+        json.dumps(sorted({p["id"] for p in pages if p.get("id")})), encoding="utf-8")
     news = sum(len(p["papers"]) for p in pages)
     return {"pages": len(pages), "newspaper_mentions": news, "out": str(OUT_PATH)}
 

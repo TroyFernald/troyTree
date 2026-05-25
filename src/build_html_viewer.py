@@ -158,10 +158,18 @@ def build(db_path=WORKING_DB, redact_living: bool = True, media_base: str = "") 
         p["side"] = sides.get(p["id"], [])
         if redact_living and is_living(p["born"], p["died"], p["gen"]):
             _redact(p)
+    story_ids = []
+    sp = EXPORTS_DIR / "story_ids.json"
+    if sp.exists():
+        try:
+            story_ids = json.loads(sp.read_text(encoding="utf-8"))
+        except Exception:
+            story_ids = []
     payload = json.dumps(people, ensure_ascii=False).replace("</", "<\\/")
     with_ev = sum(1 for p in people if p["ev"])
     generated = date.today().isoformat()
     html_doc = _TEMPLATE.replace("__DATA__", payload) \
+        .replace("__STORYIDS__", json.dumps(story_ids)) \
         .replace("__TOTAL__", str(len(people))) \
         .replace("__WITHEV__", str(with_ev)) \
         .replace("__DATE__", generated) \
@@ -204,7 +212,10 @@ _TEMPLATE = r"""<!doctype html>
   main { flex:1; overflow:auto; padding:22px 28px; }
   .empty { color:var(--muted); margin-top:40px; text-align:center; }
   h2.name { margin:0 0 2px; font-size:24px; }
-  .sub { color:var(--muted); font-size:13px; margin-bottom:16px; }
+  .sub { color:var(--muted); font-size:13px; margin-bottom:10px; }
+  a.storylink { display:inline-block; margin:0 0 14px; font-size:13.5px; color:#fff; background:var(--accent);
+    text-decoration:none; padding:6px 12px; border-radius:16px; }
+  a.storylink:hover { background:#624829; }
   table.facts { border-collapse:collapse; margin-bottom:8px; }
   table.facts td { padding:3px 14px 3px 0; vertical-align:top; }
   table.facts td.k { color:var(--muted); white-space:nowrap; }
@@ -259,6 +270,7 @@ _TEMPLATE = r"""<!doctype html>
 <div id="lb"><span id="lbx">×</span><img id="lbimg" alt=""></div>
 <script>
 const PEOPLE = __DATA__;
+const STORY_IDS = new Set(__STORYIDS__);
 const CONF = __CONF__;
 const SIDE_LABELS = __SIDELABELS__;
 const SIDE_KEYS = __SIDEKEYS__;
@@ -325,6 +337,7 @@ function renderDetail(p) {
   const sub = [p.gen==null?'Generation —':'Generation '+p.gen, p.rel, p.id].filter(Boolean).map(esc).join(' · ');
 
   let h = `<h2 class="name">${esc(p.name)}</h2><div class="sub">${sub}</div>`;
+  if (STORY_IDS.has(p.id)) h += `<a class="storylink" href="story.html#${encodeURIComponent(p.id)}">📖 Read their story →</a>`;
   h += `<table class="facts">${facts}</table>`;
   h += section('Photos', p.photos, it =>
         `<li><a href="${esc(it.href)}" class="lb">${esc(it.name)}</a>${it.caption?' — '+esc(it.caption):''}</li>`);

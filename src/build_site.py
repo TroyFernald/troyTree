@@ -46,10 +46,10 @@ def _site_password() -> str:
 
 def build_site(media_base: str = "", redact_living: bool = True, out_dir=DEFAULT_SITE_DIR,
                archive_url: str = "") -> dict:
+    build_storybook.build(redact_living=redact_living, media_base=media_base)  # writes story_ids.json first
     build_html_viewer.build(redact_living=redact_living, media_base=media_base)
     build_graph_3d.build(redact_living=redact_living)
     build_fan_chart.build(redact_living=redact_living)
-    build_storybook.build(redact_living=redact_living, media_base=media_base)
     build_map.build(redact_living=redact_living)
     build_notable.build()
     build_castles.build()

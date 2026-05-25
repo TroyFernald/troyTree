@@ -29,8 +29,16 @@ def build(db_path=WORKING_DB) -> dict:
     castles = [c for c in castles if c.get("photo")]
     castles.sort(key=lambda c: (_STATUS_ORDER.get(c.get("status", ""), 9), c.get("name", "")))
     standing = sum(1 for c in castles if c.get("status") == "Still stands")
+    story_ids = []
+    sp = EXPORTS_DIR / "story_ids.json"
+    if sp.exists():
+        try:
+            story_ids = json.loads(sp.read_text(encoding="utf-8"))
+        except Exception:
+            story_ids = []
     html_doc = (_TEMPLATE
                 .replace("__DATA__", json.dumps(castles, ensure_ascii=False).replace("</", "<\\/"))
+                .replace("__STORYIDS__", json.dumps(story_ids))
                 .replace("__COUNT__", str(len(castles)))
                 .replace("__STANDING__", str(standing)))
     OUT_PATH.write_text(html_doc, encoding="utf-8")
@@ -73,6 +81,7 @@ _TEMPLATE = r"""<!doctype html>
   .card .ppl ul { list-style:none; margin:0; padding:0; }
   .card .ppl li { margin:2px 0; color:#4f4030; line-height:1.4; }
   .card .ppl li .nm { color:var(--accent); font-weight:600; }
+  .card .ppl li a.nm { text-decoration:none; } .card .ppl li a.nm:hover { text-decoration:underline; }
   .card .ppl li .sd { color:#9a8a76; }
   .card .ppl li.more { color:#9a8a76; font-style:italic; }
   .card .cr { font-size:10.5px; color:#a4937e; margin-top:8px; }
@@ -98,12 +107,17 @@ _TEMPLATE = r"""<!doctype html>
 <div id="lb"><span id="lbx">×</span><img id="lbimg" alt=""><div id="lbcap"></div></div>
 <script>
 const CASTLES=__DATA__;
+const STORY_IDS=new Set(__STORYIDS__);
 const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const cls={'Still stands':'s-stands','Survives as ruins':'s-ruins','Rebuilt':'s-rebuilt','Largely gone':'s-gone'};
 function card(c){
   const all=(c.people||[]);
-  const ppl=all.slice(0,5).map(p=>
-    `<li><span class="nm">${esc(p.name)}</span>${p.rel?` — ${esc(p.rel)}`:''}${p.side?` <span class="sd">· ${esc(p.side)} side</span>`:''}</li>`).join('');
+  const ppl=all.slice(0,5).map(p=>{
+    const nm = (p.pid && STORY_IDS.has(p.pid))
+      ? `<a class="nm" href="story.html#${encodeURIComponent(p.pid)}">${esc(p.name)} ›</a>`
+      : `<span class="nm">${esc(p.name)}</span>`;
+    return `<li>${nm}${p.rel?` — ${esc(p.rel)}`:''}${p.side?` <span class="sd">· ${esc(p.side)} side</span>`:''}</li>`;
+  }).join('');
   const more=all.length>5?`<li class="more">+${all.length-5} more</li>`:'';
   return `<div class="card"><div class="ph" data-full="${esc(c.photo)}" data-cap="${esc(c.name+' — '+(c.caption||''))}">`
     +`<img loading="lazy" src="${esc(c.photo)}" alt="${esc(c.name)}" onerror="this.closest('.card').style.display='none'">`

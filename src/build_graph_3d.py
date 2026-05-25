@@ -168,7 +168,8 @@ _TEMPLATE = r"""<!doctype html>
 <div id="hint"><b>Drag</b> to rotate · <b>scroll / pinch</b> to zoom · <b>right-drag</b> to slide<br><b>Click a person</b> to fly to them</div>
 <div id="flykeys"><b>W A S D</b> to fly · <b>Q / E</b> up &amp; down · <b>Shift</b> = boost · drag to look</div>
 <div id="info"></div>
-<div id="help"><div class="box">
+<div id="help" onclick="this.style.display='none'" ontouchend="this.style.display='none'">
+  <div class="box">
   <h2>🪐 Flying through the family</h2>
   <ul>
     <li><b>Drag</b> to rotate the whole cloud around</li>
@@ -178,7 +179,7 @@ _TEMPLATE = r"""<!doctype html>
     <li><b>Search</b> a name (top-left) to jump straight to anyone</li>
     <li>Click empty space to fly back out</li>
   </ul>
-  <button id="helpGo">Start exploring →</button>
+  <button onclick="document.getElementById('help').style.display='none'" ontouchend="document.getElementById('help').style.display='none'">Start exploring →</button>
 </div></div>
 <div id="graph"></div>
 <script src="./lib/3d-force-graph.min.js"></script>
@@ -223,6 +224,7 @@ ctrl.addEventListener('start', () => spin = false);
 const labelsEl = document.createElement('div'); labelsEl.id='labels'; document.body.appendChild(labelsEl);
 const labPool = []; const LAB_D2 = 330*330, LAB_MAX = 60;
 function updateLabels(){
+  if (typeof Graph.graph2ScreenCoords !== 'function') return;   // older lib: skip proximity labels gracefully
   const cp=cam.position, tg=ctrl.target;
   let fx=tg.x-cp.x, fy=tg.y-cp.y, fz=tg.z-cp.z; const fl=Math.hypot(fx,fy,fz)||1; fx/=fl; fy/=fl; fz/=fl;
   const near=[];
