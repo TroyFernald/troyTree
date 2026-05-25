@@ -1,0 +1,44 @@
+{
+  "findings": [
+    {
+      "person_id": "@I322454166398@",
+      "person_name": "Wilmot Randolph Lenentine",
+      "search_query": "Lenentine Monticello Aroostook County Maine deed registry land; \"Wilmot Lenentine\" Monticello farm",
+      "source_title": "Maine, Aroostook County Deed Books (FamilySearch Catalog) / Aroostook County Registry of Deeds (Southern District, Houlton)",
+      "source_url": "https://www.familysearch.org/en/wiki/Maine,_Aroostook_County_Deed_Books_-_FamilySearch_Historical_Records",
+      "source_site": "familysearch.org",
+      "snippet": "Online land records for Monticello include Deeds from 1808-1879 with an index 1839-1866; FamilySearch Aroostook County Deed Books collection covers Southern District (Houlton) 1865-1900. 'This collection does not have a searchable index. Only images are available.'",
+      "claimed_facts": "NO DEED VERIFIED. The Lenentine family is independently confirmed as a long-standing Monticello/Bridgewater, Aroostook Co. farming family (multiple Lenentine obituaries describe generations farming around Monticello), making a Monticello-area deed for Wilmot R. Lenentine highly plausible. Relevant register: Aroostook Southern District (Houlton). No book/page could be retrieved.",
+      "confidence_score": 25,
+      "confidence_label": "Low confidence",
+      "notes": "LEAD ONLY, not a verified deed. Aroostook deed books on FamilySearch are browse-only IMAGES with no name index and require login -- not reachable by this agent. The Aroostook Southern District registry search portal (aroostook.me.us / maineregistryofdeeds.com) requires an interactive account session. Human action: create the free Aroostook Southern registry account or FamilySearch login and browse Monticello deed volumes ~1880-1933 for grantor/grantee 'Lenentine'."
+    }
+  ],
+  "processed": [
+    "@I322454164374@",
+    "@I322454164375@",
+    "@I322454165032@",
+    "@I322454165034@",
+    "@I322454165794@",
+    "@I322454165796@",
+    "@I322454165994@",
+    "@I322454166042@",
+    "@I322454166398@",
+    "@I322454166401@",
+    "@I322454166450@",
+    "@I322454166501@",
+    "@I322454166530@",
+    "@I322454166558@",
+    "@I322454166582@",
+    "@I322454166620@",
+    "@I322454166630@",
+    "@I322454171705@",
+    "@I322454171811@",
+    "@I322454166508@",
+    "@I322454166663@",
+    "@I322454166596@",
+    "@I322454166651@",
+    "@I322454166604@",
+    "@I322454166925@"
+  ]
+}

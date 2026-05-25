@@ -1,0 +1,111 @@
+{
+  "findings": [
+    {
+      "person_id": "@I322454173711@",
+      "person_name": "William Towers",
+      "search_query": "William Towers proven Loyalist New Brunswick UELAC; Tower Hill St David Charlotte County land grant",
+      "source_title": "UELAC \"Proven Loyalists of New Brunswick\" (cumulative list, August 2024)",
+      "source_url": "https://www.uelac.org/New-Brunswick/Documents/Proven-Loyalists-NB-2024-Aug.pdf",
+      "source_site": "uelac.org",
+      "snippet": "Tompkins, Sgt. Edmund  Loyal American Regt.  unknown\nTowers, William  unknown\nTracy, Jerimiah Sr.  unknown",
+      "claimed_facts": "William Towers is listed as a PROVEN United Empire Loyalist who settled in New Brunswick (arrived 1783). This directly corroborates the worklist William Towers (b. 1750 Bothkennar, Scotland; d. 13 Jan 1835 Tower Hill, St David, NB). Burial place listed as 'unknown' in the UELAC compilation; no regiment shown for him in the list.",
+      "confidence_score": 65,
+      "confidence_label": "Medium-high confidence",
+      "notes": "NB/NS record. UELAC's vetted Proven-Loyalists compilation (text extracted from the official PDF). The list expressly tries to include only people who arrived as Loyalists in 1783, not later generations. Name and NB residence match the worklist exactly; recommend confirming the specific man via PANB Land Grants RS686 / Land Petitions RS108 for the Tower Hill grant (PANB search portal is interactive-only, see notes in summary)."
+    },
+    {
+      "person_id": "@I322454173711@",
+      "person_name": "William Towers",
+      "search_query": "William Towers Tower Hill St David Charlotte County New Brunswick Admiralty mast reserve land grant origin",
+      "source_title": "Saint David Parish, New Brunswick (history of Tower Hill settlement)",
+      "source_url": "https://en.wikipedia.org/wiki/Saint_David_Parish,_New_Brunswick",
+      "source_site": "en.wikipedia.org",
+      "snippet": "Saint David joined the Cape Ann Association block in the north with the Penobscot Association block around Oak Bay and the Admiralty mast reserve between them. Communities include Tower Hill (Central Tower Hill, Lower Tower Hill, Upper Tower Hill).",
+      "claimed_facts": "Tower Hill is a settlement cluster in Saint David Parish, Charlotte County, NB, situated in/near the former Admiralty mast-and-spar reserve that was integrated into civilian land grants in the early 1800s. Per related sources, settler William Towers expanded his holdings here as the mast reserve opened to grants — consistent with the worklist death place 'Tower Hill, St David, New Brunswick.'",
+      "confidence_score": 50,
+      "confidence_label": "Medium confidence",
+      "notes": "NB/NS record. Wikipedia confirms the geography (Tower Hill / Admiralty mast reserve / Charlotte Co.); the detailed Towers-specific land narrative appeared in the Grokipedia 'Saint David Parish' article (returned in search snippets; the page itself blocked direct fetch with HTTP 403). The place-name 'Tower Hill' is plausibly associated with the Towers family. Land acreage/grant reference still to be confirmed in PANB RS686/RS108."
+    },
+    {
+      "person_id": "@I322454173711@",
+      "person_name": "William Towers",
+      "search_query": "Towers Tower Hill Saint David Charlotte New Brunswick wikitree descendants",
+      "source_title": "WikiTree Category: Saint David Parish, New Brunswick (Towers family)",
+      "source_url": "https://www.wikitree.com/wiki/Category:Saint_David_Parish,_New_Brunswick",
+      "source_site": "wikitree.com",
+      "snippet": "Mary (Towers) Bradshaw — born 12 Apr 1873 Tower Hill, Saint David, Charlotte, New Brunswick, Canada; died 29 Aug 1939.",
+      "claimed_facts": "A Towers family was established and persisting at Tower Hill, St David Parish, Charlotte Co., NB into the late 19th century (Mary Towers b. 1873 at Tower Hill), consistent with William Towers being the founding settler of the namesake locality. Supports the worklist NB residence; this Mary is a likely descendant, not the worklist individual.",
+      "confidence_score": 35,
+      "confidence_label": "Low-medium confidence",
+      "notes": "NB/NS record. Circumstantial / descendant-level corroboration of the Towers family's continued presence at Tower Hill. Useful as a downstream link; does not by itself document William Towers' own dates."
+    },
+    {
+      "person_id": "",
+      "person_name": "David Ives (Loyalist surname target — no worklist person_id match)",
+      "search_query": "Ives proven Loyalist New Brunswick UELAC Maugerville Sunbury surname target",
+      "source_title": "UELAC \"Proven Loyalists of New Brunswick\" (cumulative list, August 2024)",
+      "source_url": "https://www.uelac.org/New-Brunswick/Documents/Proven-Loyalists-NB-2024-Aug.pdf",
+      "source_site": "uelac.org",
+      "snippet": "Inman, Cpl. Richard  1st DeLanceys  unknown\nIves, David  unknown\nJ",
+      "claimed_facts": "David Ives is listed as a PROVEN United Empire Loyalist who settled in New Brunswick (arrived 1783); burial 'unknown'. Target surname 'Ives' is one of the NB/NS Loyalist surnames in the research plan (Maugerville/Sunbury cluster).",
+      "confidence_score": 40,
+      "confidence_label": "Low-medium confidence (CLUE)",
+      "notes": "NB/NS record. CLUE only — NO matching person_id in research_worklist.json (the worklist's gen-9 people are predominantly MA/NH/ME colonial, not the NB Loyalist surnames). Recorded because 'Ives' is an explicit target surname. Link to the family tree to be established before attaching."
+    },
+    {
+      "person_id": "",
+      "person_name": "Purdy family (Stephen / Jemima / Gilbert / Gloriana — Loyalist surname target, no worklist person_id match)",
+      "search_query": "Purdy proven Loyalist New Brunswick Nova Scotia UELAC burial McDonald's Point surname target",
+      "source_title": "UELAC \"Proven Loyalists of New Brunswick\" (cumulative list, August 2024)",
+      "source_url": "https://www.uelac.org/New-Brunswick/Documents/Proven-Loyalists-NB-2024-Aug.pdf",
+      "source_site": "uelac.org",
+      "snippet": "Betts, Gloriana Purdy  Loy. Burial Grnd., Saint John, NB\nPurdy, Gilbert  Rose Cem., Cumberland Co., NS\nPurdy, Jemima  McDonald's Pt. Cem., McDonald's Pt., NB\nPurdy, Stephen  unknown",
+      "claimed_facts": "Multiple PROVEN Loyalists surnamed Purdy settled in NB/NS: Stephen Purdy (burial unknown), Jemima Purdy (bur. McDonald's Point Cemetery, NB), Gilbert Purdy (bur. Rose Cemetery, Cumberland Co., NS), and Gloriana (Purdy) Betts (bur. Loyalist Burial Ground, Saint John, NB). 'Purdy' is a target NB/NS Loyalist surname in the plan.",
+      "confidence_score": 40,
+      "confidence_label": "Low-medium confidence (CLUE)",
+      "notes": "NB/NS record. CLUE only — NO matching person_id in the worklist. Gives concrete burial locations (incl. Cumberland Co. NS, adjacent to the Truro NS branch) to pursue once the Purdy line is tied into the tree."
+    },
+    {
+      "person_id": "",
+      "person_name": "Joel Daniel (Loyalist surname target — no worklist person_id match)",
+      "search_query": "Daniel proven Loyalist New Brunswick UELAC surname target Truro",
+      "source_title": "UELAC \"Proven Loyalists of New Brunswick\" (cumulative list, August 2024)",
+      "source_url": "https://www.uelac.org/New-Brunswick/Documents/Proven-Loyalists-NB-2024-Aug.pdf",
+      "source_site": "uelac.org",
+      "snippet": "Daniel, Joel  unknown",
+      "claimed_facts": "Joel Daniel is listed as a PROVEN United Empire Loyalist who settled in New Brunswick (arrived 1783); burial 'unknown'. 'Daniel' is an explicit target surname (Truro NS / NB Loyalist cluster) in the research plan.",
+      "confidence_score": 35,
+      "confidence_label": "Low-medium confidence (CLUE)",
+      "notes": "NB/NS record. CLUE only — NO matching person_id in the worklist. (Many other 'Daniel' hits in the list are first names, e.g. 'Bliss, Daniel' — excluded.) Recorded because 'Daniel' is a target surname; relationship to the tree not yet established."
+    },
+    {
+      "person_id": "",
+      "person_name": "Michael Lenentine II (Lenentine surname target — no worklist person_id match)",
+      "search_query": "Michael Lenentine Southampton New Brunswick 1789 Jerusha Farrell Woodstock origin Pennsylvania",
+      "source_title": "Lenentine family of Southampton, York Co., NB (genealogy.com user tree, Ervin E. Lenentine)",
+      "source_url": "https://www.genealogy.com/ftm/l/e/n/Ervin-E-Lenentine/WEBSITE-0001/UHP-0052.html",
+      "source_site": "genealogy.com",
+      "snippet": "Michael Lenentine II born September 12, 1789 in Southampton, N.B. Canada; died February 08, 1879 in York County, N.B. Canada; married Jerusha Farrell on October 15, 1808 in Woodstock, N.B. Canada; buried New Lenentine Cemetery, Southampton, N.B.",
+      "claimed_facts": "Michael Lenentine II b. 12 Sep 1789 Southampton, NB; d. 8 Feb 1879 York Co., NB; m. Jerusha Farrell 15 Oct 1808 Woodstock, NB; bur. New Lenentine Cemetery. The 'II' implies a Michael Lenentine I (the immigrant ancestor); a related Michael Lenentine is recorded born c.1769 in Pennsylvania — indicating the Lenentine line entered NB from the American colonies (Loyalist/German-American migration), which is why generic searches missed it.",
+      "confidence_score": 40,
+      "confidence_label": "Low-medium confidence (CLUE)",
+      "notes": "NB/NS record. CLUE only — NO matching person_id in the worklist (Lenentine is an Aroostook-origin target surname per the plan, but no Lenentine individual is in research_worklist.json). genealogy.com page itself blocked direct fetch (HTTP 403); details captured from search-engine snippet. Corroborated by WikiTree/Find a Grave 'New Lenentine Cemetery, Middle Southampton, NB.' Establishes the NB foothold of the Lenentine family before the migration to Houlton/Monticello/Mars Hill, Aroostook Co., Maine."
+    },
+    {
+      "person_id": "",
+      "person_name": "Lenentine family (New Lenentine Cemetery, Middle Southampton, York Co., NB)",
+      "search_query": "New Lenentine Cemetery Middle Southampton New Brunswick Lenentine burials",
+      "source_title": "WikiTree Category: New Lenentine Cemetery, Middle Southampton, New Brunswick",
+      "source_url": "https://www.wikitree.com/wiki/Category:New_Lenentine_Cemetery,_Middle_Southampton,_New_Brunswick",
+      "source_site": "wikitree.com",
+      "snippet": "Replacement for the Old Lenentine Cemetery in Lower Southampton; headstones moved here in the 1960s. Burials include Elizabeth (Fox) Lenentine (1825-1898), Mary (Dore) Lenentine (1851-1890), Mary (Barrow) Lenentine (1879-1975), Viola (Bates) Lenentine (1894-1974).",
+      "claimed_facts": "The Lenentine family was concentrated in Southampton / Campbell Settlement, York Co., NB, with a family burial ground (Old Lenentine Cemetery on the St. John River bank, flooded by the 1960s hydro dam; relocated as New Lenentine Cemetery, Middle Southampton). Earliest cited burial Elizabeth (Fox) Lenentine, b. 1825.",
+      "confidence_score": 35,
+      "confidence_label": "Low-medium confidence (CLUE)",
+      "notes": "NB/NS record. CLUE only — NO matching person_id in the worklist. Confirms the geographic core of the Lenentine/Lentine line in NB (Southampton, York/Carleton Co. border area) prior to the Aroostook Co., Maine migration."
+    }
+  ],
+  "processed": [
+    "@I322454173711@"
+  ]
+}
