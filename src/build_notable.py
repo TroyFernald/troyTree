@@ -112,7 +112,7 @@ _TEMPLATE = r"""<!doctype html>
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden;
     display:flex; flex-direction:column; }
-  .card img { width:100%; height:180px; object-fit:cover; object-position:center top; }
+  .card img { width:100%; height:180px; object-fit:contain; background:#efe6d8; }
   .card .body { padding:12px 14px; }
   .card h3 { margin:0 0 3px; font-size:17px; }
   .card .meta { color:#8a7866; font-size:12.5px; margin-bottom:6px; }

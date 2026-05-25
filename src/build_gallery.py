@@ -88,7 +88,7 @@ _TEMPLATE = r"""<!doctype html>
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:14px;}
   figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden;}
   figure a{display:block;}
-  figure img{width:100%;height:150px;object-fit:cover;display:block;background:#eee;}
+  figure img{width:100%;height:150px;object-fit:contain;display:block;background:#e7ddc9;}
   figcaption{padding:6px 8px;font-size:12px;color:#5b4a35;}
   figcaption .ppl{color:var(--accent);}
   @media (max-width:600px){.grid{grid-template-columns:repeat(auto-fill,minmax(108px,1fr));} figure img{height:108px;}}

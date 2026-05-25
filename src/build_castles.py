@@ -58,7 +58,7 @@ _TEMPLATE = r"""<!doctype html>
   .card { background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden;
     display:flex; flex-direction:column; box-shadow:0 2px 10px rgba(90,70,50,.06); }
   .card .ph { position:relative; cursor:zoom-in; }
-  .card img { width:100%; height:210px; object-fit:cover; display:block; background:#e7ddc9; }
+  .card img { width:100%; height:210px; object-fit:contain; display:block; background:#e7ddc9; }
   .card .badge { position:absolute; top:10px; right:10px; font-size:11.5px; font-family:-apple-system,Segoe UI,sans-serif;
     padding:3px 9px; border-radius:14px; color:#fff; backdrop-filter:blur(2px); }
   .s-stands { background:rgba(70,120,70,.92); }
