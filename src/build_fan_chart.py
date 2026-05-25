@@ -64,7 +64,7 @@ def _collect(con, max_gen: int, redact_living: bool = True) -> tuple[list[dict],
         else:
             name = rec["full_name"] or "(unknown)"
             born, died = rec["birth_date"] or "", rec["death_date"] or ""
-        slots.append({"gen": gen, "slot": slot, "name": name, "born": born, "died": died})
+        slots.append({"id": pid, "gen": gen, "slot": slot, "name": name, "born": born, "died": died})
         if gen < max_gen:
             for i, par in enumerate(parents_of(pid)):
                 frontier.append((par, gen + 1, slot * 2 + i))
@@ -123,7 +123,7 @@ _TEMPLATE = r"""<!doctype html>
 <div id="panel">
   <a href="index.html" style="color:#8b97a7;text-decoration:none;font-size:12px">‹ Home</a>
   <h1>Ancestor fan</h1>
-  <div class="meta">__COUNT__ ancestors · __MAXGEN__ generations<br>zoom in to read the outer rings · hover / tap for full name &amp; dates<br>scroll / pinch to zoom · drag to pan</div>
+  <div class="meta">__COUNT__ ancestors · __MAXGEN__ generations<br>click a wedge to open that person's story · zoom in to read the outer rings<br>scroll / pinch to zoom · drag to pan</div>
   <div id="sides"></div>
   <button id="reset" style="margin-top:6px">Reset view</button>
 </div>
@@ -135,7 +135,7 @@ const MAXGEN = Math.max(1, __MAXGEN__);
 const SIDE_LABELS = __SIDELABELS__;
 const SIDE_KEYS = __SIDEKEYS__;
 const sideClass = s => s.gen===0 ? 'side-root' : ((s.slot >> (s.gen-1))===0 ? 'side-f' : 'side-b');
-const CR = 66, RW = 64;                  // center radius, ring width
+const CR = 76, RW = 86;                  // center radius, ring width
 const TAU = Math.PI*2;
 const LABEL_MAX = 99;                     // label every generation (tiny far out; zoom in to read)
 const MINSPAN = 0.012;                    // min wedge angle (~0.7°) so sparse deep ancestors stay visible
@@ -156,19 +156,25 @@ function sector(g, slot) {
        + `L ${x3} ${y3} A ${ri} ${ri} 0 ${large} 0 ${x0} ${y0} Z`;
 }
 
+const PAD = 9;                                  // radial padding inside a ring
 function label(g, slot, name) {
   const n = Math.pow(2, g), span = TAU/n, mid = -Math.PI/2 + (slot+0.5)*span;
-  const r = g===0 ? 0 : CR + (g-0.5)*RW;
-  let deg = mid*180/Math.PI, anchor='middle', flip=0;
-  const fs = g===0 ? 15 : Math.max(5, 13 - g*0.95);
+  if (g===0) return {radial:false, fs:14, txt:firstTwo(name)};
+  // Auto-fit: shrink the font so the WHOLE name fits along the ring width, and
+  // never let it grow taller than the wedge is thick (so it stays inside the box).
+  const drawnSpan = Math.max(span, MINSPAN);
+  const midR = CR + (g-0.5)*RW;
+  const arcThick = midR * drawnSpan;            // room across the wedge (perpendicular)
+  const radialRoom = RW - PAD;                  // room along the radius (text length)
+  let fs = radialRoom / (Math.max(name.length,1) * 0.55);
+  fs = Math.min(fs, arcThick * 0.80, 15);       // cap by wedge thickness and a sensible max
+  fs = Math.max(fs, 3.4);                        // floor
   let txt = name;
-  if (g>=1) {                                  // radial labels, kept upright
-    if (deg>90 || deg<-90) { flip=180; anchor='end'; } else anchor='start';
-    const cap = Math.max(6, Math.floor((RW-10)/ (fs*0.55)));
-    if (txt.length>cap) txt = txt.slice(0,cap-1)+'…';
-    return {r, deg, anchor, flip, fs, txt, radial:true};
-  }
-  return {r:0, deg:0, anchor:'middle', flip:0, fs, txt:firstTwo(name), radial:false};
+  const maxChars = Math.floor(radialRoom / (fs*0.55));   // truncate only if even the floor won't fit
+  if (txt.length > maxChars) txt = txt.slice(0, Math.max(1, maxChars-1)) + '…';
+  let deg = mid*180/Math.PI, anchor='start', flip=0;
+  if (deg>90 || deg<-90) { flip=180; anchor='end'; }
+  return {radial:true, deg, anchor, flip, fs, txt};
 }
 const firstTwo = s => s.split(' ').slice(0,2).join(' ');
 
@@ -181,11 +187,12 @@ for (const s of SLOTS) {
 for (const s of SLOTS) {
   if (s.gen > LABEL_MAX) continue;             // (labels on every generation; zoom in to read the outer rim)
   const L = label(s.gen, s.slot, s.name);
+  const sw = Math.max(0.4, L.fs*0.16).toFixed(2);
   if (L.radial) {
     frag += `<g class="${sideClass(s)}" transform="rotate(${L.deg}) translate(${CR + (s.gen-1)*RW + 6} 0) rotate(${L.flip})">`
-          + `<text class="lbl" x="0" y="0" font-size="${L.fs}" dominant-baseline="middle" text-anchor="${L.anchor}">${esc(L.txt)}</text></g>`;
+          + `<text class="lbl" x="0" y="0" font-size="${L.fs.toFixed(1)}" style="stroke-width:${sw}px" dominant-baseline="middle" text-anchor="${L.anchor}">${esc(L.txt)}</text></g>`;
   } else {
-    frag += `<text class="lbl side-root" x="0" y="0" font-size="${L.fs}" text-anchor="middle" dominant-baseline="middle">${esc(L.txt)}</text>`;
+    frag += `<text class="lbl side-root" x="0" y="0" font-size="${L.fs}" style="stroke-width:${sw}px" text-anchor="middle" dominant-baseline="middle">${esc(L.txt)}</text>`;
   }
 }
 vp.innerHTML = frag;
@@ -210,12 +217,13 @@ function zoomAround(cx, cy, f){
   view.x = cx - (cx-view.x)*f; view.y = cy - (cy-view.y)*f; view.k *= f; apply();
 }
 
-const pts = new Map(); let lastDist=0, lastMid=null;
-svg.addEventListener('pointerdown', e => { svg.setPointerCapture(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); });
+const pts = new Map(); let lastDist=0, lastMid=null, downPt=null, moved=false;
+svg.addEventListener('pointerdown', e => { svg.setPointerCapture(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); downPt={x:e.clientX,y:e.clientY}; moved=false; });
 svg.addEventListener('pointermove', e => {
   if (!pts.has(e.pointerId)) return;
   const prev = pts.get(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
-  if (pts.size===1){ view.x += e.clientX-prev.x; view.y += e.clientY-prev.y; apply(); }
+  if (pts.size===1){ view.x += e.clientX-prev.x; view.y += e.clientY-prev.y; apply();
+    if (downPt && Math.hypot(e.clientX-downPt.x, e.clientY-downPt.y)>6) moved=true; }
   else if (pts.size===2){
     const [a,b]=[...pts.values()]; const dist=Math.hypot(a.x-b.x,a.y-b.y);
     const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
@@ -231,7 +239,8 @@ svg.addEventListener('pointerup', up); svg.addEventListener('pointercancel', up)
 const tip = document.getElementById('tip');
 function show(i, x, y){
   const s = SLOTS[i]; if(!s) return;
-  tip.innerHTML = `<b>${esc(s.name)}</b><span>${esc([s.born,s.died].filter(Boolean).join(' – ')) || 'gen '+s.gen}</span>`;
+  tip.innerHTML = `<b>${esc(s.name)}</b><span>${esc([s.born,s.died].filter(Boolean).join(' – ')) || 'gen '+s.gen}</span>`
+    + (s.id ? `<span style="color:#8fd3a0">click for their story →</span>` : '');
   tip.style.display='block';
   tip.style.left = Math.min(x+12, innerWidth-tip.offsetWidth-6)+'px';
   tip.style.top = Math.min(y+12, innerHeight-tip.offsetHeight-6)+'px';
@@ -241,7 +250,11 @@ svg.addEventListener('pointermove', e => {
   if (t && pts.size===0) show(+t.dataset.i, e.clientX, e.clientY); else if(pts.size) tip.style.display='none';
 });
 svg.addEventListener('pointerleave', ()=> tip.style.display='none');
-svg.addEventListener('click', e => { const t=e.target.closest('.wedge'); if(t) show(+t.dataset.i, e.clientX, e.clientY); });
+svg.addEventListener('click', e => {
+  const t=e.target.closest('.wedge'); if(!t || moved) return;     // ignore clicks that were pans
+  const s=SLOTS[+t.dataset.i];
+  if(s && s.id) location.href='story.html#'+encodeURIComponent(s.id);
+});
 document.getElementById('reset').addEventListener('click', fit);
 
 // ---- Fernald / Bagley side toggle ----
