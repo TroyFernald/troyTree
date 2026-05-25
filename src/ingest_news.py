@@ -188,20 +188,13 @@ def add_clipping(person_id: str, paper: str, when: str, text: str,
             raise SystemExit(f"No such person_id: {person_id}")
         pname = pr["full_name"]
         title = paper + (f" — {when}" if when else "")
-        con.execute(
-            "INSERT INTO web_research_finding (person_id, person_name, search_query, source_title, "
-            "source_type, source_url, source_site, snippet, claimed_facts, confidence_score, "
-            "confidence_label, review_status, date_found, notes) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            (person_id, pname, "news_dropbox", title, "newspaper", url, paper,
-             text.strip(), text.strip()[:200], 0.95, "user-supplied", "verified",
-             date.today().isoformat(), when),
-        )
+        # Import the source file first, so its served /media/ URL can be the clickable source.
         media_done = None
+        served_url = ""
         if image:
             src = DROPBOX / image
             if not src.exists():
-                raise SystemExit(f"Image not found in dropbox: {src}")
+                raise SystemExit(f"File not found in dropbox: {src}")
             ext = src.suffix.lower()
             safe = re.sub(r"[^A-Za-z0-9._-]", "_", f"news_{person_id.strip('@')}_{image}")
             MEDIA_DIR.mkdir(parents=True, exist_ok=True)
@@ -209,19 +202,36 @@ def add_clipping(person_id: str, paper: str, when: str, text: str,
             shutil.copy2(src, dst)
             if PUB_MEDIA.exists():
                 shutil.copy2(src, PUB_MEDIA / safe)
+            served_url = "/media/" + safe
             md5 = hashlib.md5(dst.read_bytes()).hexdigest()
             kind = "photo" if ext in {".jpg", ".jpeg", ".png"} else "document"
-            cur = con.execute(
-                "INSERT INTO media_object (file_name, file_path, file_ext, file_size, md5, caption, "
-                "media_date, kind, owner_count, ocr_text, ocr_status) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-                (safe, str(dst), ext, dst.stat().st_size, md5, title, when, kind, 1, text.strip(), "done"),
-            )
-            mid = cur.lastrowid
-            con.execute(
-                "INSERT INTO media_person_link (media_id, person_id, person_name, link_type) "
-                "VALUES (?,?,?,?)", (mid, person_id, pname, "newspaper"),
-            )
+            row = con.execute("SELECT media_id FROM media_object WHERE md5=?", (md5,)).fetchone()
+            if row:                                  # same file already imported (shared by several people)
+                mid = row["media_id"]
+            else:
+                cur = con.execute(
+                    "INSERT INTO media_object (file_name, file_path, file_ext, file_size, md5, caption, "
+                    "media_date, kind, owner_count, ocr_text, ocr_status) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                    (safe, str(dst), ext, dst.stat().st_size, md5, title, when, kind, 1, text.strip(), "done"),
+                )
+                mid = cur.lastrowid
+            if not con.execute("SELECT 1 FROM media_person_link WHERE media_id=? AND person_id=?",
+                               (mid, person_id)).fetchone():
+                con.execute(
+                    "INSERT INTO media_person_link (media_id, person_id, person_name, link_type) "
+                    "VALUES (?,?,?,?)", (mid, person_id, pname, "newspaper"),
+                )
             media_done = safe
+        final_url = url or served_url            # clickable source = the PDF/image when given
+        con.execute(
+            "INSERT OR REPLACE INTO web_research_finding (person_id, person_name, search_query, source_title, "
+            "source_type, source_url, source_site, snippet, claimed_facts, confidence_score, "
+            "confidence_label, review_status, date_found, notes) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (person_id, pname, "news_dropbox", title, "newspaper", final_url, paper,
+             text.strip(), text.strip()[:200], 0.95, "user-supplied", "verified",
+             date.today().isoformat(), when),
+        )
         # mark review entry ingested
         if REVIEW.exists():
             rev = json.loads(REVIEW.read_text(encoding="utf-8"))
