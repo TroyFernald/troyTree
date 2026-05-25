@@ -108,6 +108,15 @@ _TEMPLATE = r"""<!doctype html>
     border:1px solid #34404f; border-radius:6px; padding:6px 9px; font-size:12.5px; display:none; max-width:240px; }
   #tip b { display:block; }
   #tip span { color:#9aa6b5; }
+  #pop { position:fixed; z-index:25; background:rgba(15,18,24,.98); border:1px solid #3a4658;
+    border-radius:8px; padding:9px 12px; font-size:13px; display:none; max-width:250px;
+    box-shadow:0 6px 24px rgba(0,0,0,.55); }
+  #pop.open { display:block; }
+  #pop b { display:block; margin-bottom:2px; }
+  #pop .d { color:#9aa6b5; font-size:12px; margin-bottom:8px; }
+  #pop a { display:inline-block; background:#3a4a5e; color:#fff; text-decoration:none;
+    padding:6px 11px; border-radius:6px; font-size:12.5px; }
+  #pop a:hover { background:#4a5d75; }
   .wedge { stroke:#13161d; stroke-width:.6; cursor:pointer; }
   .wedge:hover { stroke:#fff; stroke-width:1; }
   text.lbl { fill:#10141b; font-weight:600; pointer-events:none;
@@ -123,11 +132,15 @@ _TEMPLATE = r"""<!doctype html>
 <div id="panel">
   <a href="index.html" style="color:#8b97a7;text-decoration:none;font-size:12px">‹ Home</a>
   <h1>Ancestor fan</h1>
-  <div class="meta">__COUNT__ ancestors · __MAXGEN__ generations<br>click a wedge to open that person's story · zoom in to read the outer rings<br>scroll / pinch to zoom · drag to pan</div>
+  <div class="meta">__COUNT__ ancestors · __MAXGEN__ generations<br>click a wedge for that person (and a link to their story)<br>scroll / pinch to zoom · drag to pan</div>
   <div id="sides"></div>
-  <button id="reset" style="margin-top:6px">Reset view</button>
+  <div style="display:flex;gap:5px;margin-top:6px">
+    <button id="reset" style="flex:1">Reset view</button>
+    <button id="all" style="flex:1">Whole tree</button>
+  </div>
 </div>
 <div id="tip"></div>
+<div id="pop"></div>
 <svg id="fan"><g id="vp"></g></svg>
 <script>
 const SLOTS = __DATA__;
@@ -202,10 +215,14 @@ function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const svg = document.getElementById('fan');
 let view = {k:1, x:0, y:0};
 function apply(){ vp.setAttribute('transform', `translate(${view.x} ${view.y}) scale(${view.k})`); }
-function fit(){
-  const R = CR + MAXGEN*RW + 30, w = svg.clientWidth, h = svg.clientHeight;
+function frame(gens){
+  // Zoom so `gens` rings fill the viewport (names stay readable); deeper rings sit
+  // beyond the edges and can be reached by zooming out or panning.
+  const R = CR + Math.min(gens, MAXGEN)*RW + 20, w = svg.clientWidth, h = svg.clientHeight;
   view.k = Math.min(w, h) / (2*R); view.x = w/2; view.y = h/2; apply();
 }
+function fit(){ frame(8); }          // default: the readable inner generations
+function fitAll(){ frame(MAXGEN); }  // the whole tree at once
 addEventListener('resize', fit);
 
 svg.addEventListener('wheel', e => {
@@ -218,7 +235,7 @@ function zoomAround(cx, cy, f){
 }
 
 const pts = new Map(); let lastDist=0, lastMid=null, downPt=null, moved=false;
-svg.addEventListener('pointerdown', e => { svg.setPointerCapture(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); downPt={x:e.clientX,y:e.clientY}; moved=false; });
+svg.addEventListener('pointerdown', e => { svg.setPointerCapture(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); downPt={x:e.clientX,y:e.clientY}; moved=false; pop.classList.remove('open'); });
 svg.addEventListener('pointermove', e => {
   if (!pts.has(e.pointerId)) return;
   const prev = pts.get(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -250,12 +267,24 @@ svg.addEventListener('pointermove', e => {
   if (t && pts.size===0) show(+t.dataset.i, e.clientX, e.clientY); else if(pts.size) tip.style.display='none';
 });
 svg.addEventListener('pointerleave', ()=> tip.style.display='none');
+const pop=document.getElementById('pop');
+function showPop(i, x, y){
+  const s=SLOTS[i]; if(!s) return;
+  pop.innerHTML=`<b>${esc(s.name)}</b><div class="d">${esc([s.born,s.died].filter(Boolean).join(' – ')) || ('Generation '+s.gen)}</div>`
+    + (s.id ? `<a href="story.html#${encodeURIComponent(s.id)}">📖 Open their story →</a>` : '');
+  pop.classList.add('open');
+  pop.style.left=Math.min(x+10, innerWidth-pop.offsetWidth-8)+'px';
+  pop.style.top=Math.min(y+10, innerHeight-pop.offsetHeight-8)+'px';
+}
 svg.addEventListener('click', e => {
-  const t=e.target.closest('.wedge'); if(!t || moved) return;     // ignore clicks that were pans
-  const s=SLOTS[+t.dataset.i];
-  if(s && s.id) location.href='story.html#'+encodeURIComponent(s.id);
+  const t=e.target.closest('.wedge');
+  if(!t || moved){ if(!t) pop.classList.remove('open'); return; }   // pan, or click on empty space
+  tip.style.display='none';
+  showPop(+t.dataset.i, e.clientX, e.clientY);
 });
+addEventListener('keydown', e => { if(e.key==='Escape') pop.classList.remove('open'); });
 document.getElementById('reset').addEventListener('click', fit);
+document.getElementById('all').addEventListener('click', fitAll);
 
 // ---- Fernald / Bagley side toggle ----
 const sidesEl = document.getElementById('sides');
