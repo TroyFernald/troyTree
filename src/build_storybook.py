@@ -251,7 +251,7 @@ _TEMPLATE = r"""<!doctype html>
   @keyframes flipInR{from{transform:rotateY(88deg)}to{transform:rotateY(0)}}
   .gen { color:var(--muted); font-size:12px; letter-spacing:1px; text-transform:uppercase; }
   h1.nm { font-size:30px; margin:3px 0 14px; line-height:1.1; }
-  .lead { width:100%; max-height:40%; object-fit:cover; border-radius:5px; margin:0 0 16px;
+  .lead { width:100%; max-height:46vh; object-fit:contain; background:#efe6d2; border-radius:5px; margin:0 0 16px;
     box-shadow:0 3px 12px rgba(0,0,0,.2); }
   .body { margin:0 0 18px; }
   .facts { font-size:14px; color:#5b4a35; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
@@ -264,7 +264,7 @@ _TEMPLATE = r"""<!doctype html>
   .crest span { display:block; font-size:12.5px; letter-spacing:0; font-style:italic; color:#8a6a38; margin-top:4px; }
   .portraits { display:flex; gap:12px; flex-wrap:wrap; margin:0 0 8px; }
   .portraits figure { margin:0; flex:1; min-width:140px; }
-  .portraits img { width:100%; max-height:300px; object-fit:cover; object-position:center top; border-radius:5px; box-shadow:0 3px 12px rgba(0,0,0,.28); }
+  .portraits img { width:100%; max-height:340px; object-fit:contain; background:#efe6d2; border-radius:5px; box-shadow:0 3px 12px rgba(0,0,0,.28); }
   .portraits figcaption { font-size:11.5px; color:#8a775c; font-style:italic; text-align:center; margin-top:3px; }
   .nicap { font-size:13.5px; color:#5b4a35; margin:0 0 14px; }
   .dd-badge { display:inline-block; background:linear-gradient(180deg,#f7eccb,#f0e0bc); border:1px solid #d8c08a;
@@ -282,7 +282,7 @@ _TEMPLATE = r"""<!doctype html>
   .rec { font-size:14.5px; margin:7px 0; }
   .rec .tag { font-size:11px; background:#efe2c7; color:#6b513a; border-radius:3px; padding:1px 6px; margin-right:6px; }
   .gallery { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-  .gallery img { width:108px; height:108px; object-fit:cover; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,.18); }
+  .gallery img { width:108px; height:108px; object-fit:contain; background:#efe6d2; border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,.18); }
   .nav { position:fixed; top:50%; transform:translateY(-50%); width:56px; height:56px; border:0;
     background:rgba(20,15,9,.6); color:#ecdfc6; cursor:pointer; font-size:30px; z-index:20;
     border-radius:50%; display:flex; align-items:center; justify-content:center;
