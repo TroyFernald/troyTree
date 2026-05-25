@@ -23,7 +23,7 @@ from .paths import EXPORTS_DIR, WORKING_DB
 from .privacy import LIVING_NAME, is_living
 
 OUT_PATH = EXPORTS_DIR / "fan.html"
-MAX_GEN = 9
+MAX_GEN = 25  # effectively "all generations"; the walk stops when parent links run out
 
 
 def _collect(con, max_gen: int, redact_living: bool = True) -> tuple[list[dict], int]:
@@ -122,7 +122,7 @@ _TEMPLATE = r"""<!doctype html>
 <div id="panel">
   <a href="index.html" style="color:#8b97a7;text-decoration:none;font-size:12px">‹ Home</a>
   <h1>Ancestor fan</h1>
-  <div class="meta">__COUNT__ ancestors · __MAXGEN__ generations<br>scroll / pinch to zoom · drag to pan</div>
+  <div class="meta">__COUNT__ ancestors · __MAXGEN__ generations<br>hover / tap any wedge for the name<br>scroll / pinch to zoom · drag to pan</div>
   <div id="sides"></div>
   <button id="reset" style="margin-top:6px">Reset view</button>
 </div>
@@ -134,14 +134,19 @@ const MAXGEN = Math.max(1, __MAXGEN__);
 const SIDE_LABELS = __SIDELABELS__;
 const SIDE_KEYS = __SIDEKEYS__;
 const sideClass = s => s.gen===0 ? 'side-root' : ((s.slot >> (s.gen-1))===0 ? 'side-f' : 'side-b');
-const CR = 78, RW = 102;                 // center radius, ring width
+const CR = 66, RW = 64;                  // center radius, ring width
 const TAU = Math.PI*2;
-const colorFor = g => `hsl(${205 + (g/MAXGEN)*175}, 70%, ${62 - g*1.2}%)`;
+const LABEL_MAX = 9;                      // deeper rings are colour-only (name on hover/tap)
+const MINSPAN = 0.012;                    // min wedge angle (~0.7°) so sparse deep ancestors stay visible
+// Cool blue → teal → green → soft gold sweep (no red), darkening gently outward
+const colorFor = g => `hsl(${210 - (g/MAXGEN)*150}, 52%, ${60 - (g/MAXGEN)*16}%)`;
 const polar = (r,a) => [r*Math.cos(a), r*Math.sin(a)];
 
 function sector(g, slot) {
-  const n = Math.pow(2, g), span = TAU/n;
-  const a0 = -Math.PI/2 + slot*span, a1 = a0+span;       // start at top, clockwise
+  const n = Math.pow(2, g), nat = TAU/n;
+  const mid = -Math.PI/2 + (slot+0.5)*nat;               // wedge centre, starting at top, clockwise
+  const span = Math.max(nat, MINSPAN);                   // clamp so deep, sparse wedges remain visible
+  const a0 = mid - span/2, a1 = mid + span/2;
   const ri = g===0 ? 0 : CR + (g-1)*RW, ro = g===0 ? CR : CR + g*RW;
   if (g===0) return `M ${-ri} 0 A ${ri} ${ri} 0 1 1 ${ri} 0 A ${ri} ${ri} 0 1 1 ${-ri} 0 Z`;
   const [x0,y0]=polar(ri,a0),[x1,y1]=polar(ro,a0),[x2,y2]=polar(ro,a1),[x3,y3]=polar(ri,a1);
@@ -154,7 +159,7 @@ function label(g, slot, name) {
   const n = Math.pow(2, g), span = TAU/n, mid = -Math.PI/2 + (slot+0.5)*span;
   const r = g===0 ? 0 : CR + (g-0.5)*RW;
   let deg = mid*180/Math.PI, anchor='middle', flip=0;
-  const fs = g===0 ? 15 : Math.max(6, 15 - g*1.05);
+  const fs = g===0 ? 15 : Math.max(5, 13 - g*0.95);
   let txt = name;
   if (g>=1) {                                  // radial labels, kept upright
     if (deg>90 || deg<-90) { flip=180; anchor='end'; } else anchor='start';
@@ -173,6 +178,7 @@ for (const s of SLOTS) {
         + ` data-i="${SLOTS.indexOf(s)}"></path>`;
 }
 for (const s of SLOTS) {
+  if (s.gen > LABEL_MAX) continue;             // outer rings are colour-only; name shows on hover/tap
   const L = label(s.gen, s.slot, s.name);
   if (L.radial) {
     frag += `<g class="${sideClass(s)}" transform="rotate(${L.deg}) translate(${CR + (s.gen-1)*RW + 6} 0) rotate(${L.flip})">`
