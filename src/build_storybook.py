@@ -264,7 +264,7 @@ _TEMPLATE = r"""<!doctype html>
   .crest span { display:block; font-size:12.5px; letter-spacing:0; font-style:italic; color:#8a6a38; margin-top:4px; }
   .portraits { display:flex; gap:12px; flex-wrap:wrap; margin:0 0 8px; }
   .portraits figure { margin:0; flex:1; min-width:140px; }
-  .portraits img { width:100%; max-height:300px; object-fit:cover; border-radius:5px; box-shadow:0 3px 12px rgba(0,0,0,.28); }
+  .portraits img { width:100%; max-height:300px; object-fit:cover; object-position:center top; border-radius:5px; box-shadow:0 3px 12px rgba(0,0,0,.28); }
   .portraits figcaption { font-size:11.5px; color:#8a775c; font-style:italic; text-align:center; margin-top:3px; }
   .nicap { font-size:13.5px; color:#5b4a35; margin:0 0 14px; }
   .dd-badge { display:inline-block; background:linear-gradient(180deg,#f7eccb,#f0e0bc); border:1px solid #d8c08a;
