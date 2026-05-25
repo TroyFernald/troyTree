@@ -7,7 +7,7 @@ compatibility_date = "2025-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "troytree"
-database_id = "PASTE_DATABASE_ID_HERE"
+database_id = "63b79f97-458a-49e5-8830-15e5c0813803"
 
 # FAMILY_TOKEN is NOT stored here — set it as a secret:
 #   wrangler secret put FAMILY_TOKEN

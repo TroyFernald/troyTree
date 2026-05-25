@@ -81,7 +81,7 @@ def build(db_path=WORKING_DB) -> dict:
             if r["person_id"] in living:
                 continue
             find_rows.append((r["person_id"], r["person_name"], r["source_title"], r["source_type"],
-                              (r["snippet"] or "")[:500], (r["claimed_facts"] or "")[:500], r["notes"]))
+                              (r["snippet"] or "")[:350], (r["claimed_facts"] or "")[:350], r["notes"]))
 
         notable_rows = []
         for r in con.execute(
@@ -93,8 +93,8 @@ def build(db_path=WORKING_DB) -> dict:
 
     def insert(table, cols, rows):
         out = []
-        for i in range(0, len(rows), 200):                       # batch to keep statements reasonable
-            chunk = rows[i:i + 200]
+        for i in range(0, len(rows), 25):                        # small batches: D1 caps single-statement size
+            chunk = rows[i:i + 25]
             vals = ",\n".join("(" + ",".join(_q(v) for v in row) + ")" for row in chunk)
             out.append(f"INSERT INTO {table} ({cols}) VALUES\n{vals};")
         return "\n".join(out)
