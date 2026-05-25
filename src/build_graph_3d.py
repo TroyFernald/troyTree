@@ -126,7 +126,7 @@ _TEMPLATE = r"""<!doctype html>
   #legend .ends { display:flex; justify-content:space-between; }
   #hint { position:fixed; bottom:12px; right:12px; z-index:10; color:#8b97a7; font-size:12px; text-align:right; line-height:1.6; }
   #hint b { color:#c2ccd8; }
-  #help { position:fixed; inset:0; z-index:30; display:flex; align-items:center; justify-content:center; background:rgba(5,7,11,.62); }
+  #help { position:fixed; inset:0; z-index:30; display:flex; align-items:center; justify-content:center; background:rgba(5,7,11,.62); touch-action:manipulation; cursor:pointer; }
   #help.hide { display:none; }
   #help .box { background:rgba(16,20,28,.98); border:1px solid #2a3340; border-radius:12px; padding:20px 24px; max-width:340px; box-shadow:0 12px 40px rgba(0,0,0,.6); }
   #help h2 { margin:0 0 6px; font-size:18px; }
@@ -337,8 +337,11 @@ sidesEl.addEventListener('click', e => { const b=e.target.closest('button'); if(
 const _usp = new URLSearchParams(location.search).get('side');
 applySide(SIDE_KEYS.includes(_usp) ? _usp : '');
 
-// one-time "how to navigate" card
-document.getElementById('helpGo').addEventListener('click', () => document.getElementById('help').classList.add('hide'));
+// one-time "how to navigate" card — tap anywhere on it (button or backdrop) to dismiss; robust on mobile
+const helpEl = document.getElementById('help');
+function closeHelp(e){ if(e){ e.preventDefault(); e.stopPropagation(); } helpEl.classList.add('hide'); }
+helpEl.addEventListener('click', closeHelp);
+helpEl.addEventListener('touchend', closeHelp, {passive:false});
 
 // keyboard fly mode (WASD spaceship)
 const FLYKEYS = ['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','Space','ShiftLeft','ShiftRight'];
