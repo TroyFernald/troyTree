@@ -110,7 +110,8 @@ _TEMPLATE = r"""<!doctype html>
   #tip span { color:#9aa6b5; }
   .wedge { stroke:#13161d; stroke-width:.6; cursor:pointer; }
   .wedge:hover { stroke:#fff; stroke-width:1; }
-  text.lbl { fill:#10141b; font-weight:600; pointer-events:none; }
+  text.lbl { fill:#10141b; font-weight:600; pointer-events:none;
+    paint-order:stroke; stroke:rgba(248,250,252,.62); stroke-width:1.5px; stroke-linejoin:round; }
   #sides { margin-top:7px; display:flex; gap:5px; }
   #sides button { flex:1; background:#222b38; color:#cdd6e2; border:1px solid #2a3340;
     border-radius:6px; padding:5px 4px; font-size:11.5px; cursor:pointer; }
@@ -122,7 +123,7 @@ _TEMPLATE = r"""<!doctype html>
 <div id="panel">
   <a href="index.html" style="color:#8b97a7;text-decoration:none;font-size:12px">‹ Home</a>
   <h1>Ancestor fan</h1>
-  <div class="meta">__COUNT__ ancestors · __MAXGEN__ generations<br>hover / tap any wedge for the name<br>scroll / pinch to zoom · drag to pan</div>
+  <div class="meta">__COUNT__ ancestors · __MAXGEN__ generations<br>zoom in to read the outer rings · hover / tap for full name &amp; dates<br>scroll / pinch to zoom · drag to pan</div>
   <div id="sides"></div>
   <button id="reset" style="margin-top:6px">Reset view</button>
 </div>
@@ -136,7 +137,7 @@ const SIDE_KEYS = __SIDEKEYS__;
 const sideClass = s => s.gen===0 ? 'side-root' : ((s.slot >> (s.gen-1))===0 ? 'side-f' : 'side-b');
 const CR = 66, RW = 64;                  // center radius, ring width
 const TAU = Math.PI*2;
-const LABEL_MAX = 9;                      // deeper rings are colour-only (name on hover/tap)
+const LABEL_MAX = 99;                     // label every generation (tiny far out; zoom in to read)
 const MINSPAN = 0.012;                    // min wedge angle (~0.7°) so sparse deep ancestors stay visible
 // Cool blue → teal → green → soft gold sweep (no red), darkening gently outward
 const colorFor = g => `hsl(${210 - (g/MAXGEN)*150}, 52%, ${60 - (g/MAXGEN)*16}%)`;
@@ -178,7 +179,7 @@ for (const s of SLOTS) {
         + ` data-i="${SLOTS.indexOf(s)}"></path>`;
 }
 for (const s of SLOTS) {
-  if (s.gen > LABEL_MAX) continue;             // outer rings are colour-only; name shows on hover/tap
+  if (s.gen > LABEL_MAX) continue;             // (labels on every generation; zoom in to read the outer rim)
   const L = label(s.gen, s.slot, s.name);
   if (L.radial) {
     frag += `<g class="${sideClass(s)}" transform="rotate(${L.deg}) translate(${CR + (s.gen-1)*RW + 6} 0) rotate(${L.flip})">`
