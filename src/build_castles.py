@@ -68,7 +68,13 @@ _TEMPLATE = r"""<!doctype html>
   .card .body { padding:14px 16px 16px; flex:1; display:flex; flex-direction:column; }
   .card h2 { font-size:20px; margin:0 0 4px; }
   .card .today { font-size:14px; color:#5b4a35; margin:0 0 10px; }
-  .card .ppl { font-size:12.5px; color:var(--accent); font-family:-apple-system,Segoe UI,sans-serif; margin-top:auto; }
+  .card .ppl { font-size:12.5px; font-family:-apple-system,Segoe UI,sans-serif; margin-top:auto; padding-top:9px; }
+  .card .ppl .lbl2 { color:#8a7866; font-size:10.5px; text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px; }
+  .card .ppl ul { list-style:none; margin:0; padding:0; }
+  .card .ppl li { margin:2px 0; color:#4f4030; line-height:1.4; }
+  .card .ppl li .nm { color:var(--accent); font-weight:600; }
+  .card .ppl li .sd { color:#9a8a76; }
+  .card .ppl li.more { color:#9a8a76; font-style:italic; }
   .card .cr { font-size:10.5px; color:#a4937e; margin-top:8px; }
   .card .cr a { color:#a4937e; }
   footer { text-align:center; color:#a3937f; font-size:13px; padding:0 0 24px; }
@@ -95,13 +101,16 @@ const CASTLES=__DATA__;
 const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const cls={'Still stands':'s-stands','Survives as ruins':'s-ruins','Rebuilt':'s-rebuilt','Largely gone':'s-gone'};
 function card(c){
-  const ppl=(c.people||[]).slice(0,4).map(esc).join(' · ')+((c.people||[]).length>4?' …':'');
+  const all=(c.people||[]);
+  const ppl=all.slice(0,5).map(p=>
+    `<li><span class="nm">${esc(p.name)}</span>${p.rel?` — ${esc(p.rel)}`:''}${p.side?` <span class="sd">· ${esc(p.side)} side</span>`:''}</li>`).join('');
+  const more=all.length>5?`<li class="more">+${all.length-5} more</li>`:'';
   return `<div class="card"><div class="ph" data-full="${esc(c.photo)}" data-cap="${esc(c.name+' — '+(c.caption||''))}">`
     +`<img loading="lazy" src="${esc(c.photo)}" alt="${esc(c.name)}" onerror="this.closest('.card').style.display='none'">`
     +(c.status?`<span class="badge ${cls[c.status]||'s-gone'}">${esc(c.status)}</span>`:'')+`</div>`
     +`<div class="body"><h2>${esc(c.name)}</h2>`
     +(c.today?`<p class="today">${esc(c.today)}</p>`:'')
-    +(ppl?`<div class="ppl">👥 ${ppl}</div>`:'')
+    +(ppl?`<div class="ppl"><div class="lbl2">Your ancestors who lived here</div><ul>${ppl}${more}</ul></div>`:'')
     +(c.credit?`<div class="cr">📷 ${c.commons?`<a href="${esc(c.commons)}" target="_blank">${esc(c.credit)}</a>`:esc(c.credit)}</div>`:'')
     +`</div></div>`;
 }
