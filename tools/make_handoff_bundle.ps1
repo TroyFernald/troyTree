@@ -1,10 +1,10 @@
 <#
-  make_handoff_bundle.ps1 — gather everything that is NOT in the git repo into one
+  make_handoff_bundle.ps1 - gather everything that is NOT in the git repo into one
   movable folder, so the project can be handed off to another PC.
 
   The code travels via git (github.com/TroyFernald/troyTree). This bundle is the
   rest: the working database, the 900 MB media library, the RootsMagic source,
-  the curated/generated exports, and the secrets — none of which are committed.
+  the curated/generated exports, and the secrets - none of which are committed.
 
   Usage:
     powershell -ExecutionPolicy Bypass -File tools\make_handoff_bundle.ps1
@@ -45,7 +45,7 @@ if ($IncludeDist -and (Test-Path "C:\troytree-dist")) {
 
 # --- write a RESTORE.ps1 the new PC runs to put everything back in place ---
 $restore = @'
-# RESTORE.ps1 — run on the NEW PC after cloning the repo and copying this bundle here.
+# RESTORE.ps1 - run on the NEW PC after cloning the repo and copying this bundle here.
 # Assumes the repo was cloned to C:\tree\troy-family-tree-research. Edit $repo if not.
 param([string]$repo = "C:\tree\troy-family-tree-research")
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -71,12 +71,12 @@ Set-Content -Path "$Dest\RESTORE.ps1" -Value $restore -Encoding utf8
 # --- manifest ---
 $man = Get-ChildItem -Recurse -File $Dest -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum
 $lines = @(
-  "Troy Family Tree — handoff bundle",
+  "Troy Family Tree - handoff bundle",
   ("created: " + (Get-Date -Format s)),
   ("total:   {0:N1} MB, {1} files" -f ($man.Sum/1MB), $man.Count),
   "",
   "Contents (local-only assets NOT in the git repo):",
-  "  repo-data\working\research.sqlite   the live working database (SOURCE OF TRUTH; living-relative data — keep private)",
+  "  repo-data\working\research.sqlite   the live working database (SOURCE OF TRUTH; living-relative data - keep private)",
   "  repo-data\exports\                  generated site HTML + curated research (deep_dives, dd_batch*, findings, geocode cache)",
   "  repo-data\original\                 original import sqlite",
   "  repo-data\site_password.txt         site gate password",
