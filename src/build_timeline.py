@@ -114,7 +114,7 @@ _TEMPLATE = r"""<!doctype html>
 <div id="panel">
   <a class="home" href="index.html">‹ Home</a>
   <h1>Family Timeline</h1>
-  <div class="meta">__COUNT__ relatives · __MINY__–__MAXY__<br>scroll / pinch to zoom · drag to pan<br>click a life to open their story</div>
+  <div class="meta">__COUNT__ relatives · __MINY__–__MAXY__<br><b>each band = a generation</b> (you at top, ancestors below)<br>each bar = one life (birth → death)<br>scroll / pinch to zoom time · drag to pan · click a life for their story</div>
   <div id="sides"></div>
   <input id="q" type="search" placeholder="Find &amp; jump to a person…" autocomplete="off">
   <div style="display:flex;gap:5px;margin-top:6px">
@@ -134,12 +134,20 @@ const colFor = p => p.s && p.s.includes(FK) ? '#5b9bd5' : (p.s && p.s.includes(B
 
 const cv = document.getElementById('tl'), ctx = cv.getContext('2d');
 const dpr = Math.min(window.devicePixelRatio||1, 2);
-const LH = 15, BAR = 10, AXIS_H = 30;            // lane height, bar thickness, top axis band
-let W=0, H=0, scaleX=1, panX=0, panY=AXIS_H+8, side='', nLanes=0, _raf=0, _q='';
+const LH = 12, BAR = 8, AXIS_H = 30, LEFTW = 108, BANDGAP = 1;   // compact lanes; left label gutter; blank row between generations
+let W=0, H=0, scaleX=1, panX=0, panY=AXIS_H+8, side='', totalRows=0, _raf=0, _q='';
 const tip = document.getElementById('tip');
+function genLabel(g){
+  if (g>=900) return ['Other','relatives'];
+  if (g===0) return ['Gen 0','You'];
+  if (g===1) return ['Gen 1','Parents'];
+  if (g===2) return ['Gen 2','Grandparents'];
+  if (g===3) return ['Gen 3','Gt-grandparents'];
+  return ['Gen '+g, (g-2)+'×-gt grandparents'];
+}
 
-// ---- lane packing (greedy): give each life the first lane that's free ----
-let LANES = [];
+// ---- layout: one band per generation (You at top, ancestors below); pack lives into lanes WITHIN each band ----
+let LANES = [], BANDS = [];
 function repack(){
   LANES = PEOPLE.filter(p => !side || (p.s && p.s.includes(side)))
                 .filter(p => !_q || p.n.toLowerCase().includes(_q));
@@ -147,14 +155,22 @@ function repack(){
     const st = (p.b!=null?p.b:p.d), en = (p.d!=null?p.d:p.b);
     p._s = st; p._e = Math.max(en, st+1); p._pt = (p.b==null||p.d==null);   // _pt = single-date point
   }
-  LANES.sort((a,b)=> a._s-b._s || a._e-b._e);
-  const ends=[];
-  for (const p of LANES){
-    let placed=false;
-    for (let i=0;i<ends.length;i++){ if (ends[i] < p._s){ p._lane=i; ends[i]=p._e; placed=true; break; } }
-    if (!placed){ p._lane=ends.length; ends.push(p._e); }
+  const groups = new Map();                       // generation -> people (no generation -> 999)
+  for (const p of LANES){ const g = (p.g==null?999:p.g); (groups.get(g)||groups.set(g,[]).get(g)).push(p); }
+  const gens = [...groups.keys()].sort((a,b)=>a-b);
+  BANDS = []; let row = 0;
+  for (const g of gens){
+    const arr = groups.get(g); arr.sort((a,b)=> a._s-b._s || a._e-b._e);
+    const ends = [];                              // greedy lane packing within this generation
+    for (const p of arr){
+      let placed=false;
+      for (let i=0;i<ends.length;i++){ if (ends[i] < p._s){ p._row=row+i; ends[i]=p._e; placed=true; break; } }
+      if (!placed){ p._row=row+ends.length; ends.push(p._e); }
+    }
+    BANDS.push({ g, label: genLabel(g), rowStart: row, rows: Math.max(1, ends.length) });
+    row += Math.max(1, ends.length) + BANDGAP;
   }
-  nLanes = ends.length;
+  totalRows = row;
 }
 
 // ---- coordinate transforms ----
@@ -163,7 +179,7 @@ const xToYear = x => (x - panX)/scaleX;
 const laneToY = l => panY + l*LH;
 
 function clampPan(){
-  const totalH = nLanes*LH + 20;
+  const totalH = totalRows*LH + 20;
   const minPanY = Math.min(AXIS_H+8, H - totalH - 8);
   if (panY > AXIS_H+8) panY = AXIS_H+8;
   if (panY < minPanY) panY = minPanY;
@@ -179,61 +195,79 @@ function draw(){
   clampPan();
   const y0=xToYear(0), y1=xToYear(W);
 
-  // gridlines + faint era bands
+  // generation band stripes + separator lines
+  for (let i=0;i<BANDS.length;i++){
+    const bd=BANDS[i], top=laneToY(bd.rowStart), h=bd.rows*LH;
+    if (top+h < AXIS_H || top > H) continue;
+    ctx.fillStyle = (bd.g>=900) ? 'rgba(90,100,120,.10)' : (i%2 ? 'rgba(120,140,170,.05)' : 'rgba(120,140,170,.11)');
+    const ytop=Math.max(top,AXIS_H); ctx.fillRect(0, ytop, W, top+h-ytop);
+    ctx.strokeStyle='rgba(120,140,170,.20)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(0,top); ctx.lineTo(W,top); ctx.stroke();
+  }
+
+  // year gridlines
   const step = niceStep(110/scaleX);
   const start = Math.floor(y0/step)*step;
-  ctx.textBaseline='alphabetic'; ctx.font='11px Segoe UI, sans-serif';
   for (let y=start; y<=y1; y+=step){
     const x=yearToX(y);
-    ctx.strokeStyle = (y%(step*5)===0)?'rgba(120,140,170,.22)':'rgba(120,140,170,.10)';
+    ctx.strokeStyle = (y%(step*5)===0)?'rgba(120,140,170,.22)':'rgba(120,140,170,.09)';
     ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x,AXIS_H); ctx.lineTo(x,H); ctx.stroke();
   }
 
-  // bars (cull to what's on screen)
+  // lifespan bars (cull to what's on screen)
   const lo=Math.floor((-LH-panY)/LH), hi=Math.ceil((H-panY)/LH);
+  ctx.textBaseline='middle';
   for (const p of LANES){
-    if (p._lane<lo || p._lane>hi) continue;
+    if (p._row<lo || p._row>hi) continue;
     if (p._e < y0 || p._s > y1) continue;
-    const x0=yearToX(p._s), x1=yearToX(p._e), yy=laneToY(p._lane)+(LH-BAR)/2;
-    const w=Math.max(2, x1-x0);
-    ctx.globalAlpha = p.st ? 1 : 0.72;
+    const x0=yearToX(p._s), x1=yearToX(p._e), yy=laneToY(p._row)+(LH-BAR)/2, w=Math.max(2, x1-x0);
+    ctx.globalAlpha = p.st ? 1 : 0.7;
     ctx.fillStyle = colFor(p);
     if (p._pt){ const cx=x0+1.5, cy=yy+BAR/2, r=BAR/1.7;       // single-date life = diamond marker
       ctx.beginPath(); ctx.moveTo(cx,cy-r); ctx.lineTo(cx+r,cy); ctx.lineTo(cx,cy+r); ctx.lineTo(cx-r,cy); ctx.closePath(); ctx.fill(); }
     else ctx.fillRect(x0, yy, w, BAR);
-    // label inside/after the bar when there's room
-    if (w>34 || (p._pt && scaleX>3)){
-      ctx.globalAlpha=1; ctx.fillStyle='#0c0f15'; ctx.font='600 9.5px Segoe UI, sans-serif'; ctx.textBaseline='middle';
-      let t=p.n; const room=Math.max(w-6, p._pt?90:0); const maxc=Math.floor(room/5.4);
+    if (w>34 || (p._pt && scaleX>3)){                          // name printed on the bar when it's wide enough
+      ctx.globalAlpha=1; ctx.fillStyle='#0c0f15'; ctx.font='600 9px Segoe UI, sans-serif';
+      let t=p.n; const room=Math.max(w-6, p._pt?90:0), maxc=Math.floor(room/5.2);
       if (t.length>maxc) t=t.slice(0,Math.max(1,maxc-1))+'…';
-      if (maxc>=2){ ctx.fillText(t, (p._pt?x0+8:x0+4), yy+BAR/2+0.5); }
-      ctx.textBaseline='alphabetic';
+      if (maxc>=2) ctx.fillText(t, (p._pt?x0+8:x0+4), yy+BAR/2+0.5);
     }
     ctx.globalAlpha=1;
   }
+  ctx.textBaseline='alphabetic';
 
-  // top axis band with year labels (drawn last so it stays on top)
-  ctx.fillStyle='rgba(14,17,23,.92)'; ctx.fillRect(0,0,W,AXIS_H);
+  // top axis band with year labels
+  ctx.fillStyle='rgba(14,17,23,.93)'; ctx.fillRect(0,0,W,AXIS_H);
   ctx.strokeStyle='rgba(120,140,170,.25)'; ctx.beginPath(); ctx.moveTo(0,AXIS_H); ctx.lineTo(W,AXIS_H); ctx.stroke();
   ctx.fillStyle='#cdd6e2'; ctx.font='600 12px Segoe UI, sans-serif'; ctx.textBaseline='middle'; ctx.textAlign='center';
-  for (let y=start; y<=y1; y+=step){ if (y%(step*(step<100?5:1))===0 || step>=100){ const x=yearToX(y); if(x>26&&x<W-6) ctx.fillText(y, x, AXIS_H/2); } }
+  for (let y=start; y<=y1; y+=step){ if (step>=100 || y%(step*5)===0){ const x=yearToX(y); if(x>LEFTW+18 && x<W-6) ctx.fillText(y, x, AXIS_H/2); } }
   ctx.textAlign='left';
+
+  // left sticky generation-label gutter (drawn last so it stays on top)
+  ctx.fillStyle='rgba(14,17,23,.9)'; ctx.fillRect(0,AXIS_H,LEFTW,H-AXIS_H);
+  ctx.strokeStyle='rgba(120,140,170,.25)'; ctx.beginPath(); ctx.moveTo(LEFTW,AXIS_H); ctx.lineTo(LEFTW,H); ctx.stroke();
+  ctx.textBaseline='middle';
+  for (const bd of BANDS){
+    const top=laneToY(bd.rowStart), h=bd.rows*LH; if (top+h<AXIS_H+4 || top>H) continue;
+    let cy=Math.max(AXIS_H+14, Math.min(top+h/2, H-10)); cy=Math.max(cy, top+13); cy=Math.min(cy, top+h-4);
+    ctx.fillStyle='#dbe3ee'; ctx.font='700 11px Segoe UI, sans-serif'; ctx.fillText(bd.label[0], 9, cy-6);
+    ctx.fillStyle='#8b97a7'; ctx.font='10px Segoe UI, sans-serif'; ctx.fillText(bd.label[1], 9, cy+6);
+  }
+  ctx.textBaseline='alphabetic';
 }
 function schedule(){ if(_raf) return; _raf=requestAnimationFrame(()=>{ _raf=0; draw(); }); }
 
 // ---- view framing ----
 function resize(){ W=innerWidth; H=innerHeight; cv.width=W*dpr; cv.height=H*dpr; cv.style.width=W+'px'; cv.style.height=H+'px'; draw(); }
-function fitAll(){ const pad=8; scaleX=(W-2*40)/Math.max(1,(MAXY-MINY+pad)); panX=40 - MINY*scaleX; panY=AXIS_H+8; draw(); }
+function fitAll(){ const pad=8, left=LEFTW+16; scaleX=(W-left-24)/Math.max(1,(MAXY-MINY+pad)); panX=left - MINY*scaleX; panY=AXIS_H+8; draw(); }
 function zoomAround(cx, f){ const yr=xToYear(cx); scaleX=Math.min(60, Math.max( (W)/(MAXY-MINY+400), scaleX*f)); panX=cx - yr*scaleX; schedule(); }
 
 // ---- hit testing: screen point -> life bar ----
 function hit(px,py){
   if (py<AXIS_H) return null;
-  const lane=Math.round((py-panY-(LH-BAR)/2-BAR/2)/LH);
-  const yr=xToYear(px);
+  const row=Math.floor((py-panY)/LH);
   let best=null, bestd=1e9;
   for (const p of LANES){
-    if (p._lane!==lane) continue;
+    if (p._row!==row) continue;
     const x0=yearToX(p._s), x1=Math.max(yearToX(p._e), x0+ (p._pt?12:2));
     if (px>=x0-6 && px<=x1+2){ const d=Math.abs(px-(x0+x1)/2); if(d<bestd){bestd=d; best=p;} }
   }
@@ -284,7 +318,7 @@ qEl.addEventListener('input', () => {
   const v=qEl.value.trim().toLowerCase();
   if (v && v.length>=2){ const hitp=PEOPLE.find(p => p.n.toLowerCase().includes(v) && (!side||(p.s&&p.s.includes(side))));
     if (hitp){ const yr=(hitp.b!=null?hitp.b:hitp.d); scaleX=Math.max(scaleX,8); panX=W/2 - yr*scaleX; repack();
-      const ln=(LANES.find(p=>p.id===hitp.id)||{})._lane||0; panY=H/2 - ln*LH; draw(); } }
+      const ln=(LANES.find(p=>p.id===hitp.id)||{})._row||0; panY=H/2 - ln*LH; draw(); } }
 });
 
 document.getElementById('reset').addEventListener('click', fitAll);
@@ -296,7 +330,7 @@ document.getElementById('legend').innerHTML =
   +`<i style="background:#6bbf86;margin-left:8px"></i>both / root`;
 
 paint(); repack(); resize(); fitAll();
-window.__tl = { hit, state: () => ({ count: LANES.length, lanes: nLanes, scaleX, panX, panY }) };
+window.__tl = { hit, state: () => ({ count: LANES.length, bands: BANDS.length, rows: totalRows, scaleX, panX, panY }) };
 </script>
 </body>
 </html>
