@@ -9,3 +9,7 @@ pyyaml
 ged4py
 networkx
 pytest
+# OCR + media (newspaper-clipping ingest, build_offline image localization)
+pytesseract
+Pillow
+pypdfium2
