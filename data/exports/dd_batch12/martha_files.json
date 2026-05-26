@@ -1,0 +1,49 @@
+{
+  "person_id": "@I322454167419@",
+  "title": "Martha Files (1823–1867): A Thorndike Daughter and Second Wife of the Troy Fernalds",
+  "tag": "documented",
+  "narrative": [
+    "Martha Files was born on 6 April 1823 in Thorndike, Waldo County, Maine, a daughter of Joseph Files and Margaret \"Peggy\" Wescott. Thorndike was then a young inland farming town: settled in the late 1700s, incorporated on 15 February 1819 out of what had been Lincoln Plantation, and named for Israel Thorndike, a Massachusetts merchant and one of the principal purchasers of Henry Knox's Waldo Patent. By 1850 the town had grown to its all-time peak of roughly 1,029 residents, almost all of them tied to family farms worked from the rocky upland soil. Into that world of cleared fields, woodlots, and Halfmoon Stream, Martha was born and raised among the families who gave their names to the local landscape.",
+    "The Files were among those families. Martha's father, Joseph Files (1786–1870), is buried in Files Hill Cemetery in Thorndike — a burying ground that carries the family surname, a sign of how rooted the Files were in that corner of Waldo County. Joseph's grave records that he was the husband of three women across his long life (Margaret, Sarah, and Anna), with Margaret \"Peggy\" Wescott being the mother given for Martha in this family's records. (A separate certified Maine record for a \"Martha Files\" born 8 November 1821 at Gorham, daughter of a Joseph Files and a mother named only \"Anna,\" survives in the family papers, but its differing date, town, and mother make it most likely a different woman — a cousin or half-sister rather than our Martha; it is noted here only for honesty, not relied upon.)",
+    "Martha married Jonathan F. Fernald Jr. (c.1809–1866), a farmer of Troy, the neighboring Waldo County town just west of Thorndike. She was his second wife. His first, Jane Bagley (1811–1841), had died young, and the Fernald and Bagley families were both well established in Troy — itself a town of shifting early names (incorporated as Kingville in 1812, then Joy, Montgomery, and finally Troy by 1826). In marrying a widower, Martha stepped into a household already shaped by loss, becoming stepmother to Jonathan's surviving children by Jane and then mother to children of her own. Troy in these years was a substantial farming community, counting 1,484 residents in 1850 and 1,403 in 1860.",
+    "Among Martha's children was Frank Neal Fernald, born 8 February 1850 in Troy, Maine. His identity and parentage are unusually well documented: his own Nevada death certificate, filed at Elko in October 1935 when he died at age 85, names his father as \"Johnathan Fernald\" and his mother as \"Martha Files,\" both born in Maine, and gives his birthplace as Troy, Maine. That single late record reaches back across most of a century to confirm the marriage of Martha Files and Jonathan Fernald and to anchor the blended Fernald household in Troy. It is through this Troy Fernald line — Frank Neal and his kin — that the family descends toward later generations, including the Fernalds of Troy.",
+    "The middle decades of Martha's life unfolded against the hard backdrop of mid-1800s Waldo County. These were family farms producing largely for the household and its animals, with modest surpluses sold nearby; potatoes, hay, and livestock were the staples of the upland Waldo economy. Then came the Civil War. Maine sent tens of thousands of its men to the Union armies, and Waldo County felt the drain acutely — Belfast, the county seat, ran multiple enlistment offices and sent companies to regiments such as the 4th Maine Infantry, while the war idled coastal trade and stripped farms of working-age men. Women like Martha kept households and farms running through those years, and the war's losses touched nearly every Waldo County community.",
+    "The family's own losses came in close succession as the war years ended. Jonathan Fernald died in 1866, and Martha outlived him by only about a year, dying in 1867 in Troy at roughly forty-four years of age. Both are commemorated together on the granite Fernald family monument in Mount Holly Cemetery (also recorded as Mount Repose Cemetery), Troy. The stone reads \"FERNALD / JONATHAN FERNALD 1809–1856 / HIS WIVES / JANE BAGLEY 1811–1841 / MARTHA FILES 1823–1867,\" memorializing the widower and both of the women who shared his household. The monument's \"1856\" for Jonathan appears to be a carving or transcription error: an independent Maine cemetery-records index card (compiled from the gravestones in 1980) gives his dates as 1809–1866, and the better-supported death year is 1866 — the digits 5 and 6 being easy to confuse on weathered granite. What the records agree on is the human shape of the story: a Thorndike farm daughter who married into a grieving Troy household, raised a blended family through the Civil War, and died young, laid to rest beside the husband and the first wife she had followed.",
+    "Honest summary of what is documented versus uncertain: Martha's death year (1867) and burial at Mount Holly/Mount Repose Cemetery in Troy are firmly supported by both the monument and the Maine cemetery index; her marriage to Jonathan Fernald and her motherhood of Frank Neal Fernald (b. 1850) are corroborated by Frank's 1935 death certificate; her father Joseph Files of Thorndike is supported by his grave at Files Hill Cemetery. Her exact birth date of 6 April 1823 and her mother's identity as Margaret \"Peggy\" Wescott come from the family's working records and the monument's 1823 birth year, and are treated here as given. The conflicting 1821/Gorham/\"Anna\" birth record is flagged but not adopted. Where the public record is silent — the precise number and names of all her children, or the cause of her early death — this account stays silent rather than invent."
+  ],
+  "sources": [
+    {
+      "title": "Repository vision findings: Martha Files (Fernald monument, Frank Neal Fernald death certificate, Maine cemetery index, census transcriptions)",
+      "url": "data/exports/vision_findings/martha_files.json"
+    },
+    {
+      "title": "Joseph Files (1786–1870), Files Hill Cemetery, Thorndike, Waldo Co., Maine — Find a Grave Memorial #34087580",
+      "url": "https://www.findagrave.com/memorial/34087580/joseph-files"
+    },
+    {
+      "title": "Thorndike, Maine — Wikipedia (settlement, incorporation, Israel Thorndike, Waldo Patent, 1850 population peak)",
+      "url": "https://en.wikipedia.org/wiki/Thorndike,_Maine"
+    },
+    {
+      "title": "Troy, Maine — Wikipedia (incorporation 1812, name changes, 1850/1860 population)",
+      "url": "https://en.wikipedia.org/wiki/Troy,_Maine"
+    },
+    {
+      "title": "Thorndike, Waldo County, Maine Genealogy — FamilySearch Research Wiki",
+      "url": "https://www.familysearch.org/en/wiki/Thorndike,_Waldo_County,_Maine_Genealogy"
+    },
+    {
+      "title": "Troy, Waldo County, Maine Genealogy — FamilySearch Research Wiki",
+      "url": "https://www.familysearch.org/en/wiki/Troy,_Waldo_County,_Maine_Genealogy"
+    },
+    {
+      "title": "Maine History Online: 1850–1870, The Civil War — Maine Memory Network",
+      "url": "https://www.mainememory.net/sitebuilder/site/903/page/1314/print"
+    },
+    {
+      "title": "Farming in Maine — Maine History Online / Maine Memory Network (mid-19th-century family farms, potatoes)",
+      "url": "https://www.mainememory.net/sitebuilder/site/161/slideshow/192/display"
+    }
+  ],
+  "images": []
+}
