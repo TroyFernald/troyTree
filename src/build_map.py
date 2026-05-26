@@ -42,7 +42,7 @@ def _collect(con, redact_living: bool) -> list[dict]:
 
     markers = []
     for place, e in places.items():
-        ppl = [{"n": n, "s": s} for (n, s) in e["ppl"].values()]
+        ppl = [{"n": n, "s": s, "id": pid} for pid, (n, s) in e["ppl"].items()]
         ppl.sort(key=lambda x: x["n"])
         markers.append({"place": place, "lat": e["lat"], "lon": e["lon"], "ppl": ppl})
     markers.sort(key=lambda m: -len(m["ppl"]))
@@ -53,6 +53,13 @@ def build(db_path=WORKING_DB, redact_living: bool = True) -> dict:
     with connect(db_path) as con:
         markers = _collect(con, redact_living)
         _, side_labels, side_keys = compute_sides(con)
+    story_ids = []
+    sp = EXPORTS_DIR / "story_ids.json"
+    if sp.exists():
+        try:
+            story_ids = json.loads(sp.read_text(encoding="utf-8"))
+        except Exception:
+            story_ids = []
     data = json.dumps(markers, ensure_ascii=False).replace("</", "<\\/")
     people_count = sum(len(m["ppl"]) for m in markers)
     html_doc = (
@@ -60,6 +67,7 @@ def build(db_path=WORKING_DB, redact_living: bool = True) -> dict:
         .replace("__PLACES__", str(len(markers)))
         .replace("__SIDELABELS__", json.dumps(side_labels))
         .replace("__SIDEKEYS__", json.dumps(side_keys))
+        .replace("__STORYIDS__", json.dumps(story_ids))
     )
     OUT_PATH.write_text(html_doc, encoding="utf-8")
     return {"places": len(markers), "person_place_pins": people_count, "out": str(OUT_PATH)}
@@ -98,6 +106,7 @@ _TEMPLATE = r"""<!doctype html>
 <script src="./lib/leaflet.js"></script>
 <script>
 const MARKERS = __DATA__, SIDE_LABELS = __SIDELABELS__, SIDE_KEYS = __SIDEKEYS__;
+const STORY_IDS = new Set(__STORYIDS__);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 const map = L.map('map', {worldCopyJump:true}).setView([42,-30], 3);
@@ -116,10 +125,14 @@ function render(){
     const ppl = side ? m.ppl.filter(p => p.s && p.s.includes(side)) : m.ppl;
     if (!ppl.length) continue;
     const r = Math.min(24, 4 + Math.sqrt(ppl.length)*1.7);
-    const names = ppl.slice(0,60).map(p => esc(p.n)).join(', ');
+    const names = ppl.slice(0,60).map(p => STORY_IDS.has(p.id)
+      ? `<a href="story.html#${encodeURIComponent(p.id)}" style="color:#7a5c3e;font-weight:600;text-decoration:none">${esc(p.n)} ›</a>`
+      : esc(p.n)).join(', ');
+    const anyStory = ppl.slice(0,60).some(p => STORY_IDS.has(p.id));
     L.circleMarker([m.lat, m.lon], {radius:r, color:'#5e4630', weight:1, fillColor:'#b07d4f', fillOpacity:.6})
       .bindPopup(`<b>${esc(m.place)}</b><br>${ppl.length} ${ppl.length>1?'people':'person'}<br>`
-        + `<span style="color:#6b5a47">${names}${ppl.length>60?' …':''}</span>`)
+        + `<span style="color:#6b5a47">${names}${ppl.length>60?' …':''}</span>`
+        + (anyStory?`<br><span style="color:#a08a72;font-size:11px">Tap a name with › to read their story</span>`:''))
       .addTo(layer);
     pts.push([m.lat, m.lon]);
   }
