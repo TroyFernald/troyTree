@@ -167,7 +167,7 @@ _TEMPLATE = r"""<!doctype html>
   <div class="ends"><span>0 (you)</span><span>__MAXGEN__</span></div>
 </div>
 <div id="hint"><b>Drag</b> to rotate · <b>scroll / pinch</b> to zoom · <b>right-drag</b> to slide<br><b>Click a person</b> to fly to them</div>
-<div id="flykeys"><b>W A S D</b> to fly · <b>Q / E</b> up &amp; down · <b>Shift</b> = boost · drag to look</div>
+<div id="flykeys">🚀 <b>Flying through the family…</b><br>drag, or click a person, to take the controls</div>
 <div id="info"></div>
 <div id="help" onclick="this.style.display='none'" ontouchend="this.style.display='none'">
   <div class="box">
@@ -178,7 +178,7 @@ _TEMPLATE = r"""<!doctype html>
     <li><b>Right-drag</b> (or two-finger drag) to slide sideways</li>
     <li><b>Click any person</b> to fly the camera to them and light up their connections</li>
     <li><b>Search</b> a name (top-left) to jump straight to anyone</li>
-    <li><b>🚀 Fly</b> = steer with <b>W A S D</b> (Q/E up·down, Shift to boost); <b>▶ Tour</b> flies you through the biggest family hubs on its own</li>
+    <li><b>🚀 Fly</b> takes you on a hands-free glide through the whole cloud; <b>▶ Tour</b> flies you from one big family hub to the next — both stop the moment you grab the view</li>
     <li><b>🏷 Names</b> shows the nearest people's names automatically — no need to hover</li>
     <li>Click empty space to fly back out</li>
   </ul>
@@ -203,7 +203,6 @@ const elem = document.getElementById('graph');
 const Graph = ForceGraph3D()(elem)
   .graphData(DATA)
   .backgroundColor('#0b0e14')
-  .controlType('orbit')          // stable "up" — easier to fly around than free-tumbling trackball
   .nodeLabel(n => `${n.name}${n.gen==null?'':' · gen '+n.gen}`)
   .nodeColor(n => colorFor(n.gen))
   .nodeVal(n => n.val)
@@ -220,8 +219,9 @@ const Graph = ForceGraph3D()(elem)
 let spin = true;
 const ctrl = Graph.controls();
 const cam = Graph.camera();
-let flyOn = false; const keys = {};
+let flyOn = false; let flyT = 0;
 ctrl.addEventListener('start', () => { spin = false; });
+window.__camxyz = () => [Math.round(cam.position.x), Math.round(cam.position.y), Math.round(cam.position.z), flyOn];
 
 // name labels overlay — the names of the nearest people, shown automatically (no hover needed)
 const labelsEl = document.createElement('div'); labelsEl.id='labels'; document.body.appendChild(labelsEl);
@@ -232,42 +232,31 @@ function hideLabels(){ for (const el of labPool) el.style.display='none'; }
 function updateLabels(){
   if (!labelsOn){ hideLabels(); return; }
   const cp = cam.position;
-  const near=[];
+  const cand=[];
   for (const n of CUR.nodes){
     if (n.x==null) continue;
+    tmpV.set(n.x,n.y,n.z); tmpV.project(cam);             // THREE projection → normalized device coords
+    if (tmpV.z>1 || tmpV.x<-1 || tmpV.x>1 || tmpV.y<-1 || tmpV.y>1) continue;   // skip off-screen / behind camera
     const vx=n.x-cp.x, vy=n.y-cp.y, vz=n.z-cp.z;
-    near.push([vx*vx+vy*vy+vz*vz, n]);                   // rank by distance to the camera
+    cand.push([vx*vx+vy*vy+vz*vz, n, (tmpV.x*0.5+0.5)*innerWidth, (-tmpV.y*0.5+0.5)*innerHeight]);
   }
-  near.sort((a,b)=>a[0]-b[0]);
-  const show = near.slice(0, LAB_MAX);                   // the nearest people always get a name tag
+  cand.sort((a,b)=>a[0]-b[0]);                            // nearest on-screen people first
+  const show = cand.slice(0, LAB_MAX);
   while (labPool.length<show.length){ const d=document.createElement('div'); d.className='nlab'; labelsEl.appendChild(d); labPool.push(d); }
   for (let i=0;i<labPool.length;i++){
     const el=labPool[i];
     if (i<show.length){
-      const n=show[i][1];
-      tmpV.set(n.x,n.y,n.z); tmpV.project(cam);           // THREE projection → normalized device coords (no library dependency)
-      if (tmpV.z<=1 && tmpV.x>=-1.05 && tmpV.x<=1.05 && tmpV.y>=-1.05 && tmpV.y<=1.05){
-        el.textContent=n.name;
-        el.style.left=((tmpV.x*0.5+0.5)*innerWidth)+'px';
-        el.style.top=((-tmpV.y*0.5+0.5)*innerHeight)+'px';
-        el.style.display='block';
-      } else el.style.display='none';
+      const c=show[i];
+      el.textContent=c[1].name; el.style.left=c[2]+'px'; el.style.top=c[3]+'px'; el.style.display='block';
     } else el.style.display='none';
   }
 }
-function flyStep(){                                      // WASD: glide through the cloud (camera + look-target move together)
+function flyStep(){                                      // hands-free cinematic glide: dive in and back out through the cloud
   if (!flyOn) return;
-  const cp=cam.position, tg=ctrl.target;
-  let fx=tg.x-cp.x, fy=tg.y-cp.y, fz=tg.z-cp.z; const fl=Math.hypot(fx,fy,fz)||1; fx/=fl; fy/=fl; fz/=fl;
-  let rx=-fz, rz=fx; const rl=Math.hypot(rx,rz)||1; rx/=rl; rz/=rl;   // right = forward × up(0,1,0), in the xz-plane
-  const s = 24*((keys.ShiftLeft||keys.ShiftRight)?3:1); let dx=0,dy=0,dz=0;
-  if (keys.KeyW){ dx+=fx*s; dy+=fy*s; dz+=fz*s; }
-  if (keys.KeyS){ dx-=fx*s; dy-=fy*s; dz-=fz*s; }
-  if (keys.KeyD){ dx+=rx*s; dz+=rz*s; }
-  if (keys.KeyA){ dx-=rx*s; dz-=rz*s; }
-  if (keys.KeyE||keys.Space){ dy+=s; }
-  if (keys.KeyQ){ dy-=s; }
-  if (dx||dy||dz){ cp.x+=dx; cp.y+=dy; cp.z+=dz; tg.x+=dx; tg.y+=dy; tg.z+=dz; if (ctrl.update) ctrl.update(); }
+  flyT += 0.006;
+  const R = 720 + 560*Math.sin(flyT*0.25);               // sweep from deep inside the cloud out to a wide view
+  const H = 340*Math.sin(flyT*0.4);                       // gently rise and fall
+  Graph.cameraPosition({ x: R*Math.sin(flyT), y: H, z: R*Math.cos(flyT) });   // looks at the family's center
 }
 
 function focusNode(node) {
@@ -349,12 +338,10 @@ const flyBtn = document.getElementById('flyBtn');
 const tourBtn = document.getElementById('tourBtn');
 const nameBtn = document.getElementById('nameBtn');
 
-// keyboard fly mode (WASD)
-const FLYKEYS = ['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','Space','ShiftLeft','ShiftRight'];
-addEventListener('keydown', e => { if (flyOn && FLYKEYS.includes(e.code)){ keys[e.code]=true; e.preventDefault(); } });
-addEventListener('keyup', e => { keys[e.code]=false; });
+// hands-free cinematic fly-through (works on any device — no keyboard needed)
 function setFly(on){ flyOn=on; spin=false; if(on) stopTour();
-  flyBtn.classList.toggle('on', on); document.getElementById('flykeys').style.display = on ? 'block' : 'none'; }
+  flyBtn.classList.toggle('on', on); flyBtn.textContent = on ? '⏹ Stop' : '🚀 Fly';
+  document.getElementById('flykeys').style.display = on ? 'block' : 'none'; }
 flyBtn.addEventListener('click', () => setFly(!flyOn));
 
 // auto-tour: fly from one key ancestor to the next on its own
@@ -367,7 +354,8 @@ tourBtn.addEventListener('click', () => {
   tour=[...CUR.nodes].sort((a,b)=>(b.val||0)-(a.val||0)).slice(0,15); ti=0;   // the most-connected family hubs
   tourBtn.classList.add('on'); tourBtn.textContent='⏹ Stop'; tourStep();
 });
-elem.addEventListener('pointerdown', () => { if(tourT) stopTour(); });   // grabbing the view ends the tour
+// grabbing the view (or clicking a person) takes over from any auto-motion
+elem.addEventListener('pointerdown', () => { if(flyOn) setFly(false); if(tourT) stopTour(); });
 
 // names toggle (on by default)
 nameBtn.addEventListener('click', () => { labelsOn=!labelsOn; nameBtn.classList.toggle('on', labelsOn); if(!labelsOn) hideLabels(); });
