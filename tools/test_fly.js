@@ -36,16 +36,23 @@ const URL = 'file:///' + 'C:/troytree-dist/pub/graph_3d.html';
   // dismiss the help overlay the way a user does, then click the Fly button
   await page.evaluate(() => { const h=document.getElementById('help'); if(h){h.style.display='none'; h.classList.add('hide');} });
   await page.click('#flyBtn');
-  const c1 = (await read()).cam;
-  await new Promise(r => setTimeout(r, 2500));
-  const after = await read();
-  const c2 = after.cam;
+  const enabled = await read();
+  console.log('\n=== FLY ENABLED ===');
+  console.log('flyBtn text:', enabled.flyBtnText, '| fly flag:', enabled.cam[3]);
 
-  console.log('\n=== AFTER CLICKING FLY ===');
-  console.log('flyBtn text now:', after.flyBtnText, '| fly flag:', c2[3]);
-  console.log('cam at click:', c1.slice(0,3), '-> 2.5s later:', c2.slice(0,3));
-  console.log('CAMERA MOVED:', c1[0]!==c2[0] || c1[1]!==c2[1] || c1[2]!==c2[2]);
-  console.log('visible labels now:', after.visibleLabels, '/', after.labelCount);
+  // hold each WASD key in turn and measure camera movement
+  for (const key of ['w','s','d','a']) {
+    const a = (await read()).cam;
+    await page.keyboard.down(key);
+    await new Promise(r => setTimeout(r, 900));
+    await page.keyboard.up(key);
+    await new Promise(r => setTimeout(r, 150));
+    const b = (await read()).cam;
+    const moved = Math.hypot(b[0]-a[0], b[1]-a[1], b[2]-a[2]);
+    console.log(`key ${key.toUpperCase()}: ${a.slice(0,3)} -> ${b.slice(0,3)}  (moved ${moved.toFixed(0)} units)`);
+  }
+  const after = await read();
+  console.log('visible labels:', after.visibleLabels, '/', after.labelCount);
 
   console.log('\n=== ERRORS (' + errors.length + ') ===');
   errors.slice(0, 15).forEach(e => console.log(e));
