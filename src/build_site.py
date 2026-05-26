@@ -23,15 +23,15 @@ import sys
 
 from . import (build_castles, build_fan_chart, build_gallery, build_graph_3d,
                build_guide, build_html_viewer, build_map, build_mcp_page,
-               build_notable, build_review, build_storybook)
+               build_notable, build_review, build_storybook, build_timeline)
 from .ancestral_sides import compute_sides
 from .init_database import connect
 from .paths import EXPORTS_DIR, PROJECT_ROOT, WORKING_DB
 
 DEFAULT_SITE_DIR = PROJECT_ROOT.parent / "troy-family-site"
 VIEW_FILES = ["family.html", "graph_3d.html", "fan.html", "story.html", "map.html",
-              "notable.html", "castles.html", "gallery.html", "review.html", "guide.html",
-              "connect.html"]
+              "timeline.html", "notable.html", "castles.html", "gallery.html", "review.html",
+              "guide.html", "connect.html"]
 
 
 def _site_password() -> str:
@@ -47,6 +47,7 @@ def _site_password() -> str:
 def build_site(media_base: str = "", redact_living: bool = True, out_dir=DEFAULT_SITE_DIR,
                archive_url: str = "") -> dict:
     build_storybook.build(redact_living=redact_living, media_base=media_base)  # writes story_ids.json first
+    build_timeline.build(redact_living=redact_living)                          # reads story_ids.json
     build_html_viewer.build(redact_living=redact_living, media_base=media_base)
     build_graph_3d.build(redact_living=redact_living)
     build_fan_chart.build(redact_living=redact_living)
@@ -143,6 +144,7 @@ _LANDING = r"""<!doctype html>
   <a class="card" data-view="gallery.html"><div class="ico">🖼️</div><h2>Photo Gallery</h2><p>Every photograph and document in the archive, in one place.</p></a>
   <a class="card" data-view="graph_3d.html"><div class="ico">🕸️</div><h2>3D Connections</h2><p>The whole tree as a rotating 3D web of relationships.</p></a>
   <a class="card" data-view="fan.html"><div class="ico">🌓</div><h2>Fan Chart</h2><p>Your direct ancestors in concentric 360° rings.</p></a>
+  <a class="card" data-view="timeline.html"><div class="ico">📜</div><h2>Timeline</h2><p>Every relative's life laid out across the centuries — zoom and explore.</p></a>
   <a class="card" data-view="map.html"><div class="ico">🗺️</div><h2>World Map</h2><p>Where the family lived, mapped across the world.</p></a>
   <a class="card" data-view="story.html"><div class="ico">📖</div><h2>Storybook</h2><p>Each life as a narrative you can page through.</p></a>
   <a class="card" data-view="guide.html"><div class="ico">🧭</div><h2>Research Guide</h2><p>Where to look next — the best archives and records for our lines.</p></a>
