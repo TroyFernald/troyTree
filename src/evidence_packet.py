@@ -74,6 +74,8 @@ def build_packet(con, person) -> str:
                 for r in ev]
     md.append(_section(f"Extracted evidence ({len(ev)})", ev_lines))
 
+    md.append(_cited_sources_section(con, pid))
+
     mil = con.execute(
         "SELECT person_name, claimed_facts, confidence_label, source_title FROM web_research_finding "
         "WHERE person_id=? AND (lower(claimed_facts) LIKE '%regiment%' OR lower(claimed_facts) LIKE '%pension%' "
@@ -97,7 +99,67 @@ def build_packet(con, person) -> str:
     review = [f"- ⚠️ [{r['severity']}] {r['issue_type']}: {r['description']}" for r in issues]
     review += [f"- ⚠️ mis-linked document (review): {r['file_name']}" for r in flagged]
     md.append(_section("Review flags", review))
+
+    md.append(_duplicates_section(con, pid))
     return "\n".join(md)
+
+
+def _cited_sources_section(con, pid: str) -> str:
+    """Real bibliographic sources the GEDCOM cites for this person, grouped by
+    source with the events they document and the specific page locator.
+    Populated by ``src.gedcom_sources``."""
+    rows = con.execute(
+        """
+        SELECT s.source_title, s.author, c.page_locator, c.url,
+               substr(c.citation_text, instr(c.citation_text, ' ') + 1) AS event
+        FROM citation c
+        JOIN source s ON s.source_id = c.source_id
+        JOIN raw_record rr ON rr.raw_record_id = c.raw_record_id
+        WHERE rr.xref = ? AND s.source_type = 'GEDCOM source record'
+        """,
+        (pid,),
+    ).fetchall()
+    grouped: dict[str, dict] = {}
+    for r in rows:
+        g = grouped.setdefault(
+            r["source_title"], {"author": r["author"], "events": set(), "page": "", "url": ""}
+        )
+        g["events"].add((r["event"] or "").replace(" citation", "") or "—")
+        g["page"] = g["page"] or (r["page_locator"] or "")
+        g["url"] = g["url"] or (r["url"] or "")
+    lines = []
+    for title, g in grouped.items():
+        head = f"- **{title}**" + (f" — {g['author']}" if g["author"] else "")
+        events = ", ".join(sorted(e for e in g["events"] if e and e != "—"))
+        if events:
+            head += f" _(cited for: {events})_"
+        lines.append(head)
+        if g["page"]:
+            lines.append(f"  - {g['page'][:200]}")
+        if g["url"]:
+            lines.append(f"  - {g['url']}")
+    return _section(f"Cited sources ({len(grouped)})", lines)
+
+
+def _duplicates_section(con, pid: str) -> str:
+    rows = con.execute(
+        "SELECT * FROM duplicate_candidates WHERE left_person_id=? OR right_person_id=? "
+        "ORDER BY score DESC",
+        (pid, pid),
+    ).fetchall()
+    lines = []
+    for r in rows:
+        same_left = r["left_person_id"] == pid
+        other_name = r["right_name"] if same_left else r["left_name"]
+        other_b = r["right_birth_date"] if same_left else r["left_birth_date"]
+        other_d = r["right_death_date"] if same_left else r["left_death_date"]
+        span = " / ".join(x for x in [other_b, other_d] if x)
+        lines.append(
+            f"- ⚠️ possible same person: **{other_name}**"
+            + (f" ({span})" if span else "")
+            + f" — score {r['score']}; {r['reason']}"
+        )
+    return _section(f"Possible duplicate records ({len(rows)})", lines)
 
 
 def generate(target_id=None, db_path=WORKING_DB) -> dict:

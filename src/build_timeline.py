@@ -28,6 +28,23 @@ def _year(s: str | None):
     return int(m.group(1)) if m else None
 
 
+def _gap_level(confidence_status: str | None, source_count: int | None) -> int:
+    """How big a research gap this person is (0 = worst, 3 = best).
+
+    0 no sources, 1 weak/tree-only, 2 partially sourced, 3 well-sourced. Drives the
+    Timeline's optional research-gap coloring so thinly documented ancestors stand out.
+    """
+    sc = source_count or 0
+    conf = (confidence_status or "").lower()
+    if sc == 0 or conf == "unsourced":
+        return 0
+    if conf == "weak_source_only" or sc <= 1:
+        return 1
+    if sc <= 4:
+        return 2
+    return 3
+
+
 def _collect(con, redact_living: bool) -> list[dict]:
     sides, _, _ = compute_sides(con)
     story_ids = set()
@@ -39,7 +56,8 @@ def _collect(con, redact_living: bool) -> list[dict]:
             story_ids = set()
     people = []
     for p in con.execute(
-        "SELECT person_id, full_name, birth_date, death_date, generation FROM people"
+        "SELECT person_id, full_name, birth_date, death_date, generation, "
+        "confidence_status, source_count FROM people"
     ):
         if redact_living and is_living(p["birth_date"], p["death_date"], p["generation"]):
             continue
@@ -53,6 +71,7 @@ def _collect(con, redact_living: bool) -> list[dict]:
             "g": p["generation"],
             "s": sides.get(p["person_id"], []),
             "st": 1 if p["person_id"] in story_ids else 0,
+            "gap": _gap_level(p["confidence_status"], p["source_count"]),
         })
     # earliest first — nicer initial lane packing
     people.sort(key=lambda x: (x["b"] if x["b"] is not None else x["d"], x["d"] or 9999))
@@ -96,9 +115,11 @@ _TEMPLATE = r"""<!doctype html>
   #panel a.home { color:#8b97a7; text-decoration:none; font-size:12px; }
   #panel button { background:#222b38; color:#cdd6e2; border:1px solid #2a3340; border-radius:6px;
     padding:5px 10px; font-size:12px; cursor:pointer; }
-  #sides { margin-top:7px; display:flex; gap:5px; }
-  #sides button { flex:1; padding:5px 4px; font-size:11.5px; }
-  #sides button.on { background:#3a4a5e; color:#fff; border-color:#4a5d75; }
+  #sides, #cmode { margin-top:7px; display:flex; gap:5px; }
+  #sides button, #cmode button { flex:1; padding:5px 4px; font-size:11.5px; }
+  #sides button.on, #cmode button.on { background:#3a4a5e; color:#fff; border-color:#4a5d75; }
+  #cmode { margin-top:5px; }
+  #cmode .lbl { color:#7e8a99; font-size:10.5px; align-self:center; padding-right:2px; }
   #q { width:100%; margin-top:7px; padding:6px 8px; border:1px solid #2a3340; border-radius:6px;
     background:#0d1119; color:#e8e8e8; font-size:12.5px; }
   #tip { position:fixed; z-index:20; pointer-events:none; background:rgba(10,12,17,.96);
@@ -116,6 +137,11 @@ _TEMPLATE = r"""<!doctype html>
   <h1>Family Timeline</h1>
   <div class="meta">__COUNT__ relatives · __MINY__–__MAXY__<br><b>each band = a generation</b> (you at top, ancestors below)<br>each bar = one life (birth → death)<br>scroll / pinch to zoom time · drag to pan · click a life for their story</div>
   <div id="sides"></div>
+  <div id="cmode">
+    <span class="lbl">Color:</span>
+    <button data-m="side" class="on">By side</button>
+    <button data-m="gap">Research gaps</button>
+  </div>
   <input id="q" type="search" placeholder="Find &amp; jump to a person…" autocomplete="off">
   <div style="display:flex;gap:5px;margin-top:6px">
     <button id="zout" style="flex:1;font-size:16px">－</button>
@@ -130,7 +156,11 @@ const PEOPLE = __DATA__, SIDE_LABELS = __SIDELABELS__, SIDE_KEYS = __SIDEKEYS__;
 const MINY = __MINY__, MAXY = __MAXY__;
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const FK = SIDE_KEYS[0], BK = SIDE_KEYS[1];
-const colFor = p => p.s && p.s.includes(FK) ? '#5b9bd5' : (p.s && p.s.includes(BK) ? '#d59a4e' : '#6bbf86');
+const GAP_COLORS = ['#d9534f','#e8923a','#e3c34a','#4caf72'];   // 0 none .. 3 well-sourced
+const GAP_LABELS = ['No sources','Weak / tree-only','Partly sourced','Well-sourced'];
+let cmode = 'side';                                             // 'side' | 'gap'
+const sideColor = p => p.s && p.s.includes(FK) ? '#5b9bd5' : (p.s && p.s.includes(BK) ? '#d59a4e' : '#6bbf86');
+const colFor = p => cmode==='gap' ? GAP_COLORS[p.gap==null?3:p.gap] : sideColor(p);
 
 const cv = document.getElementById('tl'), ctx = cv.getContext('2d');
 const dpr = Math.min(window.devicePixelRatio||1, 2);
@@ -324,13 +354,28 @@ qEl.addEventListener('input', () => {
 document.getElementById('reset').addEventListener('click', fitAll);
 document.getElementById('zin').addEventListener('click', ()=> zoomAround(W/2,1.5));
 document.getElementById('zout').addEventListener('click', ()=> zoomAround(W/2,1/1.5));
-document.getElementById('legend').innerHTML =
-  `<i style="background:#5b9bd5"></i>${esc(SIDE_LABELS[FK]||'Fernald')} `
-  +`<i style="background:#d59a4e;margin-left:8px"></i>${esc(SIDE_LABELS[BK]||'Bagley')} `
-  +`<i style="background:#6bbf86;margin-left:8px"></i>both / root`;
 
-paint(); repack(); resize(); fitAll();
-window.__tl = { hit, state: () => ({ count: LANES.length, bands: BANDS.length, rows: totalRows, scaleX, panX, panY }) };
+const legendEl = document.getElementById('legend');
+function paintLegend(){
+  if (cmode==='gap'){
+    legendEl.innerHTML = '<b style="color:#cdd6e2;font-weight:600">Research gaps</b><br>'
+      + GAP_COLORS.map((c,i)=>`<i style="background:${c}"></i>${esc(GAP_LABELS[i])}`).join('<br>');
+  } else {
+    legendEl.innerHTML =
+      `<i style="background:#5b9bd5"></i>${esc(SIDE_LABELS[FK]||'Fernald')} `
+      +`<i style="background:#d59a4e;margin-left:8px"></i>${esc(SIDE_LABELS[BK]||'Bagley')} `
+      +`<i style="background:#6bbf86;margin-left:8px"></i>both / root`;
+  }
+}
+const cmodeEl = document.getElementById('cmode');
+cmodeEl.addEventListener('click', e => { const b=e.target.closest('button'); if(b && b.dataset.m){
+  cmode=b.dataset.m;
+  cmodeEl.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x.dataset.m===cmode));
+  paintLegend(); draw(); }});
+
+paint(); paintLegend(); repack(); resize(); fitAll();
+window.__tl = { hit, setMode: m => { cmode=m; paintLegend(); draw(); },
+  state: () => ({ count: LANES.length, bands: BANDS.length, rows: totalRows, scaleX, panX, panY, cmode }) };
 </script>
 </body>
 </html>

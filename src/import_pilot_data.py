@@ -8,6 +8,7 @@ from .date_validation import find_date_issues
 from .direct_ancestor_audit import update_direct_ancestor_audit
 from .duplicate_detection import find_duplicate_candidates
 from .gedcom_import import import_gedcom
+from .gedcom_sources import normalize_sources
 from .init_database import connect, initialize_database
 from .notable_people import rebuild_notable_people
 from .paths import ORIGINAL_DIR, WORKING_DB, ensure_directories
@@ -202,6 +203,7 @@ def import_pilot_data() -> None:
     ensure_directories()
     initialize_database(WORKING_DB)
     import_gedcom()
+    normalize_sources()
     people = read_csv("persons.csv")
     evidence = read_csv("evidence_candidates.csv")
     queue = read_csv("research_queue.csv")

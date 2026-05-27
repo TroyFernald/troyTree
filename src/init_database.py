@@ -346,6 +346,7 @@ def initialize_database(db_path=WORKING_DB) -> None:
         con.executescript(SCHEMA)
         ensure_duplicate_columns(con)
         ensure_review_columns(con)
+        ensure_source_columns(con)
 
 
 def ensure_duplicate_columns(con: sqlite3.Connection) -> None:
@@ -377,6 +378,27 @@ def ensure_review_columns(con: sqlite3.Connection) -> None:
     for column, column_type in review_columns.items():
         if column not in review_existing:
             con.execute(f"ALTER TABLE review_task ADD COLUMN {column} {column_type}")
+
+
+def ensure_source_columns(con: sqlite3.Connection) -> None:
+    """Columns added to ``source`` for normalized GEDCOM bibliographic records
+    (parsed by ``src.gedcom_sources``). Older databases predate these."""
+    existing = {row["name"] for row in con.execute("PRAGMA table_info(source)")}
+    columns = {
+        "gedcom_xref": "TEXT",   # @S...@ id from the GEDCOM, for idempotent re-import
+        "author": "TEXT",        # AUTH
+        "publisher": "TEXT",     # PUBL
+        "apid": "TEXT",          # Ancestry _APID (collection pointer)
+    }
+    for column, column_type in columns.items():
+        if column not in existing:
+            con.execute(f"ALTER TABLE source ADD COLUMN {column} {column_type}")
+    # one source row per GEDCOM xref; partial index keeps the synthetic
+    # per-record stubs (NULL xref) out of the uniqueness constraint
+    con.execute(
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_source_gedcom_xref "
+        "ON source(gedcom_xref) WHERE gedcom_xref IS NOT NULL"
+    )
 
 
 if __name__ == "__main__":
